@@ -1,0 +1,41 @@
+{
+  "name": "veloze",
+  "version": "0.0.0",
+  "description": "",
+  "keywords": [],
+  "license": "MIT",
+  "author": "commenthol <commenthol@gmail.com>",
+  "type": "module",
+  "main": "src/index.js",
+  "types": "types",
+  "scripts": {
+    "all": "npm-run-all lint coverage types",
+    "coverage": "c8 npm t",
+    "lint": "eslint --ext js .",
+    "test": "mocha",
+    "types": "rimraf types; tsc"
+  },
+  "mocha": {
+    "recursive": true
+  },
+  "dependencies": {
+    "debug-level": "3.0.0-1"
+  },
+  "devDependencies": {
+    "@types/node": "^18.13.0",
+    "c8": "^7.12.0",
+    "eslint": "^8.33.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-n": "^15.6.1",
+    "eslint-plugin-promise": "^6.1.1",
+    "mocha": "^10.2.0",
+    "npm-run-all": "^4.1.5",
+    "rimraf": "^4.1.2",
+    "supertest": "^6.3.3",
+    "typescript": "^4.9.5"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
