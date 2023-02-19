@@ -8,6 +8,10 @@
   "type": "module",
   "main": "src/index.js",
   "types": "types",
+  "files": [
+    "src",
+    "types"
+  ],
   "scripts": {
     "all": "npm-run-all lint coverage types",
     "coverage": "c8 npm t",
