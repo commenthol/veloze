@@ -67,6 +67,16 @@ export interface Response extends http.ServerResponse {
    * needs cookieParser middleware 
    */
   clearCookie?: (name: string, opts?: CookieOpts) => Response
+  /**
+   * local template variables for res.render;
+   * needs renderEngine middleware 
+   */
+  locals?: Record<string, any>
+  /**
+   * template render function;
+   * needs renderEngine middleware 
+   */
+  render?: (name: string, locals: Record<string, any>) => Promise<void>
 }
 
 export function HandlerCb (
