@@ -3,8 +3,8 @@ import assert from 'assert'
 export const nap = (ms = 1) => new Promise((resolve) => setTimeout(() => resolve(ms), ms))
 
 export class Request {
-  constructor (method, url) {
-    this.headers = {}
+  constructor (method, url, headers) {
+    this.headers = headers || {}
     this.method = method || 'GET'
     this.url = url || '/'
   }
@@ -31,6 +31,7 @@ export class Response {
   }
 
   end (...args) {
+    this.writableEnded = true
     this.end = args
   }
 }
@@ -53,4 +54,10 @@ export const preHandler = (name) => async (req, res) => {
 
 export const shouldNotHaveHeader = (header) => (res) => {
   assert.ok(!(header in res.headers), `should not have header ${header}`)
+}
+
+export const shouldHaveHeaders = (expected) => ({ headers }) => {
+  // eslint-disable-next-line no-unused-vars
+  const { date, connection, ...other } = headers
+  assert.deepEqual(other, expected)
 }
