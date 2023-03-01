@@ -15,3 +15,4 @@ export const CONTENT_LENGTH = 'content-length'
 
 export const CONTENT_SECURITY_POLICY = 'content-security-policy'
 
+export const X_REQUEST_ID = 'x-request-id'
