@@ -12,13 +12,11 @@ const WILDCARD = Symbol('*')
 /**
  * Radix Tree Router
  *
- * - Case-sensitive router according to RFC3986.
+ * - Case-sensitive router according to [RFC3986](https://www.rfc-editor.org/rfc/rfc3986).
  * - Duplicate slashes are NOT ignored.
  * - No regular expressions.
- * - Tailing slash resolves to a different route. E.g. `/path !== /path/`
- *
- * Supports:
- * - wildcard routes `/path/*`.
+ * - Tailing slash resolves to different route. E.g. `/path !== /path/`
+ * - supports wildcard routes `/path/*`.
  * - parameters `/users/:user`, e.g. `/users/andi` resolves to `params = { user: 'andi' }`
  */
 export class FindRoute {
@@ -27,10 +25,14 @@ export class FindRoute {
   /**
    * add handler by method and pathname to routing tree
    * @param {Method} method
-   * @param {string} pathname
+   * @param {string|string[]} pathname
    * @param {Function} handler
    */
   add (method, pathname, handler) {
+    if (Array.isArray(pathname)) {
+      pathname.forEach(path => this.add(method, path, handler))
+      return
+    }
     const parts = pathname.replace(/[/]+$/, '/').split('/')
     let tmp = this.#tree
     for (const part of parts) {
@@ -66,7 +68,7 @@ export class FindRoute {
    */
   find ({ method, url }) {
     const [pathname] = url.split('?')
-    const parts = pathname.split('/')
+    const parts = (pathname || '/').split('/')
     const params = {}
     let wildcard
     let tmp = this.#tree

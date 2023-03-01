@@ -1,11 +1,10 @@
 import * as http from 'node:http'
-import { FindRoute } from './FindRoute.js'
 import { connect as connectDef } from './connect.js'
-import { HttpError } from './HttpError.js'
 import { finalHandler as finalHandlerDef } from './middleware/index.js'
-import { METHOD_HEAD, send } from './response/send.js'
-import { Log } from 'debug-level'
-// import { logger } from './utils/logger.js'
+import { FindRoute } from './FindRoute.js'
+import { HttpError } from './HttpError.js'
+import { REQ_METHOD_HEAD } from './constants.js'
+import { logger } from './utils/logger.js'
 
 /**
  * @typedef {import('../src/types').Method} Method
@@ -17,6 +16,8 @@ import { Log } from 'debug-level'
  * @typedef {import('../src/types').Connect} Connect
  * @typedef {import('../src/types').Log} Logger
  */
+
+const unique = arr => [...new Set(arr)]
 
 /**
  * Router
@@ -41,7 +42,7 @@ export class Router {
     const {
       connect,
       finalHandler,
-      log = new Log('veloze:final'),
+      log = logger('veloze:final'),
       htmlTemplate,
       findRoute
     } = opts || {}
@@ -126,13 +127,14 @@ export class Router {
 
     const { length } = path
     function rewrite (req, res, next) {
-      req.url = req.url.slice(length)
+      req.url = req.url.slice(length) || '/'
       next()
     }
-    /** @type {HandlerCb & {passOn?: boolean}} */
+
     const connected = this.#connect(...this.#preHooks, rewrite, ...handlers, ...this.#postHooks)
-    connected.passOn = handlers.length > 0
-    this.#tree.add('ALL', `${path}/*`, connected)
+    // @ts-expect-error
+    const pathnames = unique([].concat(path).map(p => [p, `${p}/*`]).flat())
+    this.#tree.add('ALL', pathnames, connected)
     return this
   }
 
@@ -143,25 +145,28 @@ export class Router {
    * @param {Function} [next]
    */
   handle (req, res, next) {
-    if (!req.originalUrl) {
-      req.originalUrl = req.url
-      res.send = send.bind(null, res)
-
-      if (req.method === 'HEAD') {
-        res[METHOD_HEAD] = true
-        req.method = 'GET'
-      }
-    }
-
     const final = (err) => {
       if (next) {
         next(err)
         return
       }
-      this.#finalHandler(err, req, res, () => {})
+      const _err = err || new HttpError(404)
+      this.#finalHandler(_err, req, res, () => { })
     }
 
-    /** @type {{handler: HandlerCb & {passOn?: boolean}, params: object}|undefined} */
+    if (!req.originalUrl) {
+      // originalUrl is set as url gets shortened on every router mount
+      req.originalUrl = req.url
+      // finalHandler will be invoked if response emits an error
+      res.once('error', final)
+
+      if (req.method === 'HEAD') {
+        res[REQ_METHOD_HEAD] = true
+        req.method = 'GET'
+      }
+    }
+
+    /** @type {{handler: HandlerCb, params: object}|undefined} */
     // @ts-expect-error
     const found = this.#tree.find(req)
     if (!found?.handler) {
@@ -169,8 +174,7 @@ export class Router {
       return
     }
     req.params = found.params || {}
-    const last = (err) => final(err || (found.handler.passOn ? null : new HttpError(404)))
-    found.handler(req, res, last)
+    found.handler(req, res, final)
   }
 
   /**
@@ -191,6 +195,8 @@ export class Router {
       .listen(port, ...args)
   }
 }
+// TODO: .listen() should default to http2 server
+// TODO: .listen() move to a separate module!
 
 http.METHODS.filter(method => method !== 'HEAD').forEach(method => {
   const methodLc = method.toLowerCase()

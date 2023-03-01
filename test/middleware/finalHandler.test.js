@@ -3,17 +3,22 @@ import { finalHandler, HttpError } from '../../src/index.js'
 import { escapeHtmlLit } from '../../src/utils/escapeHtml.js'
 import { Request, Response } from '../support/index.js'
 
+const removeFields = (args) => args.map(item => {
+  // eslint-disable-next-line no-unused-vars
+  const { id, ...other } = item
+  return other
+})
 class Log {
   info (...args) {
-    this._info = args
+    this._info = removeFields(args)
   }
 
   warn (...args) {
-    this._warn = args
+    this._warn = removeFields(args)
   }
 
   error (...args) {
-    this._error = args
+    this._error = removeFields(args)
   }
 }
 
@@ -114,6 +119,18 @@ describe('middleware/finalHandler', function () {
     )
   })
 
+  it('Error', function () {
+    const log = new Log()
+    const req = new Request('GET', '/something', { 'accept-language': '*' })
+    const res = new Response()
+    const err = new Error()
+    res.setHeader('content-type', 'text/html; charset=utf-8')
+    res.body = undefined
+
+    finalHandler({ log })(err, req, res)
+    assert.ok(/<h2>Oops! That should not have happened!<\/h2>/.test(res.end[0]), res.end[0])
+  })
+
   it('with custom html template', function () {
     const log = new Log()
     const req = new Request('GET', '/something')
@@ -127,5 +144,20 @@ describe('middleware/finalHandler', function () {
     finalHandler({ log, htmlTemplate })(err, req, res)
 
     assert.equal(res.end[0], '<h1>401</h1><h2>Unauthorized</h2>')
+  })
+
+  it('shall call res.end() if headers are sent', function () {
+    class ResponseHeadersSent {
+      headersSent = true
+      end () {
+        this._end = true
+      }
+    }
+    const log = new Log()
+    const req = new Request()
+    const res = new ResponseHeadersSent()
+    const err = new HttpError(401)
+    finalHandler({ log })(err, req, res)
+    assert.equal(res._end, true)
   })
 })

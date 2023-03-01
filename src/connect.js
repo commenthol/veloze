@@ -57,7 +57,9 @@ export const connect = (...handlers) => {
         return
       }
       const [handler, isAsync] = stack[i++] || []
-      if (res.writableEnded || !handler) {
+      if (res.writableEnded) {
+        return
+      } else if (!handler) {
         done()
         return
       }

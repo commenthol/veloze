@@ -6,8 +6,7 @@ import { send } from '../response/index.js'
  */
 
 /**
- * connect middleware which adds `req.query` as object to Request
- * `req.pathname` contains path without search parameters
+ * connect middleware which adds `res.send` to the response.
  * @param {Request} req
  * @param {Response} res
  * @param {Function} next

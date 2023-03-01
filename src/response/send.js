@@ -1,15 +1,22 @@
+import {
+  REQ_METHOD_HEAD,
+  CONTENT_TYPE,
+  MIME_HTML_UTF8,
+  MIME_JSON_UTF8,
+  MIME_BIN
+} from '../constants.js'
+import { setHeaders } from './setHeaders.js'
+
 /**
  * @typedef {import('../types').Response} Response
  * @typedef { import('../types').Request } Request
  */
 
-export const METHOD_HEAD = Symbol('kMethodHead')
-export const CONTENT_TYPE = 'content-type'
-export const MIME_HTML = 'text/html; charset=utf-8'
-export const MIME_JSON = 'application/json; charset=utf-8'
-export const MIME_BIN = 'application/octet-stream'
-
+// TODO: add fresh and etag generation
 /**
+ * Sends response
+ * sets content-type header and corrects headers based on status-code.
+ *
  * @param {Response} res
  * @param {any} body
  * @param {number} [status]
@@ -20,13 +27,11 @@ export function send (res, body, status, headers) {
   /** @type {BufferEncoding} */
   let encoding = 'utf-8'
 
-  for (const [header, value] of Object.entries(headers || {})) {
-    res.setHeader(header, value)
-  }
+  setHeaders(res, headers)
 
   if (typeof chunk === 'string') {
     if (!res.getHeader(CONTENT_TYPE)) {
-      res.setHeader(CONTENT_TYPE, MIME_HTML)
+      res.setHeader(CONTENT_TYPE, MIME_HTML_UTF8)
     }
   } else if (Buffer.isBuffer(chunk)) {
     encoding = 'binary'
@@ -38,7 +43,7 @@ export function send (res, body, status, headers) {
   } else {
     chunk = JSON.stringify(chunk)
     if (!res.getHeader(CONTENT_TYPE)) {
-      res.setHeader(CONTENT_TYPE, MIME_JSON)
+      res.setHeader(CONTENT_TYPE, MIME_JSON_UTF8)
     }
   }
 
@@ -59,7 +64,7 @@ export function send (res, body, status, headers) {
       break
   }
 
-  if (res[METHOD_HEAD]) {
+  if (res[REQ_METHOD_HEAD]) {
     res.setHeader('content-length', Buffer.byteLength(chunk, 'utf-8'))
     res.end()
     return

@@ -1,6 +1,6 @@
 import assert from 'assert'
 import supertest from 'supertest'
-import { Router } from '../src/index.js'
+import { Router, sendMw } from '../src/index.js'
 import { Request, Response, handler, asyncHandler, preHandler } from './support/index.js'
 
 const handleResBodyInit = (req, res, next) => {
@@ -16,7 +16,7 @@ describe('Router', function () {
   let app
   before(function () {
     app = new Router()
-    app.use(handleResBodyInit)
+    app.use(handleResBodyInit, sendMw)
     app.postHook(handleSend)
     app.get('/', handler)
       .get('/async', asyncHandler)
@@ -59,8 +59,8 @@ describe('Router', function () {
     it('unknown route shall return 404', function () {
       return supertest(app.handle)
         .get('/404')
-        .expect(404, { status: 404, message: 'Not Found' })
-        .expect('content-type', 'application/json; charset=utf-8')
+        .expect(404, /<h1>404<\/h1>/)
+        .expect('content-type', 'text/html; charset=utf-8')
     })
   })
 
@@ -125,7 +125,7 @@ describe('Router', function () {
     let router
     before(function () {
       router = new Router()
-      router.preHook(handleResBodyInit)
+      router.preHook(handleResBodyInit, sendMw)
       router.postHook(handleSend)
       router.use(preHandler('first'), preHandler('second'))
       router.get('/', asyncHandler)
@@ -150,41 +150,65 @@ describe('Router', function () {
   describe('mount router', function () {
     let router
     before(function () {
+      const handlerName = (name) => async (req, res) => {
+        const { method, url } = req
+        res.body.push(`${name} ${method} ${url}`)
+      }
+      const handler1 = handlerName('#1st')
+      const handler2 = handlerName('#2nd')
+
       router = new Router()
-      router.preHook(handleResBodyInit)
+      router.preHook(handleResBodyInit, sendMw)
       router.postHook(handleSend)
-      router.get('/one/main', handler)
-      router.get('/one', handler)
+      router.get('/', handler1)
+      router.get('/one', handler1)
+      router.get('/one/main', handler1)
 
       const router2 = new Router()
-      router2.get('/two', handler, handleSend)
-      router2.get('/*', handler, handleSend)
+      router2.get('/two', handler2)
+      router2.get('/', handler2)
+      router2.get('/*', handler2)
+
       // mount router with `use`
-      router.use('/one', router2.handle)
+      router.use('/one', router2.handle, handlerName('#mnt1'))
+      router.use('/two', router2.handle, handlerName('#mnt2'))
+      // router.print()
     })
 
-    it('/one/two uses mounted router', function () {
+    it('/ is from main router', function () {
       return supertest(router.handle)
-        .get('/one/two?foo=bar')
-        .expect(200, ['cb: GET /two?foo=bar'])
+        .get('/')
+        .expect(200, ['#1st GET /'])
     })
 
     it('/one is from main router', function () {
       return supertest(router.handle)
         .get('/one')
-        .expect(200, ['cb: GET /one'])
+        .expect(200, ['#1st GET /one'])
     })
 
     it('/one/main is from main router', function () {
       return supertest(router.handle)
         .get('/one/main')
-        .expect(200, ['cb: GET /one/main'])
+        .expect(200, ['#1st GET /one/main'])
+    })
+
+    it('/one/two uses mounted router', function () {
+      return supertest(router.handle)
+        .get('/one/two?foo=bar')
+        .expect(200, ['#2nd GET /two?foo=bar', '#mnt1 GET /two?foo=bar'])
     })
 
     it('/one/any is from mounted router', function () {
       return supertest(router.handle)
         .get('/one/any')
-        .expect(200, ['cb: GET /any'])
+        .expect(200, ['#2nd GET /any', '#mnt1 GET /any'])
+    })
+
+    it('/two is from mounted router', function () {
+      return supertest(router.handle)
+        .get('/two')
+        .expect(200, ['#2nd GET /', '#mnt2 GET /'])
     })
 
     it('PUT /one/any gives a 404', function () {

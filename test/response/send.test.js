@@ -1,5 +1,6 @@
 import supertest from 'supertest'
-import { METHOD_HEAD, send } from '../../src/response/send.js'
+import { send } from '../../src/response/send.js'
+import { REQ_METHOD_HEAD } from '../../src/constants.js'
 import { shouldNotHaveHeader } from '../support/index.js'
 
 describe('middleware/send', function () {
@@ -148,7 +149,7 @@ describe('middleware/send', function () {
   describe('request method is HEAD', function () {
     it('should ignore the body', async function () {
       const handle = (req, res) => {
-        res[METHOD_HEAD] = true
+        res[REQ_METHOD_HEAD] = true
         send(res, 'foobar')
       }
 

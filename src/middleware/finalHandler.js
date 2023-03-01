@@ -1,5 +1,7 @@
-import { send } from '../response/index.js'
+import * as crypto from 'node:crypto'
+import { send } from '../response/send.js'
 import { escapeHtmlLit } from '../utils/index.js'
+import { logger } from '../utils/logger.js'
 import { HttpError } from '../HttpError.js'
 
 /**
@@ -10,39 +12,47 @@ import { HttpError } from '../HttpError.js'
  */
 
 /**
- * @param {object} [opts]
- * @param {Log} [opts.log] log function
- * @param {({status, message}) => string} [opts.htmlTemplate] html template for the final error page
+ * final handler
+ *
+ * provides a error response according to a given error;
+ * returns either a json or html response; defaults to html;
+ * logs the error together with the requests url and method;
+ *
+ * @param {object} [options]
+ * @param {Log} [options.log] log function
+ * @param {(param0: {status: number, message: string, reqId: string, req: Request}) => string} [options.htmlTemplate] html template for the final error page
  * @returns {(err: HttpErrorL|Error, req: Request, res: Response, next?: Function) => void}
  */
-export const finalHandler = (opts) => {
+export const finalHandler = (options) => {
   const {
-    log = console,
+    log = logger(':final'),
     htmlTemplate = finalHtml
-  } = opts || {}
+  } = options || {}
 
   // eslint-disable-next-line no-unused-vars
-  return (err, req, res, next) => {
-    const isHttpError = err instanceof HttpError
-    // TODO allow error mapping or translations!
-    const message = isHttpError ? err.message : 'oops! This should not have happened!'
+  return function finalHandlerMw (err, req, res, next) {
+    const message = err instanceof HttpError
+      ? err.message
+      : 'Oops! That should not have happened!'
     const {
       // @ts-expect-error
       status = 500,
       stack,
       cause
     } = err || {}
+    const { url, originalUrl, method, id = crypto.randomUUID() } = req
 
-    // TODO generate an error id and log this!
     if (!res.headersSent) {
       const type = String(res.getHeader('content-type'))
-      const body = res.body || (type.startsWith('text/html')
-        ? htmlTemplate({ status, message })
-        : { status, message }
+      const body = res.body || (type.includes('json')
+        ? { status, message }
+        : htmlTemplate({ status, message, reqId: id, req })
       )
       send(res, body, status)
+    } else if (!res.writableEnded) {
+      res.end()
     }
-    const { url, originalUrl, method } = req
+
     const level = status < 400
       ? 'info'
       : status < 500
@@ -52,6 +62,7 @@ export const finalHandler = (opts) => {
       level,
       status,
       method,
+      id,
       url: originalUrl || url,
       msg: err.message,
       stack: level === 'error' ? stack : undefined,

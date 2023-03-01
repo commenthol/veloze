@@ -9,6 +9,8 @@ import {
   asyncHandler
 } from './support/index.js'
 
+const handlerPush = (str) => (req, res, next) => { res.body.push(str); next() }
+
 describe('connect', function () {
   it('no handlers shall not throw', function (done) {
     const req = new Request()
@@ -56,20 +58,20 @@ describe('connect', function () {
       res.body.push(`err#${num}`)
       next()
     }
-    const handler = (num) => async (req, res) => res.body.push(`ok#${num}`)
+
     connect(
-      handler(0),
+      handlerPush(0),
       errorHandler(1),
-      handler(1),
+      handlerPush(1),
       (req, res, next) => { next(new Error()) },
       errorHandler(2),
-      handler(2)
+      handlerPush(2)
     )(req, res, () => {
       try {
         assert.deepEqual(res, {
           body: [
-            'ok#0',
-            'ok#1',
+            0,
+            1,
             'err#1'
           ]
         })
@@ -88,22 +90,17 @@ describe('connect', function () {
       res.body.push(`err#${num}`)
       next()
     }
-    const handler = (num) => async (req, res) => res.body.push(`ok#${num}`)
 
     connect(
-      handler(0),
+      handlerPush(0),
       errorHandler(1),
-      handler(1),
+      handlerPush(1),
       errorHandler(2),
-      handler(2)
+      handlerPush(2)
     )(req, res, () => {
       try {
         assert.deepEqual(res, {
-          body: [
-            'ok#0',
-            'ok#1',
-            'ok#2'
-          ]
+          body: [0, 1, 2]
         })
         done()
       } catch (e) {
@@ -164,7 +161,7 @@ describe('connect', function () {
       next(new Error('drop it'))
     }
     connect(handler, handlerThrows, handler, finalHandler, handler)(req, res)
-    assert.deepEqual(res, { body: ['cb: GET /', 'drop it'], end: [] })
+    assert.deepEqual(res.body, ['cb: GET /', 'drop it'])
   })
 
   it('shall pass error', function (done) {
@@ -215,6 +212,38 @@ describe('connect', function () {
       } catch (e) {
         done(e)
       }
+    })
+  })
+
+  it('shall finish stack processing if request was ended', function (done) {
+    const req = new Request()
+    const res = new Response()
+
+    connect(
+      handlerPush(0),
+      handlerPush(1),
+      async (req, res) => { res.end() },
+      handlerPush(2)
+    )(req, res, () => {
+      throw new Error('assertion')
+    })
+    setTimeout(() => {
+      assert.deepEqual(res.body, [0, 1])
+      done()
+    })
+  })
+
+  it('shall conditionally exclude middleware', function (done) {
+    const req = new Request()
+    const res = new Response()
+
+    connect(
+      handlerPush(0),
+      false && handlerPush(1),
+      handlerPush(2)
+    )(req, res, () => {
+      assert.deepEqual(res.body, [0, 2])
+      done()
     })
   })
 
