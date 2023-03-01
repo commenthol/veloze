@@ -4,7 +4,6 @@ import { finalHandler as finalHandlerDef } from './middleware/index.js'
 import { FindRoute } from './FindRoute.js'
 import { HttpError } from './HttpError.js'
 import { REQ_METHOD_HEAD } from './constants.js'
-import { logger } from './utils/logger.js'
 
 /**
  * @typedef {import('../src/types').Method} Method
@@ -33,8 +32,6 @@ export class Router {
    * @param {{
    *  connect?: Connect
    *  finalHandler?: FinalHandler
-   *  log?: Logger
-   *  htmlTemplate?: (param0: {status: number, message: string}) => string
    *  findRoute?: FindRoute
    * }} [opts]
    */
@@ -42,12 +39,10 @@ export class Router {
     const {
       connect,
       finalHandler,
-      log = logger('veloze:final'),
-      htmlTemplate,
       findRoute
     } = opts || {}
     this.#tree = findRoute || new FindRoute()
-    this.#finalHandler = finalHandler || finalHandlerDef({ log, htmlTemplate })
+    this.#finalHandler = finalHandler || finalHandlerDef()
     this.#connect = connect || connectDef
     this.#preHooks = []
     this.#postHooks = []

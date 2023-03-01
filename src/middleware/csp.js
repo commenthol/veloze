@@ -1,0 +1,287 @@
+import { extname } from 'node:path'
+import { logger } from '../utils/logger.js'
+import { ms } from '../utils/index.js'
+import { isHttpsProto } from '../request/isHttpsProto.js'
+import { send } from '../response/send.js'
+import { bodyParser } from './bodyParser.js'
+import { connect } from '../connect.js'
+
+/**
+ * @typedef {import('../../src/types').HandlerCb} HandlerCb
+ * @typedef {import('../../src/types').Log} Log
+ */
+
+/**
+ * @typedef {object} HstsOptions
+ * @property {number|string} [maxAge='180d'] max-age in seconds (defaults to 180days) or ms string
+ * @property {boolean} [includeSubDomains=true]
+ * @property {boolean} [preload=false]
+ */
+
+/**
+ * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
+ * @param {HstsOptions|undefined} options
+ * @returns {string|undefined}
+ */
+export const buildHsts = (options) => {
+  if (!options) return
+  const { maxAge: _maxAge, includeSubDomains, preload } = options
+
+  const maxAge = ms(_maxAge, true)
+  if (!maxAge || maxAge < 0) {
+    return
+  }
+  const parts = [`max-age=${maxAge}`]
+  if (includeSubDomains) {
+    parts.push('includeSubDomains')
+  }
+  if (preload) {
+    parts.push('preload')
+  }
+  return parts.join('; ')
+}
+
+/**
+ * @typedef {'no-referrer'|'no-referrer-when-downgrade'|'origin'|'origin-when-cross-origin'|'same-origin'|'strict-origin'|'strict-origin-when-cross-origin'|'unsafe-url'} ReferrerPolicy
+ */
+
+const REFERRER_POLICY = [
+  'no-referrer',
+  'no-referrer-when-downgrade',
+  'origin',
+  'origin-when-cross-origin',
+  'same-origin',
+  'strict-origin',
+  'strict-origin-when-cross-origin',
+  'unsafe-url'
+]
+
+const X_DNS_PREFETCH_CONTROL = ['off', 'on']
+
+const CROSS_ORIGIN_EMBEDDER_POLICY = ['require-corp', 'unsafe-none', 'credentialless']
+const CROSS_ORIGIN_OPENER_POLICY = ['same-origin', 'same-origin-allow-popups', 'unsafe-none']
+const CROSS_ORIGIN_RESOURCE_POLICY = ['same-origin', 'same-site', 'cross-origin']
+
+const includes = (allowed, value) => value && allowed.includes(value)
+
+/**
+ * @typedef {object} CspOptions
+ * @property {boolean} [omitDefaults] if `true` CspOptions are not patched with CSP_DEFAULTS
+ * @property {boolean} [reportOnly] if `true` csp is only reported but not blocked
+ * @property {string|string[]} [connect-src]
+ * @property {string|string[]} [default-src]
+ * @property {string|string[]} [font-src]
+ * @property {string|string[]} [frame-src]
+ * @property {string|string[]} [img-src]
+ * @property {string|string[]} [manifest-src]
+ * @property {string|string[]} [media-src]
+ * @property {string|string[]} [object-src]
+ * @property {string|string[]} [prefetch-src]
+ * @property {string|string[]} [script-src]
+ * @property {string|string[]} [script-src-elem]
+ * @property {string|string[]} [script-src-attr]
+ * @property {string|string[]} [style-src]
+ * @property {string|string[]} [style-src-elem]
+ * @property {string|string[]} [style-src-attr]
+ * @property {string|string[]} [worker-src]
+ * @property {string|string[]} [base-uri]
+ * @property {string|string[]} [sandbox]
+ * @property {string|string[]} [form-action]
+ * @property {string|string[]} [frame-ancestors]
+ * @property {string|string[]} [navigate-to]
+ * @property {string} [report-to]
+ * @property {string} [report-uri]
+ * @property {string|string[]} [require-trusted-types-for]
+ * @property {string|string[]} [trusted-types]
+ * @property {boolean} [upgrade-insecure-requests]
+ */
+
+const CSP_KEYWORDS = [
+  'none',
+  'self',
+  'strict-dynamic',
+  'report-sample',
+  'unsafe-inline',
+  'unsafe-eval',
+  'unsafe-hashes',
+  'unsafe-allow-redirects'
+]
+
+const CSP_DIRECTIVES = {
+  // fetch directives
+  'default-src': ['self'],
+  'connect-src': [],
+  'font-src': ['self', 'https:', 'data:'],
+  'frame-src': [],
+  'img-src': ['self', 'data:'],
+  'manifest-src': [],
+  'media-src': [],
+  'object-src': ['none'],
+  'prefetch-src': [], // experimental
+  'script-src': ['self'],
+  'script-src-elem': [],
+  'script-src-attr': ['none'],
+  'style-src': ['self', 'unsafe-inline', 'https:'],
+  'style-src-elem': [],
+  'style-src-attr': [],
+  'worker-src': [],
+  // document directives
+  'base-uri': ['self'],
+  sandbox: [],
+  // navigation directives
+  'form-action': ['self'],
+  'frame-ancestors': ['self'],
+  'navigate-to': '', // experimental
+  // reporting directives
+  'report-to': '',
+  'report-uri': '',
+  // other directives
+  'require-trusted-types-for': [], // experimental
+  'trusted-types': [], // experimental
+  'upgrade-insecure-requests': true
+}
+
+/**
+ * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
+ * @see https://report-uri.com/home/generate
+ * @param {CspOptions|{}} [options]
+ * @returns {string}
+ */
+export const buildCsp = (options = {}) => {
+  const builder = []
+  for (const [directive, defaults] of Object.entries(CSP_DIRECTIVES)) {
+    const parts = []
+    // @ts-expect-error
+    let values = options[directive] ?? (options?.omitDefaults ? undefined : defaults)
+    // default-src must be present
+    if (directive === 'default-src' && !values) {
+      values = 'self'
+    }
+    const isArray = Array.isArray(values)
+    if (isArray && values.length) {
+      parts.push(directive)
+      values.forEach((value) => {
+        const v = CSP_KEYWORDS.includes(value) ? `'${value}'` : value
+        parts.push(v)
+      })
+    } else if (!isArray && values) {
+      parts.push(directive)
+      if (typeof values === 'string') {
+        parts.push(values)
+      }
+    }
+    if (parts.length) {
+      builder.push(parts.join(' '))
+    }
+  }
+  return builder.join('; ')
+}
+
+/**
+ * Middleware which adds various security headers on html pages.
+ * - csp: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
+ * - hsts: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
+ * - referrerPolicy: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy
+ * - xContentTypeOptions: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options
+ * - xDnsPrefetchControl: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-DNS-Prefetch-Control
+ * - crossOriginEmbedderPolicy: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Embedder-Policy
+ * - crossOriginOpenerPolicy: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Opener-Policy
+ * - crossOriginResourcePolicy: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Resource-Policy
+ *
+ * @see https://owasp.org/www-project-secure-headers/ci/headers_add.json
+ *
+ * @param {object} [options]
+ * @param {string[]} [options.extensions=['', '.html', '.htm']] extensions where CSP is applied
+ * @param {CspOptions|false} [options.csp] content-security-policy; false disables CSP
+ * @param {HstsOptions|false} [options.hsts] strict-transport-security; false disables HSTS
+ * @param {ReferrerPolicy|false} [options.referrerPolicy='no-referrer'] referrer-policy header
+ * @param {boolean} [options.xContentTypeOptions=true] x-content-type-options header; true sets 'nosniff'
+ * @param {'on'|'off'|false} [options.xDnsPrefetchControl='off'] x-dns-prefetch-control header
+ * @param {'require-corp'|'unsafe-none'|'credentialless'|false} [options.crossOriginEmbedderPolicy='require-corp'] cross-origin-embedder-policy header
+ * @param {'same-origin'|'same-origin-allow-popups'|'unsafe-none'|false} [options.crossOriginOpenerPolicy='same-origin'] cross-origin-opener-policy header
+ * @param {'same-origin'|'same-site'|'cross-origin'|false} [options.crossOriginResourcePolicy='same-origin'] cross-origin-resource-policy header
+ * @returns {HandlerCb}
+ */
+export function csp (options) {
+  const {
+    extensions = ['', '.html', '.htm'],
+    csp = { reportOnly: false },
+    referrerPolicy = 'no-referrer',
+    xContentTypeOptions = true,
+    xDnsPrefetchControl = 'off',
+    crossOriginEmbedderPolicy = 'require-corp',
+    crossOriginOpenerPolicy = 'same-origin',
+    crossOriginResourcePolicy = 'same-origin',
+    hsts = { maxAge: '180days', includeSubDomains: true }
+  } = options || {}
+
+  const cspReportOnly = csp && csp.reportOnly
+  if (cspReportOnly && !csp['report-uri']) {
+    throw new Error('cspReportOnly needs report-uri')
+  }
+
+  const headers = []
+  if (csp) {
+    headers.push([
+      cspReportOnly
+        ? 'content-security-policy-report-only'
+        : 'content-security-policy',
+      buildCsp(csp)
+    ])
+  }
+  if (includes(REFERRER_POLICY, referrerPolicy)) {
+    headers.push(['referrer-policy', referrerPolicy])
+  }
+  if (xContentTypeOptions) {
+    headers.push(['x-content-type-options', 'nosniff'])
+  }
+  if (includes(X_DNS_PREFETCH_CONTROL, xDnsPrefetchControl)) {
+    headers.push(['x-dns-prefetch-control', xDnsPrefetchControl])
+  }
+  if (includes(CROSS_ORIGIN_EMBEDDER_POLICY, crossOriginEmbedderPolicy)) {
+    headers.push(['cross-origin-embedder-policy', crossOriginEmbedderPolicy])
+  }
+  if (includes(CROSS_ORIGIN_OPENER_POLICY, crossOriginOpenerPolicy)) {
+    headers.push(['cross-origin-opener-policy', crossOriginOpenerPolicy])
+  }
+  if (includes(CROSS_ORIGIN_RESOURCE_POLICY, crossOriginResourcePolicy)) {
+    headers.push(['cross-origin-resource-policy', crossOriginResourcePolicy])
+  }
+
+  // @ts-expect-error
+  const strictTransportSecurity = buildHsts(hsts)
+
+  return function cspMw (req, res, next) {
+    req.path = req.path || (new URL(req.url, 'local://')).pathname
+    const ext = extname(req.path)
+
+    if (extensions.includes(ext)) {
+      for (const [header, value] of headers) {
+        res.setHeader(header, value)
+      }
+    }
+    if (strictTransportSecurity && isHttpsProto(req)) {
+      res.setHeader('strict-transport-security', strictTransportSecurity)
+    }
+    next()
+  }
+}
+
+/**
+ * Parse and log csp violation
+ * @param {{log: Log}} options
+ * @returns {HandlerCb}
+ */
+export function cspReport (options) {
+  const {
+    log = logger(':csp-violation')
+  } = options || {}
+
+  return connect(
+    bodyParser.json({ typeJson: 'application/csp-report' }),
+    (req, res) => {
+      log.warn(req.body)
+      send(res, '', 204)
+    }
+  )
+}

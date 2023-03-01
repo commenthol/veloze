@@ -11,3 +11,7 @@ export const CHARSET_UTF8 = 'charset=utf-8'
 export const MIME_HTML_UTF8 = MIME_HTML + '; ' + CHARSET_UTF8
 export const MIME_JSON_UTF8 = MIME_JSON + '; ' + CHARSET_UTF8
 
+export const CONTENT_LENGTH = 'content-length'
+
+export const CONTENT_SECURITY_POLICY = 'content-security-policy'
+
