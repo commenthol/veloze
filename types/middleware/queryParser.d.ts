@@ -4,7 +4,7 @@
  */
 /**
  * connect middleware which adds `req.query` as object to Request
- * `req.pathname` contains path without search parameters
+ * `req.path` contains pathname without search parameters
  * @param {Request} req
  * @param {Response} res
  * @param {Function} next

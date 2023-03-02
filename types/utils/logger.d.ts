@@ -1,1 +1,1 @@
-export function logger(namespace: any, opts: any): any;
+export function logger(namespace: string | undefined, opts: any): any;

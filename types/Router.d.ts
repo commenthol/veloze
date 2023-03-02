@@ -1,15 +1,5 @@
 /// <reference types="node" />
 /**
- * @typedef {import('../src/types').Method} Method
- * @typedef {import('../src/types').Handler} Handler
- * @typedef {import('../src/types').HandlerCb} HandlerCb
- * @typedef {import('../src/types').FinalHandler} FinalHandler
- * @typedef {import('../src/types').Request} Request
- * @typedef {import('../src/types').Response} Response
- * @typedef {import('../src/types').Connect} Connect
- * @typedef {import('../src/types').Log} Logger
- */
-/**
  * Router
  */
 export class Router {
@@ -17,19 +7,12 @@ export class Router {
      * @param {{
      *  connect?: Connect
      *  finalHandler?: FinalHandler
-     *  log?: Logger
-     *  htmlTemplate?: (param0: {status: number, message: string}) => string
      *  findRoute?: FindRoute
      * }} [opts]
      */
     constructor(opts?: {
         connect?: import("../src/types").Connect | undefined;
         finalHandler?: typeof import("../src/types").FinalHandler | undefined;
-        log?: import("../src/types").Log | undefined;
-        htmlTemplate?: ((param0: {
-            status: number;
-            message: string;
-        }) => string) | undefined;
         findRoute?: FindRoute | undefined;
     } | undefined);
     /**

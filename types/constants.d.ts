@@ -1,0 +1,14 @@
+export const REQ_METHOD_HEAD: unique symbol;
+export const RES_NEXT: unique symbol;
+export const CONTENT_TYPE: "content-type";
+export const MIME_HTML: "text/html";
+export const MIME_TEXT: "text/plain";
+export const MIME_JSON: "application/json";
+export const MIME_BIN: "application/octet-stream";
+export const MIME_FORM: "application/x-www-form-urlencoded";
+export const CHARSET_UTF8: "charset=utf-8";
+export const MIME_HTML_UTF8: string;
+export const MIME_JSON_UTF8: string;
+export const CONTENT_LENGTH: "content-length";
+export const CONTENT_SECURITY_POLICY: "content-security-policy";
+export const X_REQUEST_ID: "x-request-id";

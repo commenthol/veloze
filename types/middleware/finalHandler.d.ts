@@ -1,8 +1,10 @@
-export function finalHandler(opts?: {
+export function finalHandler(options?: {
     log?: import("../../src/types").Log | undefined;
-    htmlTemplate?: (({ status, message }: {
-        status: any;
-        message: any;
+    htmlTemplate?: ((param0: {
+        status: number;
+        message: string;
+        reqId: string;
+        req: Request;
     }) => string) | undefined;
 } | undefined): (err: HttpErrorL | Error, req: Request, res: Response, next?: Function) => void;
 export type Request = import('../../src/types').Request;
