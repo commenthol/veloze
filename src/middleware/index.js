@@ -1,4 +1,5 @@
 export { bodyParser } from './bodyParser.js'
+export { cacheControl } from './cacheControl.js'
 export { cookieParser } from './cookieParser.js'
 export { cors } from './cors.js'
 export { csp, cspReport } from './csp.js'
