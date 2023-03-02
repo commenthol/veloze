@@ -8,10 +8,15 @@ Allows you to:
 - pick the pieces to build your server 
 
 Comes with:
-- [Pure ESM Package](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c)
+- a [Pure ESM Package](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c)
 - Fast Radix Tree Router
 - Follows standards (lower-case headers, ...)
 - Async middlewares `async (req, res) => { ... }`
+- Body-parser for form, json, raw content
+- content-security-policy and reporting middleware
+- HTTP to HTTPS redirect middleware
+- cache-control middleware
+- CORS middleware
 
 Project Goals:
 - Provide a fast and modern web-server
@@ -29,6 +34,3 @@ MIT licensed
 # roadmap
 
 - http, https, http/2 server (which is stoppable)
-- http-redirect to https
-- csp middleware (like helmet)
-- bodyparser for form, json, raw with content-type detection
