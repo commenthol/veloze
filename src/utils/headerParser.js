@@ -1,11 +1,15 @@
 /**
+ * @typedef {[value: string, weight?: number]|string} HeaderParserResult
+ */
+
+/**
  * header parser for weighted values;
  * no weighted numbers are considered
  * @param {string} value
  * @param {object} [options]
- * @param {(string: value) => string|string[]|undefined} [options.fn]
+ * @param {(value: string) => string|string[]|undefined} [options.fn]
  * @param {boolean} [options.weight] return only values with weight
- * @returns {string[]|[value: string, weight?: number][]}
+ * @returns {HeaderParserResult[]}
  */
 export function headerParser (value = '', options) {
   const {
@@ -26,7 +30,7 @@ export function headerParser (value = '', options) {
     const results = [].concat((fn ? fn(value) : value))
 
     for (const result of results) {
-      if (result === undefined || order.has(result)) {
+      if (!result || order.has(result)) {
         continue
       }
       order.add(result)

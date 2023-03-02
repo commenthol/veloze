@@ -1,5 +1,5 @@
 import assert from 'node:assert'
-import { acceptLanguage } from '../../src/request/acceptLanguage.js'
+import { acceptLanguage } from '../../src/request/index.js'
 
 class Request {
   constructor (acceptLanguage) {
@@ -21,28 +21,22 @@ describe('request/acceptLanguage', function () {
 
   it('fr-CH, fr;q=0.9, en;q=0.8, de;q=0.7, *;q=0.5', function () {
     const req = new Request('fr-CH, fr;q=0.9, en;q=0.8, de;q=0.7, *;q=0.5')
-    assert.deepEqual(acceptLanguage(req), [
-      'fr-CH',
-      'fr',
-      'en',
-      'de'
-    ])
+    assert.deepEqual(acceptLanguage(req), ['fr-CH', 'fr', 'en', 'de'])
   })
 
   it('en-US,en;q=0.5', function () {
     const req = new Request('en-US,en;q=0.5')
-    assert.deepEqual(acceptLanguage(req), [
-      'en-US',
-      'en'
-    ])
+    assert.deepEqual(acceptLanguage(req), ['en-US', 'en'])
   })
 
   it('en-US should add main language "en"', function () {
     const req = new Request('en-US,en;q=0.5')
-    assert.deepEqual(acceptLanguage(req), [
-      'en-US',
-      'en'
-    ])
+    assert.deepEqual(acceptLanguage(req), ['en-US', 'en'])
+  })
+
+  it('only first item used on multiple headers', function () {
+    const req = new Request(['fr-FR', 'en-US,en;q=0.5'])
+    assert.deepEqual(acceptLanguage(req), ['fr-FR', 'fr'])
   })
 
   it('this-is-not-a-language', function () {
