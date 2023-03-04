@@ -82,10 +82,12 @@ export class Http2Client {
   then (resolveF) {
     return new Promise((resolve, reject) => {
       const client = http2.connect(this.#baseUrl, this.#options)
+      client.on('error', (err) => {
+        reject(err)
+      })
       const req = client.request(this.#connect)
-      const res = { raw: Buffer.alloc(0) }
+      const res = { headers: {}, raw: Buffer.alloc(0) }
       req.on('response', (headers) => {
-        res.headers = {}
         for (const [name, value] of Object.entries(headers)) {
           switch (name) {
             case ':status':

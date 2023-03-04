@@ -1,12 +1,9 @@
 import assert from 'node:assert'
-import fs from 'node:fs'
 import https from 'node:https'
 import supertest from 'supertest'
 import { Http2Client } from '../support/Http2Client.js'
-import { shouldHaveHeaders } from '../support/index.js'
+import { shouldHaveHeaders, certs } from '../support/index.js'
 import { Router, request, response } from '../../src/index.js'
-
-const getPath = (path) => new URL(path, import.meta.url)
 
 describe('request/isHttpsProto', function () {
   let app
@@ -19,10 +16,7 @@ describe('request/isHttpsProto', function () {
     })
   })
   before(function () {
-    httpsOptions = {
-      key: fs.readFileSync(getPath('../support/certs/foo.bar.key')),
-      cert: fs.readFileSync(getPath('../support/certs/foo.bar.crt'))
-    }
+    httpsOptions = certs()
   })
 
   it('isSsl=false for http connections', function () {

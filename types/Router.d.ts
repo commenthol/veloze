@@ -1,4 +1,3 @@
-/// <reference types="node" />
 /**
  * Router
  */
@@ -63,17 +62,6 @@ export class Router {
      * @param  {...Handler} handlers
      */
     use(path: string | string[] | Handler, ...handlers: Handler[]): Router;
-    /**
-     * start a server at `port`
-     *
-     * shortcut to `http.createServer(router.handle).listen(port)`
-     *
-     * @see https://nodejs.org/dist/latest/docs/api/http.html#serverlisten
-     * @param  {number} port
-     * @param  {...any} args
-     * @returns {http.Server}
-     */
-    listen(port: number, ...args: any[]): http.Server;
     #private;
 }
 export type Method = import('../src/types').Method;
@@ -84,4 +72,3 @@ export type Request = import('../src/types').Request;
 export type Response = import('../src/types').Response;
 export type Connect = import('../src/types').Connect;
 export type Logger = import('../src/types').Log;
-import * as http from "node:http";

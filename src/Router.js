@@ -171,27 +171,7 @@ export class Router {
     req.params = found.params || {}
     found.handler(req, res, final)
   }
-
-  /**
-   * start a server at `port`
-   *
-   * shortcut to `http.createServer(router.handle).listen(port)`
-   *
-   * @see https://nodejs.org/dist/latest/docs/api/http.html#serverlisten
-   * @param  {number} port
-   * @param  {...any} args
-   * @returns {http.Server}
-   */
-  /* c8 ignore next 6 */
-  listen (port, ...args) {
-    return http
-      // @ts-expect-error
-      .createServer((req, res) => this.handle(req, res))
-      .listen(port, ...args)
-  }
 }
-// TODO: .listen() should default to http2 server
-// TODO: .listen() move to a separate module!
 
 http.METHODS.filter(method => method !== 'HEAD').forEach(method => {
   const methodLc = method.toLowerCase()

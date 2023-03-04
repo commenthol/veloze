@@ -1,5 +1,7 @@
 import assert from 'assert'
 
+export { certs } from './certs.js'
+
 export const nap = (ms = 1) => new Promise((resolve) => setTimeout(() => resolve(ms), ms))
 
 export class Request {
