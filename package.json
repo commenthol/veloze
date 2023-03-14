@@ -1,6 +1,6 @@
 {
   "name": "veloze",
-  "version": "0.1.0",
+  "version": "0.2.0-0",
   "description": "",
   "keywords": [],
   "license": "MIT",
@@ -14,7 +14,7 @@
   ],
   "scripts": {
     "all": "npm-run-all lint coverage types",
-    "changelog": "conventional-changelog -p eslint -i CHANGELOG.md -s -r1",
+    "changelog": "conv-changelog -t groups -o",
     "coverage": "c8 npm t",
     "lint": "eslint --ext js .",
     "test": "mocha",

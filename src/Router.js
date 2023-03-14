@@ -14,6 +14,11 @@ import { REQ_METHOD_HEAD } from './constants.js'
  * @typedef {import('../src/types').Response} Response
  * @typedef {import('../src/types').Connect} Connect
  * @typedef {import('../src/types').Log} Logger
+ *
+ * @typedef {object} RouterOptions
+ * @property {Connect} [connect]
+ * @property {FinalHandler} [finalHandler]
+ * @property {FindRoute} [findRoute]
  */
 
 const unique = arr => [...new Set(arr)]
@@ -29,18 +34,14 @@ export class Router {
   #postHooks
 
   /**
-   * @param {{
-   *  connect?: Connect
-   *  finalHandler?: FinalHandler
-   *  findRoute?: FindRoute
-   * }} [opts]
+   * @param {RouterOptions} [options]
    */
-  constructor (opts) {
+  constructor (options) {
     const {
       connect,
       finalHandler,
       findRoute
-    } = opts || {}
+    } = options || {}
     this.#tree = findRoute || new FindRoute()
     this.#finalHandler = finalHandler || finalHandlerDef()
     this.#connect = connect || connectDef

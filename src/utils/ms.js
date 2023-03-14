@@ -8,9 +8,14 @@ const MONTH = Math.floor(YEAR / 12)
 
 const RE = /^(-?[\d.]+)\s?(y|mo|w|d|h|m|s)?/
 
-export function ms (val, isSeconds) {
-  if (typeof val === 'string') {
-    const m = RE.exec(val.toLowerCase())
+/**
+ * @param {number|string|undefined} value
+ * @param {boolean} inSeconds if `true` convert `value` to seconds; Only valid if value is string
+ * @returns {number|undefined}
+ */
+export function ms (value, inSeconds) {
+  if (typeof value === 'string') {
+    const m = RE.exec(value.toLowerCase())
     if (!m) return
     const count = Number(m[1])
     const unit = m[2]
@@ -29,9 +34,9 @@ export function ms (val, isSeconds) {
                 : unit === 's'
                   ? SECOND
                   : 1
-    return isSeconds
+    return inSeconds
       ? Math.floor(count * num / SECOND)
       : count * num
   }
-  return val
+  return value
 }

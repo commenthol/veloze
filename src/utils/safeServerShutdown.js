@@ -2,6 +2,7 @@ import * as http from 'node:http'
 import { logger } from './logger.js'
 
 /**
+ * @typedef {import('../../src/types').Log} Log
  * @typedef {import('http').Server} HttpServer
  * @typedef {import('https').Server} HttpSecureServer
  * @typedef {import('http2').Http2Server} Http2Server
@@ -11,6 +12,7 @@ import { logger } from './logger.js'
  */
 
 const EXIT_EVENTS = [
+  'uncaughtException',
   'beforeExit',
   'SIGINT',
   'SIGTERM',
@@ -23,8 +25,8 @@ const EXIT_EVENTS = [
  * alternative to [stoppable](https://github.com/hunterloftis/stoppable).
  * @param {Server} server the server instance
  * @param {object} [param1]
- * @param {number} [param1.gracefulTimeout=1000] graceful timeout for existing connections
- * @param {{info: function, error: function}} [param1.log] logger
+ * @param {number} [param1.gracefulTimeout=1000] (ms) graceful timeout for existing connections
+ * @param {Log} [param1.log] logger
  */
 export function safeServerShutdown (server, param1) {
   const {
@@ -60,7 +62,7 @@ export function safeServerShutdown (server, param1) {
   server.on('secureConnection', connect)
 
   // @ts-expect-error
-  server.close = function (callback) {
+  server.close = function close (callback) {
     isShutdown = true
     log.info('server is shutting down')
 
