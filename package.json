@@ -1,8 +1,14 @@
 {
   "name": "veloze",
   "version": "0.2.0-0",
-  "description": "",
-  "keywords": [],
+  "description": "A modern and fast express-like webserver for the web",
+  "keywords": [
+  ],
+  "homepage": "https://github.com/commenthol/veloze",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/commenthol/veloze.git"
+  },
   "license": "MIT",
   "author": "commenthol <commenthol@gmail.com>",
   "type": "module",
