@@ -33,7 +33,6 @@ describe('middleware/finalHandler', function () {
       _warn: [
         {
           level: 'warn',
-          cause: undefined,
           method: 'GET',
           msg: 'Bad Request',
           stack: undefined,
@@ -54,7 +53,6 @@ describe('middleware/finalHandler', function () {
       _info: [
         {
           level: 'info',
-          cause: undefined,
           method: 'GET',
           msg: 'Strange Code',
           stack: undefined,
@@ -75,18 +73,16 @@ describe('middleware/finalHandler', function () {
     const fixStack = stack => stack ? stack.substring(0, 40) : undefined
     const strip = (item) => ({
       ...item,
-      stack: fixStack(item.stack),
-      cause: fixStack(item.cause)
+      stack: fixStack(item.stack)
     })
     log._error[0] = strip(log._error[0])
     assert.deepEqual(log, {
       _error: [
         {
           level: 'error',
-          cause: 'Error: boom\n    at Context.<anonymous> (',
           method: 'DELETE',
           msg: 'Internal Server Error',
-          stack: 'Error: Internal Server Error\n    at Cont',
+          stack: 'Error: boom\n    at Context.<anonymous> (',
           status: 500,
           url: '/error'
         }
@@ -124,6 +120,18 @@ describe('middleware/finalHandler', function () {
     const req = new Request('GET', '/something', { 'accept-language': '*' })
     const res = new Response()
     const err = new Error()
+    res.setHeader('content-type', 'text/html; charset=utf-8')
+    res.body = undefined
+
+    finalHandler({ log })(err, req, res)
+    assert.ok(/<h2>Oops! That should not have happened!<\/h2>/.test(res.end[0]), res.end[0])
+  })
+
+  it('not an error at all...', function () {
+    const log = new Log()
+    const req = new Request('GET', '/something', { 'accept-language': '*' })
+    const res = new Response()
+    const err = null
     res.setHeader('content-type', 'text/html; charset=utf-8')
     res.body = undefined
 

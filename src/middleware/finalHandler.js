@@ -31,21 +31,25 @@ export const finalHandler = (options) => {
 
   // eslint-disable-next-line no-unused-vars
   return function finalHandlerMw (err, req, res, next) {
-    const message = err instanceof HttpError
-      ? err.message
-      : 'Oops! That should not have happened!'
+    // our message to the outside world
+    // @ts-expect-error
+    const errResp = (err instanceof HttpError || err?.status)
+      ? err
+      : new HttpError(500, 'Oops! That should not have happened!', err)
+
     const {
       // @ts-expect-error
       status = 500,
-      stack,
-      cause
-    } = err || {}
+      message,
+      cause // our internal error message and stack trace -> only for logging...
+    } = errResp || {}
+
     const { url, originalUrl, method, id = crypto.randomUUID() } = req
 
     if (!res.headersSent) {
       const type = String(res.getHeader('content-type'))
       const body = res.body || (type.includes('json')
-        ? { status, message }
+        ? { status, message, reqId: id }
         : htmlTemplate({ status, message, reqId: id, req })
       )
       send(res, body, status)
@@ -53,21 +57,22 @@ export const finalHandler = (options) => {
       res.end()
     }
 
+    // log different log-level by status code
     const level = status < 400
       ? 'info'
       : status < 500
         ? 'warn'
         : 'error'
+
     log[level]({
       level,
       status,
       method,
       id,
       url: originalUrl || url,
-      msg: err.message,
-      stack: level === 'error' ? stack : undefined,
+      msg: message,
       // @ts-expect-error
-      cause: cause?.stack
+      stack: cause?.stack
     })
   }
 }
