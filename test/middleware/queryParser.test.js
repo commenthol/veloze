@@ -10,7 +10,7 @@ describe('middleware/queryParser', function () {
     queryParser(req, res, () => {
       assert.strictEqual(req.path, '/home/user')
       assert.deepStrictEqual(req.query, {
-        a: ['0', '1', '2'],
+        a: '2',
         b: 'foo'
       })
       done()

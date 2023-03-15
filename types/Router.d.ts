@@ -3,17 +3,9 @@
  */
 export class Router {
     /**
-     * @param {{
-     *  connect?: Connect
-     *  finalHandler?: FinalHandler
-     *  findRoute?: FindRoute
-     * }} [opts]
+     * @param {RouterOptions} [options]
      */
-    constructor(opts?: {
-        connect?: import("../src/types").Connect | undefined;
-        finalHandler?: typeof import("../src/types").FinalHandler | undefined;
-        findRoute?: FindRoute | undefined;
-    } | undefined);
+    constructor(options?: RouterOptions | undefined);
     /**
      * request handler
      * @param {Request} req
@@ -72,3 +64,8 @@ export type Request = import('../src/types').Request;
 export type Response = import('../src/types').Response;
 export type Connect = import('../src/types').Connect;
 export type Logger = import('../src/types').Log;
+export type RouterOptions = {
+    connect?: import("../src/types").Connect | undefined;
+    finalHandler?: typeof import("../src/types").FinalHandler | undefined;
+    findRoute?: FindRoute | undefined;
+};

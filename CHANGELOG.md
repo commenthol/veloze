@@ -1,12 +1,17 @@
-# 0.2.0 (2023-03-12)
+# 0.2.0 (2023-03-15)
 
 ### feat:
 
-- utils/safeServerShutdown (#e973475)
+- middleware/tooBusy
+- utils/safeServerShutdown
+
+### fix:
+
+- middleware/queryParser: prevent HTTP Parameter Pollution
 
 ### chore:
 
-- bump dependencies (#12df052)
+- bump dependencies
 
 # 0.1.0 (2023-03-02)
 
