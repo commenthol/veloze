@@ -1,5 +1,6 @@
 /**
  * Middleware which adds various security headers on html pages.
+ *
  * - csp: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
  * - hsts: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
  * - referrerPolicy: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy
@@ -9,7 +10,10 @@
  * - crossOriginOpenerPolicy: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Opener-Policy
  * - crossOriginResourcePolicy: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Resource-Policy
  *
- * @see https://owasp.org/www-project-secure-headers/ci/headers_add.json
+ * Links
+ *
+ * - https://web.dev/strict-csp/
+ * - https://owasp.org/www-project-secure-headers/ci/headers_add.json
  *
  * @param {object} [options]
  * @param {string[]} [options.extensions=['', '.html', '.htm']] extensions where CSP is applied

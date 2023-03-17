@@ -1,6 +1,6 @@
 import { extname } from 'node:path'
 import { logger } from '../utils/logger.js'
-import { ms } from '../utils/index.js'
+import { ms, random64 } from '../utils/index.js'
 import { isHttpsProto } from '../request/isHttpsProto.js'
 import { send } from '../response/send.js'
 import { bodyParser } from './bodyParser.js'
@@ -99,6 +99,7 @@ const includes = (allowed, value) => value && allowed.includes(value)
 const CSP_KEYWORDS = [
   'none',
   'self',
+  'nonce',
   'strict-dynamic',
   'report-sample',
   'unsafe-inline',
@@ -179,6 +180,7 @@ export const buildCsp = (options = {}) => {
 
 /**
  * Middleware which adds various security headers on html pages.
+ *
  * - csp: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
  * - hsts: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
  * - referrerPolicy: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy
@@ -188,7 +190,10 @@ export const buildCsp = (options = {}) => {
  * - crossOriginOpenerPolicy: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Opener-Policy
  * - crossOriginResourcePolicy: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Resource-Policy
  *
- * @see https://owasp.org/www-project-secure-headers/ci/headers_add.json
+ * Links
+ *
+ * - https://web.dev/strict-csp/
+ * - https://owasp.org/www-project-secure-headers/ci/headers_add.json
  *
  * @param {object} [options]
  * @param {string[]} [options.extensions=['', '.html', '.htm']] extensions where CSP is applied
@@ -222,11 +227,26 @@ export function csp (options) {
 
   const headers = []
   if (csp) {
+    const cspHeaderValue = buildCsp(csp)
+    let value = cspHeaderValue
+    let valueFn
+
+    if (cspHeaderValue.indexOf("'nonce'")) {
+      valueFn = (res) => {
+        const nonce = random64(16, true)
+        res.locals = res.locals || {}
+        res.locals.nonce = nonce
+        return cspHeaderValue.replaceAll("'nonce'", `'nonce-${nonce}'`)
+      }
+      value = ''
+    }
+
     headers.push([
       cspReportOnly
         ? 'content-security-policy-report-only'
         : 'content-security-policy',
-      buildCsp(csp)
+      value,
+      valueFn
     ])
   }
   if (includes(REFERRER_POLICY, referrerPolicy)) {
@@ -256,8 +276,8 @@ export function csp (options) {
     const ext = extname(req.path)
 
     if (extensions.includes(ext)) {
-      for (const [header, value] of headers) {
-        res.setHeader(header, value)
+      for (const [header, value, valueFn] of headers) {
+        res.setHeader(header, value || (valueFn && valueFn(res)))
       }
     }
     if (strictTransportSecurity && isHttpsProto(req)) {

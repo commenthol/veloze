@@ -3,6 +3,7 @@ export { headerParser } from "./headerParser.js";
 export { isProdEnv } from "./isProdEnv.js";
 export { ms } from "./ms.js";
 export { qs } from "./qs.js";
+export { random64 } from "./random64.js";
 export { safeServerShutdown } from "./safeServerShutdown.js";
 export { tooBusy } from "./tooBusy.js";
 export { cookieParse, cookieSerialize } from "./cookie.js";

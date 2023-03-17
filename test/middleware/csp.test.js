@@ -91,19 +91,6 @@ describe('middleware/csp', function () {
         }))
     })
 
-    it('should apply HSTS security headers for .js files', function () {
-      const app = new Router()
-      app.get('/*', csp(), end)
-      return supertest(app.handle)
-        .get('/index.js?v=1')
-        .set({ 'x-forwarded-proto': 'https' })
-        .expect(200)
-        .expect(shouldHaveHeaders({
-          'content-length': '0',
-          'strict-transport-security': 'max-age=15552000; includeSubDomains'
-        }))
-    })
-
     it('should apply default security headers if used with TLS', function () {
       const app = new Router()
       app.get('/',
@@ -152,6 +139,103 @@ describe('middleware/csp', function () {
         .expect(200)
         .expect(shouldHaveHeaders({
           'content-length': '0'
+        }))
+    })
+
+    it('should omit csp defaults', function () {
+      const app = new Router()
+      app.get('/',
+        (req, res, next) => {
+          req.headers['x-forwarded-proto'] = 'https'
+          next()
+        },
+        csp({
+          csp: {
+            omitDefaults: true,
+            'frame-ancestors': 'none'
+          }
+        }),
+        end)
+      return supertest(app.handle)
+        .get('/')
+        .expect(200)
+        .expect(shouldHaveHeaders({
+          'content-length': '0',
+          'content-security-policy': 'default-src self; frame-ancestors none',
+          'cross-origin-embedder-policy': 'require-corp',
+          'cross-origin-opener-policy': 'same-origin',
+          'cross-origin-resource-policy': 'same-origin',
+          'referrer-policy': 'no-referrer',
+          'strict-transport-security': 'max-age=15552000; includeSubDomains',
+          'x-content-type-options': 'nosniff',
+          'x-dns-prefetch-control': 'off'
+        }))
+    })
+
+    it('should throw if cspReportOnly=true and missing report-uri', function () {
+      try {
+        csp({ csp: { reportOnly: true } })
+        assert.ok(false)
+      } catch (e) {
+        assert.equal(e.message, 'cspReportOnly needs report-uri')
+      }
+    })
+
+    it('should return content-security-policy-report-only header', function () {
+      const app = new Router()
+      app.get('/', csp({ csp: { reportOnly: true, 'report-uri': '/report-url' } }), end)
+      return supertest(app.handle)
+        .get('/')
+        .expect(200)
+        .expect(shouldHaveHeaders({
+          'content-length': '0',
+          'content-security-policy-report-only': "default-src 'self'; font-src 'self' https: data:; img-src 'self' data:; object-src 'none'; script-src 'self'; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https:; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; report-uri /report-url; upgrade-insecure-requests",
+          'cross-origin-embedder-policy': 'require-corp',
+          'cross-origin-opener-policy': 'same-origin',
+          'cross-origin-resource-policy': 'same-origin',
+          'referrer-policy': 'no-referrer',
+          'x-content-type-options': 'nosniff',
+          'x-dns-prefetch-control': 'off'
+        }))
+    })
+
+    it('shall apply script nonces', function () {
+      const app = new Router()
+      app.get('/*',
+        csp({
+          csp: {
+            omitDefaults: true,
+            'script-src': ['nonce', 'strict-dynamic']
+          }
+        }),
+        (req, res) => send(res, res.locals)
+      )
+      return supertest(app.handle)
+        .get('/')
+        .expect(200)
+        .then(({ body, headers }) => {
+          assert.equal(typeof body.nonce, 'string')
+          assert.equal(
+            headers['content-security-policy'].replaceAll(body.nonce, '***'),
+            "default-src self; script-src 'nonce-***' 'strict-dynamic'"
+          )
+        })
+    })
+  })
+
+  describe('hsts', function () {
+    const end = (req, res) => send(res)
+
+    it('should apply HSTS security headers for .js files', function () {
+      const app = new Router()
+      app.get('/*', csp(), end)
+      return supertest(app.handle)
+        .get('/index.js?v=1')
+        .set({ 'x-forwarded-proto': 'https' })
+        .expect(200)
+        .expect(shouldHaveHeaders({
+          'content-length': '0',
+          'strict-transport-security': 'max-age=15552000; includeSubDomains'
         }))
     })
 
@@ -205,33 +289,6 @@ describe('middleware/csp', function () {
         .expect(shouldHaveHeaders({
           'content-length': '0',
           'strict-transport-security': 'max-age=7200; preload'
-        }))
-    })
-
-    it('should throw if cspReportOnly=true and missing report-uri', function () {
-      try {
-        csp({ csp: { reportOnly: true } })
-        assert.ok(false)
-      } catch (e) {
-        assert.equal(e.message, 'cspReportOnly needs report-uri')
-      }
-    })
-
-    it('should return content-security-policy-report-only header', function () {
-      const app = new Router()
-      app.get('/', csp({ csp: { reportOnly: true, 'report-uri': '/report-url' } }), end)
-      return supertest(app.handle)
-        .get('/')
-        .expect(200)
-        .expect(shouldHaveHeaders({
-          'content-length': '0',
-          'content-security-policy-report-only': "default-src 'self'; font-src 'self' https: data:; img-src 'self' data:; object-src 'none'; script-src 'self'; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https:; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; report-uri /report-url; upgrade-insecure-requests",
-          'cross-origin-embedder-policy': 'require-corp',
-          'cross-origin-opener-policy': 'same-origin',
-          'cross-origin-resource-policy': 'same-origin',
-          'referrer-policy': 'no-referrer',
-          'x-content-type-options': 'nosniff',
-          'x-dns-prefetch-control': 'off'
         }))
     })
   })
