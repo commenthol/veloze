@@ -69,3 +69,4 @@ export type RouterOptions = {
     finalHandler?: typeof import("../src/types").FinalHandler | undefined;
     findRoute?: FindRoute | undefined;
 };
+import { FindRoute } from './FindRoute.js';

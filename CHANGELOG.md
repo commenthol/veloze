@@ -1,17 +1,24 @@
-# 0.2.0 (2023-03-15)
+# 0.2.0 (2023-03-17)
 
 ### feat:
 
-- middleware/tooBusy
-- utils/safeServerShutdown
+- middleware/tooBusy (#f7c97c0)
+- utils/safeServerShutdown (#e973475)
 
 ### fix:
 
-- middleware/queryParser: prevent HTTP Parameter Pollution
+- middleware/csp: add support for script nonces (#cac37d7)
+- middleware/finalHandler: better distinguish between outside message (#cea27d6)
+- middleware/queryParser: prevent HTTP Parameter Pollution (#b18426c)
+
+### docs:
+
+- start to document middlewares (#ff741bc)
+- Update README (#71ee7b7)
 
 ### chore:
 
-- bump dependencies
+- bump dependencies (#12df052)
 
 # 0.1.0 (2023-03-02)
 

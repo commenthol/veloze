@@ -42,5 +42,5 @@ export type Http2Server = http2.Http2Server | http2.Http2SecureServer;
 export type ServerOptions = Http2SecureServerOptions & RouterOptions & {
     gracefulTimeout: number;
 };
-import { Router } from "./Router.js";
-import * as http2 from "node:http2";
+import { Router } from './Router.js';
+import * as http2 from 'node:http2';
