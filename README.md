@@ -1,3 +1,7 @@
+[![npm-badge][npm-badge]][npm]
+[![actions-badge][actions-badge]][actions]
+![types-badge][types-badge]
+
 # veloze
 
 A modern and fast express-like webserver for the web.
@@ -43,3 +47,9 @@ MIT licensed
 - static file serving...
 - benchmarks
 - examples
+
+[npm-badge]: https://badge.fury.io/js/veloze.svg
+[npm]: https://www.npmjs.com/package/veloze
+[types-badge]: https://badgen.net/npm/types/veloze
+[actions-badge]: https://github.com/commenthol/veloze/workflows/CI/badge.svg?branch=main&event=push
+[actions]: https://github.com/commenthol/veloze/actions/workflows/ci.yml?query=branch%3Amain
