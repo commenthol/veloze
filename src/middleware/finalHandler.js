@@ -3,6 +3,8 @@ import { send } from '../response/send.js'
 import { escapeHtmlLit } from '../utils/index.js'
 import { logger } from '../utils/logger.js'
 import { HttpError } from '../HttpError.js'
+import { CONTENT_TYPE, CONTENT_SECURITY_POLICY } from '../constants.js'
+import { buildCsp } from './csp.js'
 
 /**
  * @typedef {import('../../src/types').Request} Request
@@ -47,11 +49,15 @@ export const finalHandler = (options) => {
     const { url, originalUrl, method, id = crypto.randomUUID() } = req
 
     if (!res.headersSent) {
-      const type = String(res.getHeader('content-type'))
-      const body = res.body || (type.includes('json')
+      const type = String(res.getHeader(CONTENT_TYPE))
+      const isJsonType = type.includes('json')
+      const body = res.body || (isJsonType
         ? { status, message, reqId: id }
         : htmlTemplate({ status, message, reqId: id, req })
       )
+      if (!isJsonType && !res.getHeader(CONTENT_SECURITY_POLICY)) {
+        res.setHeader(CONTENT_SECURITY_POLICY, buildCsp())
+      }
       send(res, body, status)
     } else if (!res.writableEnded) {
       res.end()

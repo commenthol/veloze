@@ -113,6 +113,12 @@ describe('middleware/finalHandler', function () {
       '</body>\n' +
       '</html>\n'
     )
+
+    /// shall set content-security-headers here
+    assert.deepEqual(res.headers, {
+      'content-type': 'text/html; charset=utf-8',
+      'content-security-policy': "default-src 'self'; font-src 'self' https: data:; img-src 'self' data:; object-src 'none'; script-src 'self'; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https:; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests"
+    })
   })
 
   it('Error', function () {
