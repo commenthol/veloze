@@ -44,5 +44,5 @@ router.use(
 | boolean        | \[mustUnderstand]       | cache should store the response only if it understands the requirements for caching based on status code                                                |
 | boolean        | \[noTransform]          | Some intermediaries transform content for various reasons                                                                                               |
 | boolean        | \[immutable]            | response will not be updated while it's fresh                                                                                                           |
-| boolean        | \[staleWhileRevalidate] | cache could reuse a stale response while it revalidates it to a cache.]                                                                                 |
+| boolean        | \[staleWhileRevalidate] | cache could reuse a stale response while it revalidates it to a cache.                                                                                  |
 | boolean        | \[staleIfError]         | cache can reuse a stale response when an origin server responds with an error (500, 502, 503, or 504)                                                   |

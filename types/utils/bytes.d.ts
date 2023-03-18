@@ -1,5 +1,6 @@
 /**
  * convert string to byte value
+ *
  * - b for bytes
  * - kb for kilobytes
  * - mb for megabytes

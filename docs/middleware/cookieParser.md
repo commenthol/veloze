@@ -1,6 +1,7 @@
 # cookieParser middleware
 
-Middleware which parses cookies in requests and allows to set or clear cookies in responses.
+Middleware which parses cookies in requests and allows to set or clear cookies
+in responses.
 
 Request:
 
@@ -47,13 +48,14 @@ Set cookie in response.
 
 See https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
 
-The `secure` flag will be set, if request uses https or http with http-header 'x-forwarded-proto': 'https'.
+The `secure` flag will be set, if request uses https or http with http-header
+'x-forwarded-proto': 'https'.
 
 **options**
 
 | type                                     | property    | description                                                                                                                                        |
 | ---------------------------------------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| string                                   | \[domain]   | Domain name for the cookie.                                                                                                                        |
+| string                                   | \[domain]   | Domain/ Host name for the cookie.                                                                                                                  |
 | Date                                     | \[expires]  | Expiry date of the cookie in GMT. If not specified or set to 0, creates a session cookie.                                                          |
 | boolean                                  | \[httpOnly] | Flags the cookie to be accessible only by the web server.                                                                                          |
 | number                                   | \[maxAge]   | Convenient option for setting the expiry time relative to the current time in milliseconds.                                                        |
@@ -68,4 +70,3 @@ The `secure` flag will be set, if request uses https or http with http-header 'x
 Clears cookie in response.
 
 Same options as with [res.cookie(name, value, options)](#res-cookie)
-

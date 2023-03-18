@@ -3,6 +3,7 @@ const RE = /^([\d.]+)\s?(b|k|m|g|t|p)?/
 
 /**
  * convert string to byte value
+ *
  * - b for bytes
  * - kb for kilobytes
  * - mb for megabytes

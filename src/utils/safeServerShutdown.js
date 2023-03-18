@@ -23,6 +23,7 @@ const EXIT_EVENTS = [
 /**
  * gracefully shutdown http/ https server
  * alternative to [stoppable](https://github.com/hunterloftis/stoppable).
+ *
  * @param {Server} server the server instance
  * @param {object} [param1]
  * @param {number} [param1.gracefulTimeout=1000] (ms) graceful timeout for existing connections

@@ -6,18 +6,18 @@ Middleware which adds various security headers on pages.
 
 <!-- !toc (omit="csp - security middleware") -->
 
-* [Usage](#usage)
-* [Options](#options)
-  * [csp](#csp)
-    * [CSP script nonces](#csp-script-nonces)
-    * [CSP omit defaults](#csp-omit-defaults)
-  * [hsts](#hsts)
-  * [referrerPolicy](#referrerpolicy)
-  * [xContentTypeOptions](#xcontenttypeoptions)
-  * [xDnsPrefetchControl](#xdnsprefetchcontrol)
-  * [crossOriginEmbedderPolicy](#crossoriginembedderpolicy)
-  * [crossOriginOpenerPolicy](#crossoriginopenerpolicy)
-  * [crossOriginResourcePolicy](#crossoriginresourcepolicy)
+- [Usage](#usage)
+- [Options](#options)
+  - [csp](#csp)
+    - [CSP script nonces](#csp-script-nonces)
+    - [CSP omit defaults](#csp-omit-defaults)
+  - [hsts](#hsts)
+  - [referrerPolicy](#referrerpolicy)
+  - [xContentTypeOptions](#xcontenttypeoptions)
+  - [xDnsPrefetchControl](#xdnsprefetchcontrol)
+  - [crossOriginEmbedderPolicy](#crossoriginembedderpolicy)
+  - [crossOriginOpenerPolicy](#crossoriginopenerpolicy)
+  - [crossOriginResourcePolicy](#crossoriginresourcepolicy)
 
 <!-- toc! -->
 
@@ -33,7 +33,7 @@ router.use(csp());
 
 // custom settings
 router.use(
-  csp(
+  csp({
     csp:  "script-src": ["nonce", "strict-dynamic"] ,
     hsts:  maxAge: "180d" ,
     referrerPolicy: "origin",
@@ -42,9 +42,12 @@ router.use(
     crossOriginEmbedderPolicy: "unsafe-none",
     crossOriginOpenerPolicy: "unsafe-none",
     crossOriginResourcePolicy: "same-site",
-  )
+  })
 );
 ```
+
+An example for using the csp middleware with the cspReport middleware see
+`examples/csp.js`.
 
 # Options
 
@@ -62,8 +65,8 @@ upgrade-insecure-requests"
 
 See https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 
-| type               | property                    | description                                            |
-| ------------------ | --------------------------- | ------------------------------------------------------ |
+| type             | property                    | description                                            |
+| ---------------- | --------------------------- | ------------------------------------------------------ |
 | boolean          | [omitDefaults]              | if `true` CspOptions are not patched with CSP_DEFAULTS |
 | boolean          | [reportOnly]                | if `true` csp is only reported but not blocked         |
 | string\|string[] | [connect-src]               |                                                        |
@@ -110,14 +113,14 @@ See https://web.dev/strict-csp/
 
 ```js
 router.use(
-  csp(
-    csp: 
+  csp({
+    csp:
       "script-src": ["nonce", "strict-dynamic"],
     ,
-  )
+  })
 );
 
-router.get("/index.html", () => 
+router.get("/index.html", () =>
   // res.locals.nonce will contain the nonce
   const  nonce  = res.locals;
   res.setHeader("content-type", "text/html");
@@ -138,17 +141,19 @@ avoided use `omitDefaults: true` and set the required directives.
 
 ```js
 router.use(
-  csp(
+  csp({
     omitDefaults: true,
     "frame-ancestors": ["none"],
-  )
+  })
 );
 // 'content-security-policy': "frame-ancestors 'none'"
 ```
 
 ## hsts
 
-Sets the `strict-transport-security` header for https connections. Only for requests using https or http with http-header 'x-forwarded-proto': 'https' being set.
+Sets the `strict-transport-security` header for https connections. Only for
+requests using https or http with http-header 'x-forwarded-proto': 'https' being
+set.
 
 Defaults to:
 
@@ -156,25 +161,25 @@ Defaults to:
 
 See https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
 
-| type             | property                 | description                                           |
-| ---------------- | ------------------------ | ----------------------------------------------------- |
+| type           | property                 | description                                           |
+| -------------- | ------------------------ | ----------------------------------------------------- |
 | number\|string | [maxAge='180d']          | max-age in seconds (defaults to 180days) or ms-string |
 | boolean        | [includeSubDomains=true] |
 | boolean        | [preload=false]          |
 
 ```js
 router.use(
-  csp(
+  csp({
     hsts:  maxAge: "30d", includeSubDomains: false, preload: true ,
-  )
+  })
 );
 // 'strict-transport-security': 'max-age=2592000; preload'
 
 // disable header
 router.use(
-  csp(
+  csp({
     hsts: false,
-  )
+  })
 );
 ```
 
@@ -203,16 +208,16 @@ Possible values:
 ```js
 // set header
 router.use(
-  csp(
+  csp({
     referrerPolicy: "origin-when-cross-origin",
-  )
+  })
 );
 
 // disable header
 router.use(
-  csp(
+  csp({
     referrerPolicy: false,
-  )
+  })
 );
 ```
 
@@ -229,16 +234,16 @@ See https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Opt
 ```js
 // set header
 router.use(
-  csp(
+  csp({
     xContentTypeOptions: true,
-  )
+  })
 );
 
 // disable header
 router.use(
-  csp(
+  csp({
     xContentTypeOptions: false,
-  )
+  })
 );
 ```
 
