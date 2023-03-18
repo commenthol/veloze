@@ -58,6 +58,14 @@ describe('middleware/redirect2Https', function () {
     assert.strictEqual(res.statusCode, 308)
   })
 
+  it('shall allow to redirect to a known vhost', function () {
+    const req = new Request('POST', '/test', { host: 'example.com' })
+    const res = new Response()
+    redirect2Https({ redirectUrl: 'https://foo.bar/other', allowedHosts: ['example.com'] })(req, res)
+    assert.strictEqual(res.headers.location, 'https://example.com/other/test')
+    assert.strictEqual(res.statusCode, 308)
+  })
+
   it('shall always redirect to a defined url with 301', function () {
     const req = new Request('GET', '/test', { host: 'example.com' })
     const res = new Response()
