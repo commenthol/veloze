@@ -32,6 +32,10 @@ export class Server extends Router {
      */
     listen(port?: number | undefined, hostname?: string | number | (() => void) | undefined, backlog?: number | (() => void) | undefined, listeningListener?: (() => void) | undefined): Http2Server;
     /**
+     * @returns {string | AddressInfo | null}
+     */
+    address(): string | AddressInfo | null;
+    /**
      * Closes all connections and shuts down the server after `gracefulTimeout`
      *
      * @param {{(err?: Error): void}} callback
@@ -47,5 +51,6 @@ export type ServerOptions = Http2SecureServerOptions & RouterOptions & {
     onlyHTTP1: boolean;
     gracefulTimeout: number;
 };
+export type AddressInfo = import('node:net').AddressInfo;
 import { Router } from './Router.js';
 import * as http2 from 'node:http2';

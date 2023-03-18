@@ -11,6 +11,7 @@ import { logger } from './utils/logger.js'
  * @typedef {import('./Router').RouterOptions} RouterOptions
  * @typedef {http2.Http2Server|http2.Http2SecureServer} Http2Server
  * @typedef {Http2SecureServerOptions & RouterOptions & {onlyHTTP1: boolean, gracefulTimeout: number}} ServerOptions
+ * @typedef {import('node:net').AddressInfo} AddressInfo
  */
 
 const log = logger(':server')
@@ -85,6 +86,13 @@ export class Server extends Router {
     this.#server.listen(port, hostname, backlog, listeningListener)
     log.info('server started %j', this.#server.address())
     return this.#server
+  }
+
+  /**
+   * @returns {string | AddressInfo | null}
+   */
+  address () {
+    return this.#server.address()
   }
 
   /**
