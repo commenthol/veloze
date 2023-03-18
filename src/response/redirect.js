@@ -37,6 +37,9 @@ const htmlTmpl = (location) => escapeHtmlLit`<!DOCTYPE html>
 export function redirect (res, location, status = 307, headers = {}) {
   res.statusCode = Math.floor(status / 100) === 3 ? status : 307
 
+  /// remove any previously set cache-control header
+  /// if redirect needs cache-control set with `headers['cache-control']`!
+  res.removeHeader('cache-control')
   setHeaders(res, { ...headers, location })
 
   if (res[REQ_METHOD_HEAD]) {

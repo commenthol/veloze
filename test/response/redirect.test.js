@@ -97,9 +97,9 @@ describe('response/redirect', function () {
   it('shall remove header', function () {
     const app = new Router()
     app.get('/', (req, res) => {
-      res.setHeader('cache-control', 'no-cache, max-age=0')
+      res.setHeader('x-cache-control', 'no-cache, max-age=0')
       // remove the previously set header with `false`
-      redirect(res, 'https://foo.bar', 301, { 'cache-control': false })
+      redirect(res, 'https://foo.bar', 301, { 'x-cache-control': false })
     })
 
     const location = 'https://foo.bar'
@@ -112,6 +112,51 @@ describe('response/redirect', function () {
       .expect(301)
       .expect(shouldHaveHeaders({
         'content-length': '0',
+        location
+      }))
+  })
+
+  it('shall remove cache-control header', function () {
+    const app = new Router()
+    app.get('/', (req, res) => {
+      res.setHeader('cache-control', 'no-cache, max-age=0')
+      // remove the previously set header with `false`
+      redirect(res, 'https://foo.bar', 301)
+    })
+
+    const location = 'https://foo.bar'
+    return supertest(app.handle)
+      .get('/')
+      .query({
+        location: 'https://foo.bar',
+        status: 500
+      })
+      .expect(301)
+      .expect(shouldHaveHeaders({
+        'content-length': '0',
+        location
+      }))
+  })
+
+  it('shall explicitly set cache-control header', function () {
+    const app = new Router()
+    app.get('/', (req, res) => {
+      res.setHeader('cache-control', 'no-cache, max-age=0')
+      // remove the previously set header with `false`
+      redirect(res, 'https://foo.bar', 301, { 'cache-control': 'no-store' })
+    })
+
+    const location = 'https://foo.bar'
+    return supertest(app.handle)
+      .get('/')
+      .query({
+        location: 'https://foo.bar',
+        status: 500
+      })
+      .expect(301)
+      .expect(shouldHaveHeaders({
+        'content-length': '0',
+        'cache-control': 'no-store',
         location
       }))
   })
