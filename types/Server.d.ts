@@ -1,9 +1,13 @@
 /// <reference types="node" />
 /**
  * @class
- * HTTP2 server
+ * HTTP2 or HTTP1/HTTPS server
  *
- * If providing a key and cert then server starts as secureServer.
+ * If providing a `key` and `cert` in options, then server starts as secure
+ * server.
+ *
+ * Server starts as HTTP2 server by default allowing fallback to HTTP1
+ * connections.
  */
 export class Server extends Router {
     /**
@@ -40,6 +44,7 @@ export type Http2SecureServerOptions = import('http2').SecureServerOptions;
 export type RouterOptions = import('./Router').RouterOptions;
 export type Http2Server = http2.Http2Server | http2.Http2SecureServer;
 export type ServerOptions = Http2SecureServerOptions & RouterOptions & {
+    onlyHTTP1: boolean;
     gracefulTimeout: number;
 };
 import { Router } from './Router.js';

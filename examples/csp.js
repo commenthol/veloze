@@ -1,9 +1,11 @@
 /**
  * This example shows how to use the csp middleware
  * with the cspReport middleware
+ *
+ * requires a certificate; run `./scripts/certs.sh` before.
  */
 
-import { Router, csp, cspReport, sendMw } from '../src/index.js'
+import { Server, csp, cspReport, sendMw, redirect2Https } from '../src/index.js'
 
 const page = `<!DOCTYPE html>
 <html lang="en-US">
@@ -12,7 +14,7 @@ const page = `<!DOCTYPE html>
     <title>CSP report violation</title>
     <link rel="stylesheet" href="css/style.css" />
     <style>
-      body { color: darkgreen; }
+      body { color: #070; }
     </style>
   </head>
   <body>
@@ -21,10 +23,19 @@ const page = `<!DOCTYPE html>
 </html>`
 
 const css = `
-body { color: red; }
+body { color: #F00; background-color: #C00; }
 `
 
-const app = new Router()
+/// defining the http server for redirecting to https
+const sHttp = new Server({ onlyHTTP1: true })
+sHttp.all('/*', redirect2Https({ redirectUrl: 'https://localhost:3443' }))
+sHttp.listen(3000)
+
+/// defining the secure http2 server for the application
+const key = new URL('../test/support/certs/foo.bar.key', import.meta.url)
+const cert = new URL('../test/support/certs/foo.bar.crt', import.meta.url)
+const app = new Server({ key, cert })
+
 app.use(
   sendMw,
   csp({
@@ -43,4 +54,4 @@ app.get('/favicon.ico', (req, res) => res.send('', 200, { 'content-type': 'image
 app.get('/css/style.css', (req, res) => res.send(css, 200, { 'content-type': 'text/css' }))
 app.post('/csp-report', cspReport())
 
-app.listen(3000)
+app.listen(3443)

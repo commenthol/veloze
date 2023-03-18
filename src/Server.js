@@ -1,4 +1,7 @@
+import * as http from 'node:http'
+import * as https from 'node:https'
 import * as http2 from 'node:http2'
+import * as fs from 'node:fs'
 import { Router } from './Router.js'
 import { safeServerShutdown } from './utils/safeServerShutdown.js'
 import { logger } from './utils/logger.js'
@@ -7,27 +10,33 @@ import { logger } from './utils/logger.js'
  * @typedef {import('http2').SecureServerOptions} Http2SecureServerOptions
  * @typedef {import('./Router').RouterOptions} RouterOptions
  * @typedef {http2.Http2Server|http2.Http2SecureServer} Http2Server
- * @typedef {Http2SecureServerOptions & RouterOptions & {gracefulTimeout: number}} ServerOptions
+ * @typedef {Http2SecureServerOptions & RouterOptions & {onlyHTTP1: boolean, gracefulTimeout: number}} ServerOptions
  */
 
 const log = logger(':server')
 
 /**
  * @class
- * HTTP2 server
+ * HTTP2 or HTTP1/HTTPS server
  *
- * If providing a key and cert then server starts as secureServer.
+ * If providing a `key` and `cert` in options, then server starts as secure
+ * server.
+ *
+ * Server starts as HTTP2 server by default allowing fallback to HTTP1
+ * connections.
  */
 export class Server extends Router {
   #server
   #serverOptions
   #shutdownOptions
+  #onlyHTTP1
 
   /**
    * @param {ServerOptions} options
    */
   constructor (options) {
     const {
+      onlyHTTP1 = false,
       connect,
       finalHandler,
       findRoute,
@@ -36,6 +45,9 @@ export class Server extends Router {
     } = options || {}
 
     super({ connect, finalHandler, findRoute })
+    loadCerts(serverOptions)
+
+    this.#onlyHTTP1 = onlyHTTP1
     this.#serverOptions = {
       allowHTTP1: true,
       ...serverOptions
@@ -61,14 +73,17 @@ export class Server extends Router {
    */
   listen (port, hostname, backlog, listeningListener) {
     const { key, cert, pfx } = this.#serverOptions
+    const refCreateSecureServer = this.#onlyHTTP1 ? https.createServer : http2.createSecureServer
+    const refCreateServer = this.#onlyHTTP1 ? http.createServer : http2.createServer
     const createServer = ((key && cert) || pfx)
-      ? http2.createSecureServer
-      : http2.createServer
-    // @ts-expect-error
+      // @ts-expect-error
+      ? (handle, options) => refCreateSecureServer(options, handle)
+      // @ts-expect-error
+      : (handle) => refCreateServer(handle)
     this.#server = createServer(this.handle, this.#serverOptions)
     safeServerShutdown(this.#server, this.#shutdownOptions)
     this.#server.listen(port, hostname, backlog, listeningListener)
-    log.info('server started %s', this.#server.address())
+    log.info('server started %j', this.#server.address())
     return this.#server
   }
 
@@ -81,4 +96,24 @@ export class Server extends Router {
   close (callback) {
     return this.#server.close(callback)
   }
+}
+
+const LOAD_CERTS_KEYS = ['key', 'cert', 'pfx', 'passphrase']
+
+/**
+ * load certificates and passphrase from file if option is an instance of URL
+ * @param {ServerOptions|{}} serverOptions
+ * @returns {ServerOptions|{}}
+ */
+const loadCerts = (serverOptions = {}) => {
+  for (const key of LOAD_CERTS_KEYS) {
+    if (serverOptions[key] instanceof URL) {
+      const data = fs.readFileSync(serverOptions[key])
+      serverOptions[key] = data
+      if (key === 'passphrase') {
+        serverOptions[key] = data.toString().trimEnd()
+      }
+    }
+  }
+  return serverOptions
 }
