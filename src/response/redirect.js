@@ -32,7 +32,7 @@ const htmlTmpl = (location) => escapeHtmlLit`<!DOCTYPE html>
  * @param {Response} res
  * @param {string} location
  * @param {number} [status=307]
- * @param {Record<string,string|number|boolean>} [headers={}]
+ * @param {Record<string, string|number|boolean>|{}} [headers]
  */
 export function redirect (res, location, status = 307, headers = {}) {
   res.statusCode = Math.floor(status / 100) === 3 ? status : 307

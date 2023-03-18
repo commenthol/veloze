@@ -20,7 +20,7 @@ import { setHeaders } from './setHeaders.js'
  * @param {Response} res
  * @param {any} body
  * @param {number} [status]
- * @param {object} [headers]
+ * @param {Record<string, string|number|boolean>|{}} [headers]
  */
 export function send (res, body, status, headers) {
   let chunk = body

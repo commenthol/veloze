@@ -93,4 +93,26 @@ describe('response/redirect', function () {
         location
       }))
   })
+
+  it('shall remove header', function () {
+    const app = new Router()
+    app.get('/', (req, res) => {
+      res.setHeader('cache-control', 'no-cache, max-age=0')
+      // remove the previously set header with `false`
+      redirect(res, 'https://foo.bar', 301, { 'cache-control': false })
+    })
+
+    const location = 'https://foo.bar'
+    return supertest(app.handle)
+      .get('/')
+      .query({
+        location: 'https://foo.bar',
+        status: 500
+      })
+      .expect(301)
+      .expect(shouldHaveHeaders({
+        'content-length': '0',
+        location
+      }))
+  })
 })

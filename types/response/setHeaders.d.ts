@@ -4,8 +4,10 @@
 /**
  * Set (multiple) headers on response
  *
+ * if header value is set to `false` header is removed.
+ *
  * @param {Response} res
- * @param {Record<string, string|number|boolean>} headers
+ * @param {Record<string, string|number|boolean>|{}} [headers]
  *
  * @example
  * async (req, res) => {
@@ -15,5 +17,5 @@
  *  })
  * }
  */
-export function setHeaders(res: Response, headers: Record<string, string | number | boolean>): void;
+export function setHeaders(res: Response, headers?: {} | Record<string, string | number | boolean> | undefined): void;
 export type Response = import('../../src/types').Response;

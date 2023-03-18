@@ -9,8 +9,8 @@
  * @param {Response} res
  * @param {any} body
  * @param {number} [status]
- * @param {object} [headers]
+ * @param {Record<string, string|number|boolean>|{}} [headers]
  */
-export function send(res: Response, body: any, status?: number | undefined, headers?: object): void;
+export function send(res: Response, body: any, status?: number | undefined, headers?: {} | Record<string, string | number | boolean> | undefined): void;
 export type Response = import('../types').Response;
 export type Request = import('../types').Request;
