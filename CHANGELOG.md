@@ -1,3 +1,20 @@
+# 0.3.0 (2023-03-18)
+
+### feat:
+
+- Server: HTTP2 or HTTP1/HTTPS server
+
+### fix:
+
+- middleware/finalHandler: fix styling issue on chrome
+- response/redirect: remove any previously set cache-control header
+- response/setHeaders: allow to remove header with send or redirect
+
+### docs:
+
+- wip
+- badges
+
 # 0.2.0 (2023-03-17)
 
 ### feat:
