@@ -107,6 +107,7 @@ const finalHtml = ({ status, message }) => escapeHtmlLit`<!DOCTYPE html>
       background: linear-gradient(120deg, #cc33ff 30%, #33ddff);
       background-clip: text;
       -webkit-text-fill-color: transparent;
+      -webkit-background-clip: text;
     }
     h2 {
       font-weight: bold;
