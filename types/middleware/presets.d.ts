@@ -9,7 +9,7 @@ export type PresetOptions = {
     /**
      * security header options
      */
-    cspOpts: import('./csp').CspMiddlewareOptions;
+    cspOpts: import('./contentSec').CspMiddlewareOptions;
     /**
      * Note: tooBusy options are set globally for the whole server
      */

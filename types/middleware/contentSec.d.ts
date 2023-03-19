@@ -30,14 +30,14 @@
  * @param {CspMiddlewareOptions} [options]
  * @returns {HandlerCb}
  */
-export function csp(options?: CspMiddlewareOptions | undefined): HandlerCb;
+export function contentSec(options?: CspMiddlewareOptions | undefined): HandlerCb;
 /**
  * Middleware adding various security headers to json responses.
  * @see https://cheatsheetseries.owasp.org/cheatsheets/REST_Security_Cheat_Sheet.html#security-headers
  * @param {CspMiddlewareOptions} [options]
  * @returns {HandlerCb}
  */
-export function cspJson(options?: CspMiddlewareOptions | undefined): HandlerCb;
+export function contentSecJson(options?: CspMiddlewareOptions | undefined): HandlerCb;
 /**
  * Parse and log csp violation
  * @param {{log: Log}} options
@@ -86,8 +86,8 @@ export type CspMiddlewareOptions = {
      */
     crossOriginResourcePolicy?: false | "same-origin" | "same-site" | "cross-origin" | undefined;
 };
-export type HandlerCb = typeof import("../../src/types").HandlerCb;
-export type Log = import('../../src/types').Log;
+export type HandlerCb = typeof import("../types").HandlerCb;
+export type Log = import('../types').Log;
 export type HstsOptions = {
     /**
      * max-age in seconds (defaults to 180days) or ms string

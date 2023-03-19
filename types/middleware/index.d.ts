@@ -9,5 +9,5 @@ export { renderEngine } from "./renderEngine.js";
 export { send } from "./send.js";
 export { tooBusy } from "./tooBusy.js";
 export { cacheControl, cacheControlByMethod } from "./cacheControl.js";
-export { csp, cspJson, cspReport } from "./csp.js";
+export { contentSec, contentSecJson, cspReport } from "./contentSec.js";
 export { presetHtml, presetJson } from "./presets.js";

@@ -7,8 +7,8 @@ import { bodyParser } from './bodyParser.js'
 import { connect } from '../connect.js'
 
 /**
- * @typedef {import('../../src/types').HandlerCb} HandlerCb
- * @typedef {import('../../src/types').Log} Log
+ * @typedef {import('../types').HandlerCb} HandlerCb
+ * @typedef {import('../types').Log} Log
  */
 
 /**
@@ -212,7 +212,7 @@ export const buildCsp = (options = {}) => {
  * @param {CspMiddlewareOptions} [options]
  * @returns {HandlerCb}
  */
-export function csp (options) {
+export function contentSec (options) {
   const {
     extensions = ['', '.html', '.htm'],
     csp = { reportOnly: false },
@@ -298,7 +298,7 @@ export function csp (options) {
  * @param {CspMiddlewareOptions} [options]
  * @returns {HandlerCb}
  */
-export function cspJson (options) {
+export function contentSecJson (options) {
   const _options = {
     extensions: ['', '.json'],
     csp: {
@@ -314,7 +314,7 @@ export function cspJson (options) {
     ...options
   }
   // @ts-expect-error
-  return csp(_options)
+  return contentSec(_options)
 }
 
 /**

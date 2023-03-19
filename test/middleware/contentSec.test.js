@@ -1,7 +1,7 @@
 import assert from 'node:assert'
 import supertest from 'supertest'
-import { buildCsp } from '../../src/middleware/csp.js'
-import { Router, csp, cspJson, cspReport, response } from '../../src/index.js'
+import { buildCsp } from '../../src/middleware/contentSec.js'
+import { Router, contentSec, contentSecJson, cspReport, response } from '../../src/index.js'
 import { shouldHaveHeaders } from '../support/index.js'
 
 const { send } = response
@@ -59,12 +59,12 @@ describe('middleware/csp', function () {
     })
   })
 
-  describe('csp', function () {
+  describe('contentSec', function () {
     const end = (req, res) => send(res)
 
     it('should apply default security headers', function () {
       const app = new Router()
-      app.get('/', csp(), end)
+      app.get('/', contentSec(), end)
       return supertest(app.handle)
         .get('/')
         .expect(200)
@@ -82,7 +82,7 @@ describe('middleware/csp', function () {
 
     it('should not apply default security headers for .js files', function () {
       const app = new Router()
-      app.get('/*', csp(), end)
+      app.get('/*', contentSec(), end)
       return supertest(app.handle)
         .get('/index.js')
         .expect(200)
@@ -98,7 +98,7 @@ describe('middleware/csp', function () {
           req.headers['x-forwarded-proto'] = 'https'
           next()
         },
-        csp(),
+        contentSec(),
         end)
       return supertest(app.handle)
         .get('/')
@@ -123,7 +123,7 @@ describe('middleware/csp', function () {
           req.headers['x-forwarded-proto'] = 'https'
           next()
         },
-        csp({
+        contentSec({
           csp: false,
           hsts: false,
           referrerPolicy: false,
@@ -149,7 +149,7 @@ describe('middleware/csp', function () {
           req.headers['x-forwarded-proto'] = 'https'
           next()
         },
-        csp({
+        contentSec({
           csp: {
             omitDefaults: true,
             'frame-ancestors': 'none'
@@ -174,7 +174,7 @@ describe('middleware/csp', function () {
 
     it('should throw if cspReportOnly=true and missing report-uri', function () {
       try {
-        csp({ csp: { reportOnly: true } })
+        contentSec({ csp: { reportOnly: true } })
         assert.ok(false)
       } catch (e) {
         assert.equal(e.message, 'cspReportOnly needs report-uri')
@@ -183,7 +183,7 @@ describe('middleware/csp', function () {
 
     it('should return content-security-policy-report-only header', function () {
       const app = new Router()
-      app.get('/', csp({ csp: { reportOnly: true, 'report-uri': '/report-url' } }), end)
+      app.get('/', contentSec({ csp: { reportOnly: true, 'report-uri': '/report-url' } }), end)
       return supertest(app.handle)
         .get('/')
         .expect(200)
@@ -202,7 +202,7 @@ describe('middleware/csp', function () {
     it('shall apply script nonces', function () {
       const app = new Router()
       app.get('/*',
-        csp({
+        contentSec({
           csp: {
             omitDefaults: true,
             'script-src': ['nonce', 'strict-dynamic']
@@ -223,12 +223,12 @@ describe('middleware/csp', function () {
     })
   })
 
-  describe('cspJson', function () {
+  describe('contentSecJson', function () {
     const end = (req, res) => send(res)
 
     it('should apply default security headers', function () {
       const app = new Router()
-      app.get('/', cspJson(), end)
+      app.get('/', contentSecJson(), end)
       return supertest(app.handle)
         .get('/')
         .expect(200)
@@ -245,7 +245,7 @@ describe('middleware/csp', function () {
 
     it('should apply HSTS security headers for .js files', function () {
       const app = new Router()
-      app.get('/*', csp(), end)
+      app.get('/*', contentSec(), end)
       return supertest(app.handle)
         .get('/index.js?v=1')
         .set({ 'x-forwarded-proto': 'https' })
@@ -263,7 +263,7 @@ describe('middleware/csp', function () {
           req.headers['x-forwarded-proto'] = 'https'
           next()
         },
-        csp({
+        contentSec({
           csp: false,
           hsts: { maxAge: 0 },
           referrerPolicy: false,
@@ -289,7 +289,7 @@ describe('middleware/csp', function () {
           req.headers['x-forwarded-proto'] = 'https'
           next()
         },
-        csp({
+        contentSec({
           csp: false,
           hsts: { maxAge: 7200, preload: true },
           referrerPolicy: false,

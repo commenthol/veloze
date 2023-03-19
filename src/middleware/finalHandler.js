@@ -4,7 +4,7 @@ import { escapeHtmlLit } from '../utils/index.js'
 import { logger } from '../utils/logger.js'
 import { HttpError } from '../HttpError.js'
 import { CONTENT_TYPE, CONTENT_SECURITY_POLICY } from '../constants.js'
-import { buildCsp } from './csp.js'
+import { buildCsp } from './contentSec.js'
 
 /**
  * @typedef {import('../../src/types').Request} Request

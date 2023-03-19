@@ -1,7 +1,7 @@
 import { bodyParser } from './bodyParser.js'
 import { cacheControlByMethod } from './cacheControl.js'
 import { cookieParser } from './cookieParser.js'
-import { csp, cspJson } from './csp.js'
+import { contentSec, contentSecJson } from './contentSec.js'
 import { queryParser } from './queryParser.js'
 import { requestId } from './requestId.js'
 import { send } from './send.js'
@@ -12,7 +12,7 @@ import { tooBusy } from './tooBusy.js'
  *
  * @typedef {object} PresetOptions
  * @property {number|string} limit body-parser limit
- * @property {import('./csp').CspMiddlewareOptions} cspOpts security header options
+ * @property {import('./contentSec').CspMiddlewareOptions} cspOpts security header options
  * @property {import('./tooBusy.js').TooBusyOptions} tooBusyOpts Note: tooBusy options are set globally for the whole server
  * @property {import('./cacheControl.js').CacheControlDirectivesByMethod} cacheControlOpts}
  */
@@ -33,7 +33,7 @@ export const presetHtml = (options) => {
   return [
     tooBusy(tooBusyOpts),
     requestId(),
-    csp(cspOpts),
+    contentSec(cspOpts),
     cacheControlByMethod(cacheControlOpts),
     send,
     queryParser,
@@ -58,7 +58,7 @@ export const presetJson = (options) => {
   return [
     tooBusy(tooBusyOpts),
     requestId(),
-    cspJson(cspOpts),
+    contentSecJson(cspOpts),
     cacheControlByMethod(cacheControlOpts),
     send,
     queryParser,

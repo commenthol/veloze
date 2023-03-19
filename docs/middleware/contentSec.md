@@ -1,4 +1,4 @@
-# csp - security middleware
+# contentSec - content security middleware
 
 Middleware which adds various security headers on pages.
 
@@ -24,16 +24,16 @@ Middleware which adds various security headers on pages.
 # Usage
 
 ```js
-import { Router, csp } from "veloze";
+import { Router, contentSec } from "veloze";
 
 const router = new Router();
 
 // safe defaults
-router.use(csp());
+router.use(contentSec());
 
 // custom settings
 router.use(
-  csp({
+  contentSec({
     csp:  "script-src": ["nonce", "strict-dynamic"] ,
     hsts:  maxAge: "180d" ,
     referrerPolicy: "origin",
@@ -97,11 +97,11 @@ See https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-P
 | boolean          | [upgrade-insecure-requests] |                                                        |
 
 ```js
-router.use(csp());
+router.use(contentSec());
 
 // disable header
 router.use(
-  csp(
+  contentSec(
     csp: false,
   )
 );
@@ -113,7 +113,7 @@ See https://web.dev/strict-csp/
 
 ```js
 router.use(
-  csp({
+  contentSec({
     csp:
       "script-src": ["nonce", "strict-dynamic"],
     ,
@@ -141,7 +141,7 @@ avoided use `omitDefaults: true` and set the required directives.
 
 ```js
 router.use(
-  csp({
+  contentSec({
     omitDefaults: true,
     "frame-ancestors": ["none"],
   })
@@ -169,7 +169,7 @@ See https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-S
 
 ```js
 router.use(
-  csp({
+  contentSec({
     hsts:  maxAge: "30d", includeSubDomains: false, preload: true ,
   })
 );
@@ -177,7 +177,7 @@ router.use(
 
 // disable header
 router.use(
-  csp({
+  contentSec({
     hsts: false,
   })
 );
@@ -208,14 +208,14 @@ Possible values:
 ```js
 // set header
 router.use(
-  csp({
+  contentSec({
     referrerPolicy: "origin-when-cross-origin",
   })
 );
 
 // disable header
 router.use(
-  csp({
+  contentSec({
     referrerPolicy: false,
   })
 );
@@ -234,14 +234,14 @@ See https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Opt
 ```js
 // set header
 router.use(
-  csp({
+  contentSec({
     xContentTypeOptions: true,
   })
 );
 
 // disable header
 router.use(
-  csp({
+  contentSec({
     xContentTypeOptions: false,
   })
 );
