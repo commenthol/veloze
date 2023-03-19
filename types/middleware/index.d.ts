@@ -1,5 +1,4 @@
 export { bodyParser } from "./bodyParser.js";
-export { cacheControl } from "./cacheControl.js";
 export { cookieParser } from "./cookieParser.js";
 export { cors } from "./cors.js";
 export { finalHandler } from "./finalHandler.js";
@@ -11,3 +10,4 @@ export { send } from "./send.js";
 export { tooBusy } from "./tooBusy.js";
 export { cacheControl, cacheControlByMethod } from "./cacheControl.js";
 export { csp, cspJson, cspReport } from "./csp.js";
+export { presetHtml, presetJson } from "./presets.js";
