@@ -110,6 +110,7 @@ export class Router {
    * mount router or add pre-hook handler
    *
    * `app.use(handler)` adds `handler` as pre-hook handler which is added to all following routes
+   *
    * `app.use('/path', handler)` mounts `handler` on `/path/*` for ALL methods
    *
    * @param {string|string[]|Handler} path
@@ -117,7 +118,8 @@ export class Router {
    */
   use (path, ...handlers) {
     // apply as pre-hook handler
-    if (typeof path === 'function') {
+    if (typeof path === 'function' || (Array.isArray(path) && typeof path[0] === 'function')) {
+      // @ts-expect-error
       return this.preHook(path, ...handlers)
     }
 
