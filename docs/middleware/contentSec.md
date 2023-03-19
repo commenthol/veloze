@@ -1,4 +1,4 @@
-# contentSec - content security middleware
+# contentSec middleware
 
 Middleware which adds various security headers on pages.
 
