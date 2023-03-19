@@ -9,4 +9,5 @@ export { redirect2Https } from "./redirect2Https.js";
 export { renderEngine } from "./renderEngine.js";
 export { send } from "./send.js";
 export { tooBusy } from "./tooBusy.js";
+export { cacheControl, cacheControlByMethod } from "./cacheControl.js";
 export { csp, cspJson, cspReport } from "./csp.js";

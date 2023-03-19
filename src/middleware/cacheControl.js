@@ -21,12 +21,11 @@ import { ms } from '../utils/ms.js'
  */
 
 /**
- * set the cache-control header
  * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
- * @param {CacheControlDirectives} options
- * @returns {HandlerCb}
+ * @param { CacheControlDirectives } [options]
+ * @returns {string} cache-control header value
  */
-export function cacheControl (options = {}) {
+export function buildCacheControl (options = {}) {
   const isEmpty = Object.keys(options).length === 0
 
   let maxAge = max(ms(options.maxAge, true))
@@ -84,18 +83,68 @@ export function cacheControl (options = {}) {
     directives.push(`s-maxage=${sMaxAge}`)
   }
   const value = directives.join(', ')
-
-  return function _cacheControl (req, res, next) {
-    if (value) {
-      res.setHeader('cache-control', value)
-    }
-    next()
-  }
+  return value
 }
 
+/**
+ * @private
+ * @param {any} value
+ * @param {number} [lower=0]
+ * @returns {number|undefined}
+ */
 function max (value, lower = 0) {
   if (typeof value !== 'number') {
     return
   }
   return Math.max(value, lower)
+}
+
+/**
+ * Set the cache-control header, regardless of request method
+ *
+ * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
+ * @param {CacheControlDirectives} [options]
+ * @returns {HandlerCb}
+ */
+export function cacheControl (options) {
+  const value = buildCacheControl(options)
+
+  return function cacheControlMw (req, res, next) {
+    res.setHeader('cache-control', value)
+    next()
+  }
+}
+
+/**
+ * @typedef {object} NoCacheMethods
+ * @property {string[]} [noCacheMethods] List of uppercase request methods where no-cache rules must apply
+ *
+ * @typedef {CacheControlDirectives & NoCacheMethods} CacheControlDirectivesByMethod
+ */
+
+/**
+ * Set the cache-control header dependent of the request method
+ *
+ * All requests matching `noCacheMethods` will have
+ * `cache-control: no-store, no-cache, max-age=0` being set
+ *
+ * @param {CacheControlDirectivesByMethod} [options]
+ * @returns {HandlerCb}
+ */
+export function cacheControlByMethod (options) {
+  const {
+    noCacheMethods = ['POST', 'PUT', 'PATCH', 'DELETE'],
+    ...opts
+  } = options || {}
+
+  const cacheVal = buildCacheControl(opts)
+  const noCacheVal = buildCacheControl()
+
+  return function cacheControlMw (req, res, next) {
+    const value = noCacheMethods.includes(req.method || '')
+      ? noCacheVal
+      : cacheVal
+    res.setHeader('cache-control', value)
+    next()
+  }
 }

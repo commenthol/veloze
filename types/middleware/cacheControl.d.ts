@@ -18,12 +18,35 @@
  * @property {boolean} [staleIfError] cache can reuse a stale response when an origin server responds with an error (500, 502, 503, or 504)
  */
 /**
- * set the cache-control header
  * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
- * @param {CacheControlDirectives} options
+ * @param { CacheControlDirectives } [options]
+ * @returns {string} cache-control header value
+ */
+export function buildCacheControl(options?: CacheControlDirectives | undefined): string;
+/**
+ * Set the cache-control header, regardless of request method
+ *
+ * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
+ * @param {CacheControlDirectives} [options]
  * @returns {HandlerCb}
  */
-export function cacheControl(options?: CacheControlDirectives): HandlerCb;
+export function cacheControl(options?: CacheControlDirectives | undefined): HandlerCb;
+/**
+ * @typedef {object} NoCacheMethods
+ * @property {string[]} [noCacheMethods] List of uppercase request methods where no-cache rules must apply
+ *
+ * @typedef {CacheControlDirectives & NoCacheMethods} CacheControlDirectivesByMethod
+ */
+/**
+ * Set the cache-control header dependent of the request method
+ *
+ * All requests matching `noCacheMethods` will have
+ * `cache-control: no-store, no-cache, max-age=0` being set
+ *
+ * @param {CacheControlDirectivesByMethod} [options]
+ * @returns {HandlerCb}
+ */
+export function cacheControlByMethod(options?: CacheControlDirectivesByMethod | undefined): HandlerCb;
 export type HandlerCb = typeof import("../../src/types").HandlerCb;
 export type CacheControlDirectives = {
     /**
@@ -79,3 +102,10 @@ export type CacheControlDirectives = {
      */
     staleIfError?: boolean | undefined;
 };
+export type NoCacheMethods = {
+    /**
+     * List of uppercase request methods where no-cache rules must apply
+     */
+    noCacheMethods?: string[] | undefined;
+};
+export type CacheControlDirectivesByMethod = CacheControlDirectives & NoCacheMethods;
