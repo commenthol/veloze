@@ -1,5 +1,6 @@
 export const REQ_METHOD_HEAD: unique symbol;
 export const RES_NEXT: unique symbol;
+export const RES_ETAG: unique symbol;
 export const CONTENT_TYPE: "content-type";
 export const MIME_HTML: "text/html";
 export const MIME_TEXT: "text/plain";

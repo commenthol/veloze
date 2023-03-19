@@ -1,5 +1,6 @@
 import {
   REQ_METHOD_HEAD,
+  RES_ETAG,
   CONTENT_TYPE,
   MIME_HTML_UTF8,
   MIME_JSON_UTF8,
@@ -48,6 +49,10 @@ export function send (res, body, status, headers) {
   }
 
   res.statusCode = status || res.statusCode || 200
+
+  if (res[RES_ETAG]) {
+    res[RES_ETAG](chunk)
+  }
 
   switch (res.statusCode) {
     case 204:

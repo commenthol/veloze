@@ -1,5 +1,6 @@
 export const REQ_METHOD_HEAD = Symbol('reqMethodHead')
 export const RES_NEXT = Symbol('resNext')
+export const RES_ETAG = Symbol('resEtag')
 
 export const CONTENT_TYPE = 'content-type'
 export const MIME_HTML = 'text/html'
