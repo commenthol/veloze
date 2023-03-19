@@ -16,7 +16,7 @@ export interface Request extends http.IncomingMessage {
   /**
    * params object from url parameters e.g. for route
    * `/authors/:author/books/:bookTitle` would return with url
-   * `/authors/melville/books/moby-dick` the object 
+   * `/authors/melville/books/moby-dick` the object
    * `{ author: 'melville', bookTitle: 'moby-dick' }`
    */
   params: Record<string, string>|{}
@@ -30,14 +30,14 @@ export interface Request extends http.IncomingMessage {
    * needs queryParser middleware
    */
   query?: Record<string, string>|{}
-  /** 
+  /**
    * parsed request body;
-   * needs bodyParser middleware 
+   * needs bodyParser middleware
    */
   body?: Record<string, any>|{}|Buffer
-  /** 
+  /**
    * parsed cookies;
-   * needs cookieParser middleware 
+   * needs cookieParser middleware
    */
   cookies?: Record<string, string>|{}
   /**
@@ -48,33 +48,33 @@ export interface Request extends http.IncomingMessage {
 }
 
 export interface Response extends http.ServerResponse {
-  /** 
-   * response body 
+  /**
+   * response body
    */
   body?: any
   /**
    * send request;
-   * needs sendMw middleware 
+   * needs send middleware
    */
   send?: (body: any, status?: number, headers?: object) => void
   /**
    * sets a response cookie;
-   * needs cookieParser middleware 
+   * needs cookieParser middleware
    */
   cookie?: (name: string, value: string|number|boolean, opts?: CookieOpts) => Response
-  /** 
+  /**
    * Clears the cookie specified by name;
-   * needs cookieParser middleware 
+   * needs cookieParser middleware
    */
   clearCookie?: (name: string, opts?: CookieOpts) => Response
   /**
    * local template variables for res.render;
-   * needs renderEngine middleware 
+   * needs renderEngine middleware
    */
   locals?: Record<string, any>
   /**
    * template render function;
-   * needs renderEngine middleware 
+   * needs renderEngine middleware
    */
   render?: (name: string, locals: Record<string, any>) => Promise<void>
 }

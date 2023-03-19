@@ -4,7 +4,7 @@
  * requires a certificate; run `./scripts/certs.sh` before.
  */
 
-import { Server, csp, sendMw, redirect2Https } from '../src/index.js'
+import { Server, csp, send, redirect2Https } from '../src/index.js'
 
 const page = `<!DOCTYPE html>
 <html lang="en-US">
@@ -31,7 +31,7 @@ const cert = new URL('../test/support/certs/foo.bar.crt', import.meta.url)
 const app = new Server({ key, cert })
 
 app.use(
-  sendMw /// enables `res.send()`
+  send /// enables `res.send()`
 )
 app.get('/path', csp(), (req, res) => res.send(page))
 app.get('/favicon.ico', (req, res) => res.send('', 200, { 'content-type': 'image/x-icon' }))

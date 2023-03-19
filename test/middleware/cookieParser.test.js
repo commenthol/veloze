@@ -1,13 +1,13 @@
 import assert from 'assert'
 import supertest from 'supertest'
 import sinon from 'sinon'
-import { Router, cookieParser, sendMw } from '../../src/index.js'
+import { Router, cookieParser, send } from '../../src/index.js'
 
 describe('middleware/cookieParser', function () {
   let app
   before(function () {
     app = new Router()
-    app.use(sendMw)
+    app.use(send)
     app.get('/cookie',
       cookieParser,
       (req, res) => {

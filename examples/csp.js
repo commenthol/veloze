@@ -5,7 +5,7 @@
  * requires a certificate; run `./scripts/certs.sh` before.
  */
 
-import { Server, csp, cspReport, sendMw, redirect2Https } from '../src/index.js'
+import { Server, csp, cspReport, send, redirect2Https } from '../src/index.js'
 
 const page = `<!DOCTYPE html>
 <html lang="en-US">
@@ -37,7 +37,7 @@ const cert = new URL('../test/support/certs/foo.bar.crt', import.meta.url)
 const app = new Server({ key, cert })
 
 app.use(
-  sendMw,
+  send,
   csp({
     csp: {
       omitDefaults: true,

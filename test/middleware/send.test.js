@@ -1,9 +1,9 @@
 import supertest from 'supertest'
-import { sendMw, connect } from '../../src/index.js'
+import { send, connect } from '../../src/index.js'
 
-describe('middleware/sendMw', function () {
+describe('middleware/send', function () {
   it('res.send', async function () {
-    const handle = connect(sendMw, (req, res) => {
+    const handle = connect(send, (req, res) => {
       res.send('<h1>works</h1>')
     })
 

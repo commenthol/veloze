@@ -1,6 +1,6 @@
 import assert from 'assert'
 import supertest from 'supertest'
-import { Router, sendMw } from '../src/index.js'
+import { Router, send } from '../src/index.js'
 import { Request, Response, handler, asyncHandler, preHandler } from './support/index.js'
 
 const handleResBodyInit = (req, res, next) => {
@@ -16,7 +16,7 @@ describe('Router', function () {
   let app
   before(function () {
     app = new Router()
-    app.use(handleResBodyInit, sendMw)
+    app.use(handleResBodyInit, send)
     app.postHook(handleSend)
     app.get('/', handler)
       .get('/async', asyncHandler)
@@ -125,7 +125,7 @@ describe('Router', function () {
     let router
     before(function () {
       router = new Router()
-      router.preHook(handleResBodyInit, sendMw)
+      router.preHook(handleResBodyInit, send)
       router.postHook(handleSend)
       router.use(preHandler('first'), preHandler('second'))
       router.get('/', asyncHandler)
@@ -158,7 +158,7 @@ describe('Router', function () {
       const handler2 = handlerName('#2nd')
 
       router = new Router()
-      router.preHook(handleResBodyInit, sendMw)
+      router.preHook(handleResBodyInit, send)
       router.postHook(handleSend)
       router.get('/', handler1)
       router.get('/one', handler1)

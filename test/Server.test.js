@@ -1,6 +1,6 @@
 import assert from 'assert'
 import supertest from 'supertest'
-import { Router, Server, sendMw } from '../src/index.js'
+import { Router, Server, send } from '../src/index.js'
 import { Http2Client } from './support/Http2Client.js'
 
 describe('Server', function () {
@@ -13,7 +13,7 @@ describe('Server', function () {
 
   before(function () {
     app = new Router()
-    app.use(sendMw)
+    app.use(send)
     app.get('/', (req, res) => {
       const { httpVersion } = req
       const isHttps = req.socket?.encrypted || false

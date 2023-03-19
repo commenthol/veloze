@@ -1,4 +1,4 @@
-import { send } from '../response/index.js'
+import { send as resSend } from '../response/index.js'
 
 /**
  * @typedef {import('../types').Response} Response
@@ -11,7 +11,7 @@ import { send } from '../response/index.js'
  * @param {Response} res
  * @param {Function} next
  */
-export function sendMw (req, res, next) {
-  res.send = send.bind(null, res)
+export function send (req, res, next) {
+  res.send = resSend.bind(null, res)
   next()
 }

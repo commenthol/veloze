@@ -23,7 +23,7 @@ src
 │   ├── redirect2Https.js   // redirect from http to https
 │   ├── renderEngine.js     // render helper for multiple template engines
 │   ├── requestId.js        // request id 
-│   ├── sendMw.js           // res.send
+│   ├── send.js             // adds res.send
 │   └── tooBusy.js          // overload protection
 ├── request                 // # request helpers
 │   ├── accept.js           // accept-* header parsing 
