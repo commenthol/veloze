@@ -235,12 +235,7 @@ describe('middleware/csp', function () {
         .expect(shouldHaveHeaders({
           'content-length': '0',
           'content-security-policy': "default-src 'self'; frame-ancestors 'none'; upgrade-insecure-requests",
-          'cross-origin-embedder-policy': 'require-corp',
-          'cross-origin-opener-policy': 'same-origin',
-          'cross-origin-resource-policy': 'same-origin',
-          'referrer-policy': 'no-referrer',
-          'x-content-type-options': 'nosniff',
-          'x-dns-prefetch-control': 'off'
+          'x-content-type-options': 'nosniff'
         }))
     })
   })

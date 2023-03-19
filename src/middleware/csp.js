@@ -142,6 +142,8 @@ const CSP_DIRECTIVES = {
   'upgrade-insecure-requests': true
 }
 
+const quoteKeyword = value => CSP_KEYWORDS.includes(value) ? `'${value}'` : value
+
 /**
  * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
  * @see https://report-uri.com/home/generate
@@ -158,9 +160,6 @@ export const buildCsp = (options = {}) => {
     if (directive === 'default-src' && !values) {
       values = "'self'"
     }
-
-    const quoteKeyword = value => CSP_KEYWORDS.includes(value) ? `'${value}'` : value
-
     const isArray = Array.isArray(values)
     if (isArray && values.length) {
       parts.push(directive)
@@ -188,7 +187,7 @@ export const buildCsp = (options = {}) => {
  * @property {ReferrerPolicy|false} [referrerPolicy='no-referrer'] referrer-policy header
  * @property {boolean} [xContentTypeOptions=true] x-content-type-options header; true sets 'nosniff'
  * @property {'on'|'off'|false} [xDnsPrefetchControl='off'] x-dns-prefetch-control header
- * @property {'require-corp'|'unsafe-none'|'credentialless'|false} [crossOriginEmbedderPolicy='require-corp'] cross-origin-embedder-policy header
+ * @property {'require-corp'|'unsafe-none'|'credentialless'|false} [crossOriginEmbedderPolicy='require-corp'] cross-origin-embedder-policy header; see https://web.dev/coop-coep/
  * @property {'same-origin'|'same-origin-allow-popups'|'unsafe-none'|false} [crossOriginOpenerPolicy='same-origin'] cross-origin-opener-policy header
  * @property {'same-origin'|'same-site'|'cross-origin'|false} [crossOriginResourcePolicy='same-origin'] cross-origin-resource-policy header
  */
@@ -307,9 +306,14 @@ export function cspJson (options) {
       'frame-ancestors': ['none'],
       'upgrade-insecure-requests': true
     },
+    referrerPolicy: false,
+    xDnsPrefetchControl: false,
+    crossOriginEmbedderPolicy: false,
+    crossOriginOpenerPolicy: false,
+    crossOriginResourcePolicy: false,
     ...options
   }
-
+  // @ts-expect-error
   return csp(_options)
 }
 

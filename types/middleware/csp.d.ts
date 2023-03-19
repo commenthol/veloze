@@ -6,7 +6,7 @@
  * @property {ReferrerPolicy|false} [referrerPolicy='no-referrer'] referrer-policy header
  * @property {boolean} [xContentTypeOptions=true] x-content-type-options header; true sets 'nosniff'
  * @property {'on'|'off'|false} [xDnsPrefetchControl='off'] x-dns-prefetch-control header
- * @property {'require-corp'|'unsafe-none'|'credentialless'|false} [crossOriginEmbedderPolicy='require-corp'] cross-origin-embedder-policy header
+ * @property {'require-corp'|'unsafe-none'|'credentialless'|false} [crossOriginEmbedderPolicy='require-corp'] cross-origin-embedder-policy header; see https://web.dev/coop-coep/
  * @property {'same-origin'|'same-origin-allow-popups'|'unsafe-none'|false} [crossOriginOpenerPolicy='same-origin'] cross-origin-opener-policy header
  * @property {'same-origin'|'same-site'|'cross-origin'|false} [crossOriginResourcePolicy='same-origin'] cross-origin-resource-policy header
  */
@@ -74,7 +74,7 @@ export type CspMiddlewareOptions = {
      */
     xDnsPrefetchControl?: false | "on" | "off" | undefined;
     /**
-     * cross-origin-embedder-policy header
+     * cross-origin-embedder-policy header; see https://web.dev/coop-coep/
      */
     crossOriginEmbedderPolicy?: false | "require-corp" | "unsafe-none" | "credentialless" | undefined;
     /**
