@@ -9,4 +9,4 @@ export { redirect2Https } from "./redirect2Https.js";
 export { renderEngine } from "./renderEngine.js";
 export { send } from "./send.js";
 export { tooBusy } from "./tooBusy.js";
-export { csp, cspReport } from "./csp.js";
+export { csp, cspJson, cspReport } from "./csp.js";

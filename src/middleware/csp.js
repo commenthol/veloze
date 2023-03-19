@@ -156,19 +156,21 @@ export const buildCsp = (options = {}) => {
     let values = options[directive] ?? (options?.omitDefaults ? undefined : defaults)
     // default-src must be present
     if (directive === 'default-src' && !values) {
-      values = 'self'
+      values = "'self'"
     }
+
+    const quoteKeyword = value => CSP_KEYWORDS.includes(value) ? `'${value}'` : value
+
     const isArray = Array.isArray(values)
     if (isArray && values.length) {
       parts.push(directive)
       values.forEach((value) => {
-        const v = CSP_KEYWORDS.includes(value) ? `'${value}'` : value
-        parts.push(v)
+        parts.push(quoteKeyword(value))
       })
     } else if (!isArray && values) {
       parts.push(directive)
       if (typeof values === 'string') {
-        parts.push(values)
+        parts.push(quoteKeyword(values))
       }
     }
     if (parts.length) {
@@ -179,7 +181,20 @@ export const buildCsp = (options = {}) => {
 }
 
 /**
- * Middleware which adds various security headers on html pages.
+ * @typedef {object} CspMiddlewareOptions
+ * @property {string[]} [extensions=['', '.html', '.htm']] extensions where CSP is applied
+ * @property {CspOptions|false} [csp] content-security-policy; false disables CSP
+ * @property {HstsOptions|false} [hsts] strict-transport-security; false disables HSTS
+ * @property {ReferrerPolicy|false} [referrerPolicy='no-referrer'] referrer-policy header
+ * @property {boolean} [xContentTypeOptions=true] x-content-type-options header; true sets 'nosniff'
+ * @property {'on'|'off'|false} [xDnsPrefetchControl='off'] x-dns-prefetch-control header
+ * @property {'require-corp'|'unsafe-none'|'credentialless'|false} [crossOriginEmbedderPolicy='require-corp'] cross-origin-embedder-policy header
+ * @property {'same-origin'|'same-origin-allow-popups'|'unsafe-none'|false} [crossOriginOpenerPolicy='same-origin'] cross-origin-opener-policy header
+ * @property {'same-origin'|'same-site'|'cross-origin'|false} [crossOriginResourcePolicy='same-origin'] cross-origin-resource-policy header
+ */
+
+/**
+ * Middleware which adding various security headers to html page responses.
  *
  * - csp: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
  * - hsts: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
@@ -195,16 +210,7 @@ export const buildCsp = (options = {}) => {
  * - https://web.dev/strict-csp/
  * - https://owasp.org/www-project-secure-headers/ci/headers_add.json
  *
- * @param {object} [options]
- * @param {string[]} [options.extensions=['', '.html', '.htm']] extensions where CSP is applied
- * @param {CspOptions|false} [options.csp] content-security-policy; false disables CSP
- * @param {HstsOptions|false} [options.hsts] strict-transport-security; false disables HSTS
- * @param {ReferrerPolicy|false} [options.referrerPolicy='no-referrer'] referrer-policy header
- * @param {boolean} [options.xContentTypeOptions=true] x-content-type-options header; true sets 'nosniff'
- * @param {'on'|'off'|false} [options.xDnsPrefetchControl='off'] x-dns-prefetch-control header
- * @param {'require-corp'|'unsafe-none'|'credentialless'|false} [options.crossOriginEmbedderPolicy='require-corp'] cross-origin-embedder-policy header
- * @param {'same-origin'|'same-origin-allow-popups'|'unsafe-none'|false} [options.crossOriginOpenerPolicy='same-origin'] cross-origin-opener-policy header
- * @param {'same-origin'|'same-site'|'cross-origin'|false} [options.crossOriginResourcePolicy='same-origin'] cross-origin-resource-policy header
+ * @param {CspMiddlewareOptions} [options]
  * @returns {HandlerCb}
  */
 export function csp (options) {
@@ -285,6 +291,26 @@ export function csp (options) {
     }
     next()
   }
+}
+
+/**
+ * Middleware adding various security headers to json responses.
+ * @see https://cheatsheetseries.owasp.org/cheatsheets/REST_Security_Cheat_Sheet.html#security-headers
+ * @param {CspMiddlewareOptions} [options]
+ * @returns {HandlerCb}
+ */
+export function cspJson (options) {
+  const _options = {
+    extensions: ['', '.json'],
+    csp: {
+      omitDefaults: true,
+      'frame-ancestors': ['none'],
+      'upgrade-insecure-requests': true
+    },
+    ...options
+  }
+
+  return csp(_options)
 }
 
 /**

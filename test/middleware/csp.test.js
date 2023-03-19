@@ -1,7 +1,7 @@
 import assert from 'node:assert'
 import supertest from 'supertest'
 import { buildCsp } from '../../src/middleware/csp.js'
-import { Router, csp, cspReport, response } from '../../src/index.js'
+import { Router, csp, cspJson, cspReport, response } from '../../src/index.js'
 import { shouldHaveHeaders } from '../support/index.js'
 
 const { send } = response
@@ -55,7 +55,7 @@ describe('middleware/csp', function () {
         'frame-ancestors': '',
         'upgrade-insecure-requests': false
       })
-      assert.equal(result, 'default-src self')
+      assert.equal(result, "default-src 'self'")
     })
   })
 
@@ -161,7 +161,7 @@ describe('middleware/csp', function () {
         .expect(200)
         .expect(shouldHaveHeaders({
           'content-length': '0',
-          'content-security-policy': 'default-src self; frame-ancestors none',
+          'content-security-policy': "default-src 'self'; frame-ancestors 'none'",
           'cross-origin-embedder-policy': 'require-corp',
           'cross-origin-opener-policy': 'same-origin',
           'cross-origin-resource-policy': 'same-origin',
@@ -217,9 +217,31 @@ describe('middleware/csp', function () {
           assert.equal(typeof body.nonce, 'string')
           assert.equal(
             headers['content-security-policy'].replaceAll(body.nonce, '***'),
-            "default-src self; script-src 'nonce-***' 'strict-dynamic'"
+            "default-src 'self'; script-src 'nonce-***' 'strict-dynamic'"
           )
         })
+    })
+  })
+
+  describe('cspJson', function () {
+    const end = (req, res) => send(res)
+
+    it('should apply default security headers', function () {
+      const app = new Router()
+      app.get('/', cspJson(), end)
+      return supertest(app.handle)
+        .get('/')
+        .expect(200)
+        .expect(shouldHaveHeaders({
+          'content-length': '0',
+          'content-security-policy': "default-src 'self'; frame-ancestors 'none'; upgrade-insecure-requests",
+          'cross-origin-embedder-policy': 'require-corp',
+          'cross-origin-opener-policy': 'same-origin',
+          'cross-origin-resource-policy': 'same-origin',
+          'referrer-policy': 'no-referrer',
+          'x-content-type-options': 'nosniff',
+          'x-dns-prefetch-control': 'off'
+        }))
     })
   })
 
