@@ -10,6 +10,8 @@ See https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
 
 # Usage
 
+## cacheControl
+
 ```js
 import { Router, cacheControl } from "veloze";
 
@@ -24,6 +26,33 @@ router.use(
     maxAge: "5days",
     private: true,
     staleIfError: true,
+  })
+);
+```
+
+## cacheControlByMethod
+
+Set the cache-control header dependent of the request method
+
+All requests matching `noCacheMethods` will have `cache-control: no-store,
+no-cache, max-age=0` being set.
+
+```js
+import { Router, cacheControlByMethod } from "veloze";
+
+const router = new Router();
+
+// safe defaults
+router.use(cacheControlByMethod());
+
+// with options
+router.use(
+  cacheControlByMethod({
+    maxAge: "5days",
+    private: true,
+    staleIfError: true,
+    // name methods which should be set to "no-cache".
+    noCacheMethods: ["POST", "PUT", "PATCH", "DELETE"],
   })
 );
 ```
