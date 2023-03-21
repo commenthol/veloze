@@ -7,8 +7,10 @@
  */
 /**
  * Connect middleware which checks if server is too busy.
- * In case that the event-loop lags behind the defined maxLag incoming requests
+ *
+ * In case that the event-loop lags behind the defined maxLag, incoming requests
  * are rejected with a 429 Too Many Requests
+ *
  * @param {TooBusyOptions & RetryAfterOption} [options]
  * @returns {HandlerCb}
  */
