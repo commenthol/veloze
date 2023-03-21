@@ -1,16 +1,12 @@
 # veloze
 
-TODO
-
-# Server
-
 TODO:
 
+# Core
 
-# Router
-
-TODO:
-
+- [connect](./core/Server.md) Connects middlewares
+- [Router](./core/Router.md) Routes to connected 
+- [Server](./core/Server.md) Runs the server
 
 # middlewares
 
@@ -19,14 +15,18 @@ TODO:
 - [cacheControl](./middleware/cacheControl.md) Set 'cache-control' header.
 - [cookieParser](./middleware/cookieParser.md) Parse cookies or set them.
 - [contentSec](./middleware/contentSec.md) Add security headers.
-- [cors](./middleware/cors.md) TODO:
+- [cors](./middleware/cors.md) CORS preflight and response headers
 - [finalHandler](./middleware/finalHandler.md) TODO:
 - [queryParser](./middleware/queryParser.md) Parse the query string.
 - [renderEngine](./middleware/renderEngine.md) Using template render engines.
-- [send, sendEtag](./middleware/send.md) TODO:
-- [requestId](./middleware/requestId.md) TODO:
+- [send, sendEtag](./middleware/send.md) res.send(), res.redirect()
+- [requestId](./middleware/requestId.md) Sets a random request (correlation) id
 - [tooBusy](./middleware/tooBusy.md) Reject incoming requests if server is too
   busy.
+
+# presets
+
+TODO:
 
 # request
 
@@ -48,8 +48,10 @@ Response utilities
 
 # utilities
 
-TODO:
-
-
-
+- [bytes](./utils/bytes.md) TODO:
+- [cookie](./utils/cookie.md) TODO:
+- [escapeHtml](./utils/escapeHtml.md) TODO:
+- [ms](./utils/ms.md) TODO:
+- [qs](./utils/qs.md) TODO:
+- [random64](./utils/random64.md) TODO:
 

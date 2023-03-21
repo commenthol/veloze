@@ -51,7 +51,7 @@ See https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
 The `secure` flag will be set, if request uses https or http with http-header
 'x-forwarded-proto': 'https'.
 
-**options**
+### Options:
 
 | type                                     | property    | description                                                                                                                                        |
 | ---------------------------------------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -61,7 +61,7 @@ The `secure` flag will be set, if request uses https or http with http-header
 | number                                   | \[maxAge]   | Convenient option for setting the expiry time relative to the current time in milliseconds.                                                        |
 | string                                   | \[path]     | Path for the cookie. Defaults to "/".                                                                                                              |
 | boolean                                  | \[secure]   | Marks the cookie to be used with HTTPS only.                                                                                                       |
-| boolean\|string\|'Lax'\|'Strict'\|'None' | \[sameSite] | Value of the "SameSite" Set-Cookie attribute. More information at https://tools.ietf.org/html/draft-ietf-httpbis-cookie-same-site-00#section-4.1.1 |
+| boolean\|string\|<br>'Lax'\|'Strict'\|'None' | \[sameSite] | Value of the "SameSite" Set-Cookie attribute. More information at https://tools.ietf.org/html/draft-ietf-httpbis-cookie-same-site-00#section-4.1.1 |
 
 <a id="res-clear-cookie"></a>
 

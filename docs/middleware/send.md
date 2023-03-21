@@ -66,6 +66,12 @@ app.get("/", (req, res) => {
 });
 ```
 
+### Options
+
+| type   | property          | description                            |
+| ------ | ----------------- | -------------------------------------- |
+| string | \[algorithm=sha1] | etag hash algorithm; defaults to SHA-1 |
+
 <a id="res-send"></a>
 
 # res.send(body, \[status], \[headers])
@@ -78,7 +84,7 @@ A body of type is sent with 'content-type':
 - Buffer : `application/octet-stream`
 - object : `application/json; charset=utf-8`
 
-**options**
+### Options:
 
 | type                   | property   | description                      |
 | ---------------------- | ---------- | -------------------------------- |
@@ -92,7 +98,7 @@ A body of type is sent with 'content-type':
 
 Sends a redirect
 
-**options**
+### Options:
 
 | type   | property   | description                                         |
 | ------ | ---------- | --------------------------------------------------- |

@@ -2,7 +2,7 @@
  * @typedef {import('../../src/types').HandlerCb} HandlerCb
  */
 /**
- * Middleware which sets a request id;
+ * Middleware which sets a random request id;
  * Overwrites or sets `req.headers['x-request-id']`;
  *
  * @param {object} [options]

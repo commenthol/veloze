@@ -9,7 +9,7 @@ import { getHeader } from '../request/getHeader.js'
 // TODO: distinguish between requests from private and public ips
 
 /**
- * Middleware which sets a request id;
+ * Middleware which sets a random request id;
  * Overwrites or sets `req.headers['x-request-id']`;
  *
  * @param {object} [options]
@@ -21,7 +21,7 @@ export function requestId (options) {
     force = false
   } = options || {}
 
-  return function _requestId (req, res, next) {
+  return function requestIdMw (req, res, next) {
     if (force) {
       req.id = crypto.randomUUID()
     } else {
