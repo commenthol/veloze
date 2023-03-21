@@ -58,6 +58,11 @@ export interface Response extends http.ServerResponse {
    */
   send?: (body: any, status?: number, headers?: object) => void
   /**
+   * redirect request;
+   * needs send middleware
+   */
+  redirect?: (location: string, status?: number, headers?: object) => void
+  /**
    * sets a response cookie;
    * needs cookieParser middleware
    */

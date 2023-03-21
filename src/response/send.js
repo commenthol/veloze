@@ -13,7 +13,6 @@ import { setHeaders } from './setHeaders.js'
  * @typedef { import('../types').Request } Request
  */
 
-// TODO: add fresh and etag generation
 /**
  * Sends response
  * sets content-type header and corrects headers based on status-code.

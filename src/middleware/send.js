@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto'
-import { send as resSend } from '../response/index.js'
+import { send as resSend, redirect as resRedirect } from '../response/index.js'
 import { RES_ETAG } from '../constants.js'
 
 /**
@@ -16,6 +16,7 @@ import { RES_ETAG } from '../constants.js'
  */
 export function send (req, res, next) {
   res.send = resSend.bind(null, res)
+  res.redirect = resRedirect.bind(null, res)
   next()
 }
 
@@ -33,15 +34,21 @@ export function sendEtag (options) {
   const hash = (chunk = '') => createHash(algorithm).update(chunk).digest('base64')
 
   const calcEtag = (req, res, chunk) => {
+    if (res.statusCode !== 200) {
+      return
+    }
+
     const etag = '"' + hash(chunk) + '"'
-    if (res.statusCode === 200 && req.headers['if-none-match'] === etag) {
+    res.setHeader('etag', etag)
+
+    if (req.headers['if-none-match'] === etag) {
       res.statusCode = 304
     }
-    res.setHeader('etag', etag)
   }
 
   return function sendEtagMw (req, res, next) {
     res.send = resSend.bind(null, res)
+    res.redirect = resRedirect.bind(null, res)
     if (['GET', 'HEAD'].includes(req.method || '')) {
       res[RES_ETAG] = calcEtag.bind(null, req, res)
     }

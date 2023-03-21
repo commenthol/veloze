@@ -27,6 +27,7 @@ Comes with:
 - Too Busy middleware to prevent server from overload
 - Support for server-side rendering engines
 - Safe final handler to prevent info leakage from internal error exposure in responses
+- res.send() with or without Etag generation
 
 Project Goals:
 - Provide a fast and modern web-server
@@ -43,7 +44,7 @@ MIT licensed
 
 # roadmap
 
-- etag support for send()
+- documentation
 - static file serving...
 - benchmarks
 - examples
