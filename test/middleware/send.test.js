@@ -1,5 +1,5 @@
 import supertest from 'supertest'
-import { send, sendEtag, connect } from '../../src/index.js'
+import { send, sendEtag, connect, Router } from '../../src/index.js'
 import { shouldHaveHeaders } from '../support/index.js'
 
 describe('middleware/send', function () {
@@ -18,8 +18,17 @@ describe('middleware/send', function () {
   })
 
   describe('sendEtag', function () {
-    const handle = connect(sendEtag(), (req, res) => {
-      res.send('<h1>works</h1>')
+    let handle
+    before(function () {
+      const app = new Router()
+      handle = app.handle
+      app.use(sendEtag())
+      app.get('/', (req, res) => {
+        res.send('<h1>works</h1>')
+      })
+      app.get('/404', (req, res) => {
+        res.send('<h1>ouch</h1>', 404)
+      })
     })
 
     it('shall set etag', function () {
@@ -30,6 +39,16 @@ describe('middleware/send', function () {
           'content-length': '14',
           'content-type': 'text/html; charset=utf-8',
           etag: '"KbHPF47xLpMM9by5ECjxj4W2xpg="'
+        }))
+    })
+
+    it('shall not set etag on status != 200', function () {
+      return supertest(handle)
+        .get('/404')
+        .expect(404, '<h1>ouch</h1>')
+        .expect(shouldHaveHeaders({
+          'content-length': '13',
+          'content-type': 'text/html; charset=utf-8'
         }))
     })
 
