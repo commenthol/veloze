@@ -174,6 +174,53 @@ export class Router {
     req.params = found.params || {}
     found.handler(req, res, final)
   }
+
+  // --- define common methods for types ---
+  /**
+   * @param {string} path
+   * @param  {...Handler} handlers
+   */
+  connect (path, ...handlers) { } // eslint-disable-line no-unused-vars
+  /**
+   * @param {string} path
+   * @param  {...Handler} handlers
+   */
+  delete (path, ...handlers) { }// eslint-disable-line no-unused-vars
+  /**
+   * @param {string} path
+   * @param  {...Handler} handlers
+   */
+  get (path, ...handlers) {} // eslint-disable-line no-unused-vars
+  /**
+   * @param {string} path
+   * @param  {...Handler} handlers
+   */
+  options (path, ...handlers) { } // eslint-disable-line no-unused-vars
+  /**
+   * @param {string} path
+   * @param  {...Handler} handlers
+   */
+  post (path, ...handlers) {} // eslint-disable-line no-unused-vars
+  /**
+   * @param {string} path
+   * @param  {...Handler} handlers
+   */
+  put (path, ...handlers) { } // eslint-disable-line no-unused-vars
+  /**
+   * @param {string} path
+   * @param  {...Handler} handlers
+   */
+  patch (path, ...handlers) { }// eslint-disable-line no-unused-vars
+  /**
+   * @param {string} path
+   * @param  {...Handler} handlers
+   */
+  search (path, ...handlers) { }// eslint-disable-line no-unused-vars
+  /**
+   * @param {string} path
+   * @param  {...Handler} handlers
+   */
+  trace (path, ...handlers) { }// eslint-disable-line no-unused-vars
 }
 
 http.METHODS.filter(method => method !== 'HEAD').forEach(method => {

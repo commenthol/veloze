@@ -55,6 +55,51 @@ export class Router {
      * @param  {...Handler} handlers
      */
     use(path: string | string[] | Handler, ...handlers: Handler[]): Router;
+    /**
+     * @param {string} path
+     * @param  {...Handler} handlers
+     */
+    connect(path: string, ...handlers: Handler[]): void;
+    /**
+     * @param {string} path
+     * @param  {...Handler} handlers
+     */
+    delete(path: string, ...handlers: Handler[]): void;
+    /**
+     * @param {string} path
+     * @param  {...Handler} handlers
+     */
+    get(path: string, ...handlers: Handler[]): void;
+    /**
+     * @param {string} path
+     * @param  {...Handler} handlers
+     */
+    options(path: string, ...handlers: Handler[]): void;
+    /**
+     * @param {string} path
+     * @param  {...Handler} handlers
+     */
+    post(path: string, ...handlers: Handler[]): void;
+    /**
+     * @param {string} path
+     * @param  {...Handler} handlers
+     */
+    put(path: string, ...handlers: Handler[]): void;
+    /**
+     * @param {string} path
+     * @param  {...Handler} handlers
+     */
+    patch(path: string, ...handlers: Handler[]): void;
+    /**
+     * @param {string} path
+     * @param  {...Handler} handlers
+     */
+    search(path: string, ...handlers: Handler[]): void;
+    /**
+     * @param {string} path
+     * @param  {...Handler} handlers
+     */
+    trace(path: string, ...handlers: Handler[]): void;
     #private;
 }
 export type Method = import('../src/types').Method;
