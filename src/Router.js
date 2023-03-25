@@ -21,8 +21,6 @@ import { REQ_METHOD_HEAD } from './constants.js'
  * @property {FindRoute} [findRoute]
  */
 
-const unique = arr => [...new Set(arr)]
-
 /**
  * Router
  */
@@ -32,6 +30,7 @@ export class Router {
   #connect
   #preHooks
   #postHooks
+  #areHooksReady = false
 
   /**
    * @param {RouterOptions} [options]
@@ -126,16 +125,23 @@ export class Router {
       return this.preHook(path, ...handlers)
     }
 
-    const { length } = path
-    function rewrite (req, res, next) {
-      req.url = req.url.slice(length) || '/'
-      next()
+    // @ts-expect-error
+    const paths = [].concat(path)
+
+    for (const p of paths) {
+      const path = p.replace(/([/]+)$/, '')
+
+      const { length } = path
+      function rewrite (req, res, next) {
+        req.url = req.url.slice(length) || '/'
+        next()
+      }
+
+      const pathnames = [path || '/', `${path}/*`]
+      const connected = this.#connect(...this.#preHooks, rewrite, ...handlers, ...this.#postHooks)
+      this.#tree.add('ALL', pathnames, connected)
     }
 
-    const connected = this.#connect(...this.#preHooks, rewrite, ...handlers, ...this.#postHooks)
-    // @ts-expect-error
-    const pathnames = unique([].concat(path).map(p => [p, `${p}/*`]).flat())
-    this.#tree.add('ALL', pathnames, connected)
     return this
   }
 

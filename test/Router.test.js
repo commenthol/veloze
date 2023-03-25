@@ -1,7 +1,6 @@
-import assert from 'assert'
 import supertest from 'supertest'
 import { Router, send } from '../src/index.js'
-import { Request, Response, handler, asyncHandler, preHandler } from './support/index.js'
+import { handler, asyncHandler, preHandler } from './support/index.js'
 
 const handleResBodyInit = (req, res, next) => {
   res.body = []
@@ -11,6 +10,11 @@ const handleResBodyInit = (req, res, next) => {
 const handleSend = (req, res) => res.send(res.body)
 
 const handleSendParams = (req, res) => res.send(req.params)
+
+const handleName = (name) => async (req, res) => {
+  const { method, url } = req
+  res.body.push(`${name} ${method} ${url}`)
+}
 
 describe('Router', function () {
   let app
@@ -28,7 +32,7 @@ describe('Router', function () {
       .all('/wildcard/*', [handler, asyncHandler])
       .get('/wildcard', handler)
 
-    app.print()
+    // app.print()
   })
 
   describe('with paths', function () {
@@ -150,12 +154,8 @@ describe('Router', function () {
   describe('mount router', function () {
     let router
     before(function () {
-      const handlerName = (name) => async (req, res) => {
-        const { method, url } = req
-        res.body.push(`${name} ${method} ${url}`)
-      }
-      const handler1 = handlerName('#1st')
-      const handler2 = handlerName('#2nd')
+      const handler1 = handleName('#1st')
+      const handler2 = handleName('#2nd')
 
       router = new Router()
       router.preHook(handleResBodyInit, send)
@@ -170,8 +170,8 @@ describe('Router', function () {
       router2.get('/*', handler2)
 
       // mount router with `use`
-      router.use('/one', router2.handle, handlerName('#mnt1'))
-      router.use('/two', router2.handle, handlerName('#mnt2'))
+      router.use('/one', router2.handle, handleName('#mnt1'))
+      router.use('/two', router2.handle, handleName('#mnt2'))
       // router.print()
     })
 
@@ -218,44 +218,28 @@ describe('Router', function () {
     })
   })
 
-  describe.skip('todo', function () {
-    describe('preHandlers', function () {
-      let router
-      before(function () {
-        router = new Router()
-        router.use(preHandler('first'), preHandler('second'))
-        router.get('/', asyncHandler)
-        router.use(preHandler('third'))
-        router.get('/path', handler)
-      })
+  describe('mount router on /', function () {
+    let app
+    before(function () {
+      app = new Router()
+      app.preHook(handleResBodyInit, send)
+      app.postHook(handleSend)
+      const router = new Router()
+      router.get('/', handleName('#0'))
+      router.get('/one', handleName('#1'))
+      app.use('/', router.handle)
+    })
 
-      it('shall apply prehandlers', function (done) {
-        const req = new Request('GET', '/')
-        const res = new Response()
-        router.handle(req, res, (err) => {
-          try {
-            assert.equal(err.status, 404)
-            assert.deepEqual(res, { locals: ['first', 'second', 'async: GET /'] })
-            done()
-          } catch (e) {
-            done(e)
-          }
-        })
-      })
+    it('GET /', function () {
+      return supertest(app.handle)
+        .get('/')
+        .expect(['#0 GET /'])
+    })
 
-      it('shall apply intermediary prehandler third', function (done) {
-        const req = new Request('GET', '/path')
-        const res = new Response()
-        router.handle(req, res, (err) => {
-          try {
-            assert.equal(err.status, 404)
-            assert.deepEqual(res, { locals: ['first', 'second', 'third', 'cb: GET /path'] })
-            done()
-          } catch (e) {
-            done(e)
-          }
-        })
-      })
+    it('GET /one', function () {
+      return supertest(app.handle)
+        .get('/one')
+        .expect(['#1 GET /one'])
     })
   })
 })
