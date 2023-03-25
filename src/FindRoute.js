@@ -79,7 +79,8 @@ export class FindRoute {
         const param = tmp[PARAM]
         params[param] = safeDecodeUriComponent(part)
         next = tmp[PARAM_PART]
-      } else if (tmp[WILDCARD]) {
+      }
+      if (tmp[WILDCARD]) {
         wildcard = tmp[WILDCARD]
       }
       if (!next) {
@@ -88,8 +89,8 @@ export class FindRoute {
       }
       tmp = next
     }
+    // console.dir({ wildcard, tmp }, { depth: null })
     const handler = getHandler(tmp, method) || getHandler(wildcard, method)
-
     if (!handler) {
       return
     }

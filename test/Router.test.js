@@ -29,10 +29,11 @@ describe('Router', function () {
       .get('/users', handler, handleSendParams)
       .get('/users/:user', handler, handleSendParams)
       .get('/topics/:topic/books/:book', handleSendParams)
-      .all('/wildcard/*', [handler, asyncHandler])
+      .get('/wildcard/:wildcard/*', handler, handleSendParams)
+      .all('/wildcard/*', handler)
       .get('/wildcard', handler)
 
-    // app.print()
+    app.print()
   })
 
   describe('with paths', function () {
@@ -103,6 +104,32 @@ describe('Router', function () {
       return supertest(app.handle)
         .get('/topics/programming/books/easy%20javascript')
         .expect(200, { topic: 'programming', book: 'easy javascript' })
+    })
+  })
+
+  describe('wildcard', function () {
+    it('GET /wildcard', function () {
+      return supertest(app.handle)
+        .get('/wildcard')
+        .expect(['cb: GET /wildcard'])
+    })
+
+    it('GET /wildcard/anything', function () {
+      return supertest(app.handle)
+        .get('/wildcard/anything')
+        .expect(['cb: GET /wildcard/anything'])
+    })
+
+    it('PUT /wildcard/anything', function () {
+      return supertest(app.handle)
+        .put('/wildcard/anything')
+        .expect(['cb: PUT /wildcard/anything'])
+    })
+
+    it('GET /wildcard/anything/else', function () {
+      return supertest(app.handle)
+        .get('/wildcard/anything/else')
+        .expect({ wildcard: 'anything' })
     })
   })
 
