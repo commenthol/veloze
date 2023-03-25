@@ -47,6 +47,8 @@ export class Router {
     this.#preHooks = []
     this.#postHooks = []
     this.handle = this.handle.bind(this)
+    /** @type {string} */
+    this.mountPath = '/'
   }
 
   /**

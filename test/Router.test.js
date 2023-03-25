@@ -226,8 +226,10 @@ describe('Router', function () {
       app.postHook(handleSend)
       const router = new Router()
       router.get('/', handleName('#0'))
-      router.get('/one', handleName('#1'))
+      router.get('/:id', handleName('#1'))
+      router.put('/:id', handleName('#2'))
       app.use('/', router.handle)
+      // router.print()
     })
 
     it('GET /', function () {
@@ -240,6 +242,12 @@ describe('Router', function () {
       return supertest(app.handle)
         .get('/one')
         .expect(['#1 GET /one'])
+    })
+
+    it('PUT /two', function () {
+      return supertest(app.handle)
+        .put('/two')
+        .expect(['#2 PUT /two'])
     })
   })
 })

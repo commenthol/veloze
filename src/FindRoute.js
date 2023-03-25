@@ -37,10 +37,10 @@ export class FindRoute {
     let tmp = this.#tree
     for (const part of parts) {
       if (part === '*') {
-        tmp = tmp[WILDCARD] = {}
+        tmp = tmp[WILDCARD] = tmp[WILDCARD] || {}
       } else if (part.startsWith(':')) {
         tmp[PARAM] = part.slice(1)
-        tmp = tmp[PARAM_PART] = {}
+        tmp = tmp[PARAM_PART] = tmp[PARAM_PART] || {}
       } else {
         tmp = tmp[part] = tmp[part] || {}
       }
@@ -75,7 +75,7 @@ export class FindRoute {
     for (let i = 0; i < parts.length; i += 1) {
       const part = parts[i]
       let next = tmp?.[part]
-      if (tmp[PARAM_PART]) {
+      if (part && tmp[PARAM_PART]) {
         const param = tmp[PARAM]
         params[param] = safeDecodeUriComponent(part)
         next = tmp[PARAM_PART]

@@ -28,6 +28,8 @@ export class Router {
      * @param {Function} [next]
      */
     handle(req: Request, res: Response, next?: Function | undefined): void;
+    /** @type {string} */
+    mountPath: string;
     /**
      * print the routing-tree from FindRoute
      */
