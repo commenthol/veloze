@@ -22,7 +22,7 @@ import { buildCsp } from './contentSec.js'
  *
  * @param {object} [options]
  * @param {Log} [options.log] log function
- * @param {(param0: {status: number, message: string, reqId: string, req: Request}) => string} [options.htmlTemplate] html template for the final error page
+ * @param {(param0: {status: number, message: string, description?: object|string, reqId: string, req: Request}) => string} [options.htmlTemplate] html template for the final error page
  * @returns {(err: HttpErrorL|Error, req: Request, res: Response, next?: Function) => void}
  */
 export const finalHandler = (options) => {
@@ -43,7 +43,9 @@ export const finalHandler = (options) => {
       // @ts-expect-error
       status = 500,
       message,
-      cause // our internal error message and stack trace -> only for logging...
+      cause, // our internal error message and stack trace -> only for logging...
+      // @ts-expect-error
+      description
     } = errResp || {}
 
     const { url, originalUrl, method, id = crypto.randomUUID() } = req
@@ -52,8 +54,8 @@ export const finalHandler = (options) => {
       const type = String(res.getHeader(CONTENT_TYPE))
       const isJsonType = type.includes('json')
       const body = res.body || (isJsonType
-        ? { status, message, reqId: id }
-        : htmlTemplate({ status, message, reqId: id, req })
+        ? { status, message, errors: description, reqId: id }
+        : htmlTemplate({ status, message, description, reqId: id, req })
       )
       if (!isJsonType && !res.getHeader(CONTENT_SECURITY_POLICY)) {
         res.setHeader(CONTENT_SECURITY_POLICY, buildCsp())
