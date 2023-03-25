@@ -1,5 +1,5 @@
 import * as crypto from 'node:crypto'
-import { send } from '../response/send.js'
+import { send } from '../response/index.js'
 import { escapeHtmlLit } from '../utils/index.js'
 import { logger } from '../utils/logger.js'
 import { HttpError } from '../HttpError.js'
@@ -52,7 +52,8 @@ export const finalHandler = (options) => {
 
     if (!res.headersSent) {
       const type = String(res.getHeader(CONTENT_TYPE))
-      const isJsonType = type.includes('json')
+      const accept = String(req.headers?.accept || req.headers?.[CONTENT_TYPE])
+      const isJsonType = type.includes('/json') || accept.includes('/json')
       const body = res.body || (isJsonType
         ? { status, message, errors: description, reqId: id }
         : htmlTemplate({ status, message, description, reqId: id, req })
