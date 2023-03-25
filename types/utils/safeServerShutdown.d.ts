@@ -9,9 +9,9 @@
  */
 export function safeServerShutdown(server: Server, param1?: {
     gracefulTimeout?: number | undefined;
-    log?: import("../../src/types").Log | undefined;
+    log?: import("../types").Log | undefined;
 } | undefined): void;
-export type Log = import('../../src/types').Log;
+export type Log = import('../types').Log;
 export type HttpServer = import('http').Server;
 export type HttpSecureServer = import('https').Server;
 export type Http2Server = import('http2').Http2Server;

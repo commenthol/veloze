@@ -3,7 +3,7 @@ import { X_REQUEST_ID } from '../constants.js'
 import { getHeader } from '../request/getHeader.js'
 
 /**
- * @typedef {import('../../src/types').HandlerCb} HandlerCb
+ * @typedef {import('../types').HandlerCb} HandlerCb
  */
 
 // TODO: distinguish between requests from private and public ips

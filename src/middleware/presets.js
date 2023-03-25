@@ -8,12 +8,12 @@ import { send } from './send.js'
 import { tooBusy } from './tooBusy.js'
 
 /**
- * @typedef {import('../types.js').Handler} Handler
+ * @typedef {import('../types').Handler} Handler
  *
  * @typedef {object} PresetOptions
  * @property {number|string} limit body-parser limit
  * @property {import('./contentSec').CspMiddlewareOptions} cspOpts security header options
- * @property {import('./tooBusy.js').TooBusyOptions} tooBusyOpts Note: tooBusy options are set globally for the whole server
+ * @property {import('../types').TooBusyOptions} tooBusyOpts Note: tooBusy options are set globally for the whole server
  * @property {import('./cacheControl.js').CacheControlDirectivesByMethod} cacheControlOpts}
  */
 

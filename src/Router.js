@@ -6,14 +6,14 @@ import { HttpError } from './HttpError.js'
 import { REQ_METHOD_HEAD } from './constants.js'
 
 /**
- * @typedef {import('../src/types').Method} Method
- * @typedef {import('../src/types').Handler} Handler
- * @typedef {import('../src/types').HandlerCb} HandlerCb
- * @typedef {import('../src/types').FinalHandler} FinalHandler
- * @typedef {import('../src/types').Request} Request
- * @typedef {import('../src/types').Response} Response
- * @typedef {import('../src/types').Connect} Connect
- * @typedef {import('../src/types').Log} Logger
+ * @typedef {import('./types').Method} Method
+ * @typedef {import('./types').Handler} Handler
+ * @typedef {import('./types').HandlerCb} HandlerCb
+ * @typedef {import('./types').FinalHandler} FinalHandler
+ * @typedef {import('./types').Request} Request
+ * @typedef {import('./types').Response} Response
+ * @typedef {import('./connect').connect} Connect
+ * @typedef {import('./types').Log} Logger
  *
  * @typedef {object} RouterOptions
  * @property {Connect} [connect]
@@ -60,7 +60,7 @@ export class Router {
 
   /**
    * add a pre-hook handler
-   * @param  {...Handler} handlers
+   * @param {...(Handler|Handler[]|undefined)} handlers
    * @returns {this}
    */
   preHook (...handlers) {
@@ -70,7 +70,7 @@ export class Router {
 
   /**
    * add a post-hook handler
-   * @param  {...Handler} handlers
+   * @param {...(Handler|Handler[]|undefined)} handlers
    * @returns {this}
    */
   postHook (...handlers) {
@@ -82,10 +82,13 @@ export class Router {
    * route by method(s) and path(s)
    * @param {Method|Method[]} methods
    * @param {string|string[]} paths
-   * @param  {...Handler} handlers
+   * @param {...(Handler|Handler[]|undefined)} handlers
    * @returns {this}
    */
   method (methods, paths, ...handlers) {
+    if (!handlers.length) {
+      return this
+    }
     // @ts-expect-error
     for (const method of [].concat(methods)) {
       // @ts-expect-error
@@ -99,7 +102,7 @@ export class Router {
   /**
    * route all methods
    * @param {string} path
-   * @param  {...Handler} handlers
+   * @param {...(Handler|Handler[]|undefined)} handlers
    * @returns {this}
    */
   all (path, ...handlers) {
@@ -114,7 +117,7 @@ export class Router {
    * `app.use('/path', handler)` mounts `handler` on `/path/*` for ALL methods
    *
    * @param {string|string[]|Handler} path
-   * @param  {...Handler} handlers
+   * @param  {...(Handler|Handler[]|undefined)} handlers
    */
   use (path, ...handlers) {
     // apply as pre-hook handler
@@ -178,47 +181,47 @@ export class Router {
   // --- define common methods for types ---
   /**
    * @param {string} path
-   * @param  {...Handler} handlers
+   * @param {...(Handler|Handler[]|undefined)} handlers
    */
   connect (path, ...handlers) { } // eslint-disable-line no-unused-vars
   /**
    * @param {string} path
-   * @param  {...Handler} handlers
+   * @param {...(Handler|Handler[]|undefined)} handlers
    */
   delete (path, ...handlers) { }// eslint-disable-line no-unused-vars
   /**
    * @param {string} path
-   * @param  {...Handler} handlers
+   * @param {...(Handler|Handler[]|undefined)} handlers
    */
   get (path, ...handlers) {} // eslint-disable-line no-unused-vars
   /**
    * @param {string} path
-   * @param  {...Handler} handlers
+   * @param {...(Handler|Handler[]|undefined)} handlers
    */
   options (path, ...handlers) { } // eslint-disable-line no-unused-vars
   /**
    * @param {string} path
-   * @param  {...Handler} handlers
+   * @param {...(Handler|Handler[]|undefined)} handlers
    */
   post (path, ...handlers) {} // eslint-disable-line no-unused-vars
   /**
    * @param {string} path
-   * @param  {...Handler} handlers
+   * @param {...(Handler|Handler[]|undefined)} handlers
    */
   put (path, ...handlers) { } // eslint-disable-line no-unused-vars
   /**
    * @param {string} path
-   * @param  {...Handler} handlers
+   * @param {...(Handler|Handler[]|undefined)} handlers
    */
   patch (path, ...handlers) { }// eslint-disable-line no-unused-vars
   /**
    * @param {string} path
-   * @param  {...Handler} handlers
+   * @param {...(Handler|Handler[]|undefined)} handlers
    */
   search (path, ...handlers) { }// eslint-disable-line no-unused-vars
   /**
    * @param {string} path
-   * @param  {...Handler} handlers
+   * @param {...(Handler|Handler[]|undefined)} handlers
    */
   trace (path, ...handlers) { }// eslint-disable-line no-unused-vars
 }
@@ -227,7 +230,7 @@ http.METHODS.filter(method => method !== 'HEAD').forEach(method => {
   const methodLc = method.toLowerCase()
   /**
    * @param {string} path
-   * @param  {...Handler} handlers
+   * @param {...(Handler|Handler[]|undefined)} handlers
    */
   const { [methodLc]: fn } = {
     [methodLc]: function (path, ...handlers) {

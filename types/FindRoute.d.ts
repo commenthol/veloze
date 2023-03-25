@@ -1,5 +1,5 @@
 /**
- * @typedef {import('../src/types').Method} Method
+ * @typedef {import('./types').Method} Method
  */
 /**
  * Radix Tree Router
@@ -42,4 +42,4 @@ export class FindRoute {
     } | undefined;
     #private;
 }
-export type Method = import('../src/types').Method;
+export type Method = import('./types').Method;

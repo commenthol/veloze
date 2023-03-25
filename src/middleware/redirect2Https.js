@@ -2,7 +2,7 @@ import { isHttpsProto } from '../request/isHttpsProto.js'
 import { redirect } from '../response/redirect.js'
 
 /**
- * @typedef {import('../../src/types').HandlerCb} HandlerCb
+ * @typedef {import('../types').HandlerCb} HandlerCb
  */
 
 /**

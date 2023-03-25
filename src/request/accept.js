@@ -7,8 +7,8 @@ import { headerParser } from '../utils/headerParser.js'
 import { getHeader } from './getHeader.js'
 
 /**
- * @typedef {import('../../src/types').Request} Request
- * @typedef {import('../../src/utils/headerParser').HeaderParserResult} HeaderParserResult
+ * @typedef {import('../types').Request} Request
+ * @typedef {import('../types').HeaderParserResult} HeaderParserResult
  */
 
 /**

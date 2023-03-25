@@ -2,7 +2,7 @@ import * as http from 'node:http'
 import { logger } from './logger.js'
 
 /**
- * @typedef {import('../../src/types').Log} Log
+ * @typedef {import('../types').Log} Log
  * @typedef {import('http').Server} HttpServer
  * @typedef {import('https').Server} HttpSecureServer
  * @typedef {import('http2').Http2Server} Http2Server

@@ -52,8 +52,8 @@ export class View {
     render(res: Response, name: string, options?: object): Promise<void>;
     #private;
 }
-export type HandlerCb = typeof import("../../src/types").HandlerCb;
-export type Response = import('../../src/types').Response;
+export type HandlerCb = typeof import("../types").HandlerCb;
+export type Response = import('../types').Response;
 /**
  * the engine extension e.g. `html`, `hbs`, `ejs`
  */

@@ -1,7 +1,7 @@
 import { qs } from '../utils/index.js'
 /**
- * @typedef { import('../../src/types').Request } Request
- * @typedef { import('../../src/types').Response } Response
+ * @typedef { import('../types').Request } Request
+ * @typedef { import('../types').Response } Response
  */
 /**
  * connect middleware which adds `req.query` as object to Request

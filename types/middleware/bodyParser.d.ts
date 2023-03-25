@@ -6,24 +6,24 @@ export namespace bodyParser {
      * @param {BodyParserOptions} options
      * @returns {HandlerCb}
      */
-    function json(options?: BodyParserOptions): typeof import("../../src/types").HandlerCb;
+    function json(options?: BodyParserOptions): typeof import("../types").HandlerCb;
     /**
      * UrlEncoded Form parser
      * `req.body instanceof Object`
      * @param {BodyParserOptions} options
      * @returns {HandlerCb}
      */
-    function urlEncoded(options?: BodyParserOptions): typeof import("../../src/types").HandlerCb;
+    function urlEncoded(options?: BodyParserOptions): typeof import("../types").HandlerCb;
     /**
      * Raw Parser
      * `req.body instanceof Buffer`
      * @param {BodyParserOptions} options
      * @returns {HandlerCb}
      */
-    function raw(options?: BodyParserOptions): typeof import("../../src/types").HandlerCb;
+    function raw(options?: BodyParserOptions): typeof import("../types").HandlerCb;
 }
-export type HandlerCb = typeof import("../../src/types").HandlerCb;
-export type Log = import('../../src/types').Log;
+export type HandlerCb = typeof import("../types").HandlerCb;
+export type Log = import('../types').Log;
 export type BodyParserOptions = {
     limit?: string | number | undefined;
     /**
@@ -45,5 +45,5 @@ export type BodyParserOptions = {
     /**
      * custom logger
      */
-    log?: import("../../src/types").Log | undefined;
+    log?: import("../types").Log | undefined;
 };

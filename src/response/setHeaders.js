@@ -1,5 +1,5 @@
 /**
- * @typedef {import('../../src/types').Response} Response
+ * @typedef {import('../types').Response} Response
  */
 /**
  * Set (multiple) headers on response

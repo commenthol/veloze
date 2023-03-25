@@ -1,6 +1,6 @@
 /**
- * @typedef {import('../../src/types').HandlerCb} HandlerCb
- * @typedef {import('../../src/utils/tooBusy').TooBusyOptions} TooBusyOptions
+ * @typedef {import('../types').HandlerCb} HandlerCb
+ * @typedef {import('../types').TooBusyOptions} TooBusyOptions
  *
  * @typedef {object} RetryAfterOption
  * @property {number|string} [retryAfter] if server is busy set retry-after header to `retryAfter seconds`. If number, value is seconds.
@@ -14,9 +14,9 @@
  * @param {TooBusyOptions & RetryAfterOption} [options]
  * @returns {HandlerCb}
  */
-export function tooBusy(options?: (import("../../src/utils/tooBusy").TooBusyOptions & RetryAfterOption) | undefined): HandlerCb;
-export type HandlerCb = typeof import("../../src/types").HandlerCb;
-export type TooBusyOptions = import('../../src/utils/tooBusy').TooBusyOptions;
+export function tooBusy(options?: (import("../types").TooBusyOptions & RetryAfterOption) | undefined): HandlerCb;
+export type HandlerCb = typeof import("../types").HandlerCb;
+export type TooBusyOptions = import('../types').TooBusyOptions;
 export type RetryAfterOption = {
     /**
      * if server is busy set retry-after header to `retryAfter seconds`. If number, value is seconds.

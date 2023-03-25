@@ -1,5 +1,5 @@
 export function finalHandler(options?: {
-    log?: import("../../src/types").Log | undefined;
+    log?: import("../types").Log | undefined;
     htmlTemplate?: ((param0: {
         status: number;
         message: string;
@@ -8,7 +8,7 @@ export function finalHandler(options?: {
         req: Request;
     }) => string) | undefined;
 } | undefined): (err: HttpErrorL | Error, req: Request, res: Response, next?: Function) => void;
-export type Request = import('../../src/types').Request;
-export type Response = import('../../src/types').Response;
-export type HttpErrorL = import('../../src/types').HttpError;
-export type Log = import('../../src/types').Log;
+export type Request = import('../types').Request;
+export type Response = import('../types').Response;
+export type HttpErrorL = import('../types').HttpError;
+export type Log = import('../types').Log;

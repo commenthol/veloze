@@ -1,5 +1,5 @@
 /**
- * @typedef {import('../../src/types').HandlerCb} HandlerCb
+ * @typedef {import('../types').HandlerCb} HandlerCb
  */
 /**
  * Middleware which sets a random request id;
@@ -12,4 +12,4 @@
 export function requestId(options?: {
     force?: boolean | undefined;
 } | undefined): HandlerCb;
-export type HandlerCb = typeof import("../../src/types").HandlerCb;
+export type HandlerCb = typeof import("../types").HandlerCb;

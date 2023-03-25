@@ -3,8 +3,8 @@ import { setCookie, clearCookie } from '../response/cookie.js'
 import { isHttpsProto } from '../request/isHttpsProto.js'
 
 /**
- * @typedef { import('../../src/types').Request } Request
- * @typedef { import('../../src/types').Response } Response
+ * @typedef { import('../types').Request } Request
+ * @typedef { import('../types').Response } Response
  */
 
 export const COOKIE_OPTS_SECURE = Symbol('kCookieOptsSecure')

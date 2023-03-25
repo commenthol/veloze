@@ -2,9 +2,9 @@ import { isAsyncFunction } from 'node:util/types'
 import { assert } from './utils/assert.js'
 
 /**
- * @typedef {import('../src/types').Request} Request
- * @typedef {import('../src/types').Response} Response
- * @typedef {import('../src/types').Handler} Handler
+ * @typedef {import('./types').Request} Request
+ * @typedef {import('./types').Response} Response
+ * @typedef {import('./types').Handler} Handler
  */
 /**
  * Connects middleware handlers
@@ -18,7 +18,7 @@ import { assert } from './utils/assert.js'
  * One error handler per route of type `(err, req, res, next) => void` is
  * allowed.
  *
- * @param  {...Handler} handlers
+ * @param  {...(Handler|Handler[]|undefined)} handlers
  */
 export const connect = (...handlers) => {
   let errorHandler
@@ -27,7 +27,7 @@ export const connect = (...handlers) => {
   for (const handler of handlers.flat(Infinity).filter(Boolean)) {
     assert(typeof handler === 'function', 'handler must be of type function')
     const isAsync = isAsyncFunction(handler)
-    const arity = handler.length
+    const arity = handler?.length
     if (arity === 4) {
       if (!errorHandler) {
         // connect only supports one error handler

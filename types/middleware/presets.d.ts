@@ -1,6 +1,6 @@
 export function presetHtml(options?: PresetOptions | undefined): Handler[];
 export function presetJson(options?: PresetOptions | undefined): Handler[];
-export type Handler = import('../types.js').Handler;
+export type Handler = import('../types').Handler;
 export type PresetOptions = {
     /**
      * body-parser limit
@@ -13,7 +13,7 @@ export type PresetOptions = {
     /**
      * Note: tooBusy options are set globally for the whole server
      */
-    tooBusyOpts: import('./tooBusy.js').TooBusyOptions;
+    tooBusyOpts: import('../types').TooBusyOptions;
     /**
      * }
      */

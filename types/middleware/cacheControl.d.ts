@@ -1,5 +1,5 @@
 /**
- * @typedef {import('../../src/types').HandlerCb} HandlerCb
+ * @typedef {import('../types').HandlerCb} HandlerCb
  *
  * @typedef {object} CacheControlDirectives
  * @property {number|string} [maxAge] response remains fresh until N seconds
@@ -47,7 +47,7 @@ export function cacheControl(options?: CacheControlDirectives | undefined): Hand
  * @returns {HandlerCb}
  */
 export function cacheControlByMethod(options?: CacheControlDirectivesByMethod | undefined): HandlerCb;
-export type HandlerCb = typeof import("../../src/types").HandlerCb;
+export type HandlerCb = typeof import("../types").HandlerCb;
 export type CacheControlDirectives = {
     /**
      * response remains fresh until N seconds

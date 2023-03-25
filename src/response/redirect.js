@@ -10,7 +10,7 @@ import { setHeaders } from './setHeaders.js'
 import { escapeHtmlLit } from '../utils/index.js'
 
 /**
- * @typedef {import('../../src/types').Response} Response
+ * @typedef {import('../types').Response} Response
  */
 
 const htmlTmpl = (location) => escapeHtmlLit`<!DOCTYPE html>

@@ -8,4 +8,4 @@
  * @param {Record<string, string|number|boolean>|{}} [headers]
  */
 export function redirect(res: Response, location: string, status?: number | undefined, headers?: {} | Record<string, string | number | boolean> | undefined): void;
-export type Response = import('../../src/types').Response;
+export type Response = import('../types').Response;
