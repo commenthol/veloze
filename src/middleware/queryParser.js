@@ -11,8 +11,10 @@ import { qs } from '../utils/index.js'
  * @param {Function} next
  */
 export function queryParser (req, res, next) {
-  const [path, search] = req.url.split('?')
-  req.path = path
-  req.query = qs(search)
+  if (!req.query || !req.path) {
+    const [path, search] = req.url.split('?')
+    req.path = path
+    req.query = qs(search)
+  }
   next()
 }
