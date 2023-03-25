@@ -29,6 +29,8 @@ import {
  * request. If only a dedicated parser shall be used consider the
  * `bodyParser.json()`, `bodyParser.urlEncoded()` or `bodyParser.raw()` methods.
  *
+ * If `req.body` was already parsed in a previous middleware parsing is skipped.
+ *
  * @param {BodyParserOptions} [options]
  * @returns {HandlerCb}
  */
@@ -46,7 +48,7 @@ export const bodyParser = (options) => {
 
   return function bodyParserMw (req, res, next) {
     // @ts-expect-error
-    if (!methods.includes(req.method)) {
+    if (!methods.includes(req.method) || req.body) {
       next()
       return
     }
