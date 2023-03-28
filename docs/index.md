@@ -4,7 +4,7 @@ TODO:
 
 # Core
 
-- [connect](./core/Server.md) Connects middlewares
+- [connect](./core/connect.md) Connects middlewares
 - [Router](./core/Router.md) Routes to connected 
 - [Server](./core/Server.md) Runs the server
 

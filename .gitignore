@@ -3,10 +3,13 @@ coverage
 tmp
 lib
 
-*.log
-*.tgz
-.env*
+/*.log
+/*.tgz
+/.env*
+/*.crt
+/*.key
 
 pnpm-lock.yaml
 package-lock.json
 yarn.lock
+
