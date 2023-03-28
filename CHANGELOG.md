@@ -1,3 +1,25 @@
+# 0.3.1 (2023-03-28)
+
+### fix:
+
+- middleware/finalHandler: json type detection (#5c96af8)
+- FindRoute: wildcard with parameters (#40c957f)
+- FindRoute: routing issue with param route and different methods (#0b5be97)
+- Router: improve use with multiple paths (#47ac91d)
+- HttpError: Add description object, string to HttpError (#d74d439)
+- middleware/bodyParser: skip parsing if req.body is present (#c3be476)
+- Router: define common methods for types (#63b4fc4)
+- middleware/queryParser: no reprocessing (#2a5b271)
+
+### docs:
+
+- documenting Router (#e0104c7)
+- documenting connect (#7017cd2)
+
+### chore:
+
+- types (#cb09449)
+
 # 0.3.0 (2023-03-25)
 
 ### BREAKING CHANGE:
