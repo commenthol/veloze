@@ -23,6 +23,7 @@ describe('Router', function () {
     app.use(handleResBodyInit, send)
     app.postHook(handleSend)
     app.get('/', handler)
+      .get('/ignore')
       .get('/async', asyncHandler)
       .post('/', handler)
       .post('/mix', handler, asyncHandler)

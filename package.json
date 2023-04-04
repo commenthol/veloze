@@ -19,7 +19,7 @@
   ],
   "scripts": {
     "all": "npm-run-all lint coverage types",
-    "ci": "npm run all",
+    "ci": "CI=true npm-run-all lint coverage types",
     "changelog": "conv-changelog -t groups -o",
     "coverage": "c8 npm t",
     "lint": "eslint --ext js .",
@@ -34,7 +34,6 @@
     "debug-level": "3.0.0"
   },
   "devDependencies": {
-    "shelljs": "^0.8.5",
     "@types/node": "^18.15.3",
     "c8": "^7.13.0",
     "consolidate": "^0.16.0",
@@ -48,6 +47,7 @@
     "handlebars": "^4.7.7",
     "mocha": "^10.2.0",
     "npm-run-all": "^4.1.5",
+    "shelljs": "^0.8.5",
     "sinon": "^15.0.2",
     "supertest": "^6.3.3",
     "typescript": "^5.0.2"

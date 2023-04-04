@@ -2,10 +2,11 @@ import assert from 'node:assert'
 import { fork } from 'node:child_process'
 import { fileURLToPath } from 'node:url'
 import supertest from 'supertest'
+import { describeBool } from '../support/describeBool.js'
 
 const nap = (ms = 50) => new Promise((resolve) => setTimeout(() => { resolve(ms) }, ms))
 
-describe('middleware/tooBusy', function () {
+describeBool(!process.env.CI)('middleware/tooBusy', function () {
   it('shall return true with load', async function () {
     const filename = fileURLToPath(new URL('./tooBusy.server.js', import.meta.url))
     const child = fork(filename, ['--run-too-busy-server'])

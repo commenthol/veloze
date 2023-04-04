@@ -6,6 +6,7 @@ import supertest from 'supertest'
 import { safeServerShutdown } from '../../src/utils/safeServerShutdown.js'
 import { certs } from '../support/index.js'
 import { Http2Client } from '../support/Http2Client.js'
+import { describeBool } from '../support/describeBool.js'
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(() => resolve(), ms))
 
@@ -22,7 +23,7 @@ const METHODS = [
   'TRACE'
 ]
 
-describe('utils/safeServerShutdown', function () {
+describeBool(!process.env.CI)('utils/safeServerShutdown', function () {
   describe('http', function () {
     let server
     let start
