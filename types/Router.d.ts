@@ -12,6 +12,7 @@
  * @property {Connect} [connect]
  * @property {FinalHandler} [finalHandler]
  * @property {FindRoute} [findRoute]
+ * @property {number} [cacheSize]
  */
 /**
  * Router
@@ -131,5 +132,6 @@ export type RouterOptions = {
     connect?: ((...handlers: (import("./types").Handler | import("./types").Handler[] | undefined)[]) => (req: import("./types").Request, res: import("./types").Response, done: Function) => void) | undefined;
     finalHandler?: typeof import("./types").FinalHandler | undefined;
     findRoute?: FindRoute | undefined;
+    cacheSize?: number | undefined;
 };
 import { FindRoute } from './FindRoute.js';

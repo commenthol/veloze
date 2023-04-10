@@ -4,7 +4,7 @@ import { FindRoute } from '../src/index.js'
 describe('FindRoute', function () {
   let tree
   before(function () {
-    tree = new FindRoute()
+    tree = new FindRoute(0)
     tree.add('GET', '/', 'GET /')
     tree.add('POST', '/', 'POST /')
     tree.add('ALL', '/', 'ALL /')
@@ -88,6 +88,50 @@ describe('FindRoute', function () {
     assert.deepEqual(found, {
       handler: 'ALL /wildcard/*',
       params: {}
+    })
+  })
+
+  describe('cacheSize > 0', function () {
+    let tree
+    before(function () {
+      tree = new FindRoute(1)
+      tree.add('GET', '/', 'GET /')
+      tree.add('GET', '/:hello', 'GET /:hello')
+    })
+
+    it('shall add found route to cache', function () {
+      const found = tree.find({ method: 'GET', url: '/' })
+      assert.deepEqual(found, {
+        handler: 'GET /',
+        params: {}
+      })
+      assert.equal(tree._cache.has('GET/'), true)
+    })
+
+    it('shall read from cache', function () {
+      const found = tree.find({ method: 'GET', url: '/' })
+      assert.deepEqual(found, {
+        handler: 'GET /',
+        params: {}
+      })
+    })
+
+    it('shall create fresh', function () {
+      const found = tree.find({ method: 'GET', url: '/kitty' })
+      assert.deepEqual(found, {
+        handler: 'GET /:hello',
+        params: { hello: 'kitty' }
+      })
+      assert.equal(tree._cache.has('GET/'), false)
+      assert.equal(tree._cache.has('GET/kitty'), true)
+    })
+
+    it('shall again read from cache', function () {
+      const found = tree.find({ method: 'GET', url: '/kitty' })
+      assert.deepEqual(found, {
+        handler: 'GET /:hello',
+        params: { hello: 'kitty' }
+      })
     })
   })
 })

@@ -13,6 +13,11 @@
  */
 export class FindRoute {
     /**
+     * @param {number} [size=1000]
+     */
+    constructor(size?: number | undefined);
+    _cache: LruCache<any, any> | null;
+    /**
      * add handler by method and pathname to routing tree
      * @param {Method} method
      * @param {string|string[]} pathname
@@ -43,3 +48,4 @@ export class FindRoute {
     #private;
 }
 export type Method = import('./types').Method;
+import LruCache from 'mnemonist/lru-cache.js';

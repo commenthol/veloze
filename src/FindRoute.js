@@ -1,3 +1,4 @@
+import LruCache from 'mnemonist/lru-cache.js'
 import { safeDecodeUriComponent } from './utils/safeDecode.js'
 
 const METHODS = Symbol('methods')
@@ -21,6 +22,16 @@ const WILDCARD = Symbol('*')
  */
 export class FindRoute {
   #tree = {}
+  _cache
+
+  /**
+   * @param {number} [size=1000]
+   */
+  constructor (size = 1000) {
+    this._cache = size > 0
+      ? new LruCache(size)
+      : null
+  }
 
   /**
    * add handler by method and pathname to routing tree
@@ -68,6 +79,10 @@ export class FindRoute {
    */
   find ({ method, url }) {
     const [pathname] = url.split('?')
+    const cached = this._cache?.get(method + pathname)
+    if (cached) {
+      return cached
+    }
     const parts = (pathname || '/').split('/')
     const params = {}
     let wildcard
@@ -89,11 +104,12 @@ export class FindRoute {
       }
       tmp = next
     }
-    // console.dir({ wildcard, tmp }, { depth: null })
+
     const handler = getHandler(tmp, method) || getHandler(wildcard, method)
     if (!handler) {
       return
     }
+    this._cache?.set(method + pathname, { handler, params })
     return { handler, params }
   }
 }

@@ -31,7 +31,8 @@
     "recursive": true
   },
   "dependencies": {
-    "debug-level": "3.0.0"
+    "debug-level": "3.0.0",
+    "mnemonist": "^0.39.5"
   },
   "devDependencies": {
     "@types/node": "^18.15.3",

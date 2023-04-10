@@ -19,6 +19,7 @@ import { REQ_METHOD_HEAD } from './constants.js'
  * @property {Connect} [connect]
  * @property {FinalHandler} [finalHandler]
  * @property {FindRoute} [findRoute]
+ * @property {number} [cacheSize]
  */
 
 /**
@@ -30,18 +31,18 @@ export class Router {
   #connect
   #preHooks
   #postHooks
-  #areHooksReady = false
 
   /**
    * @param {RouterOptions} [options]
    */
   constructor (options) {
     const {
+      cacheSize,
       connect,
       finalHandler,
       findRoute
     } = options || {}
-    this.#tree = findRoute || new FindRoute()
+    this.#tree = findRoute || new FindRoute(cacheSize)
     this.#finalHandler = finalHandler || finalHandlerDef()
     this.#connect = connect || connectDef
     this.#preHooks = []
@@ -90,11 +91,13 @@ export class Router {
     if (!handlers.length) {
       return this
     }
+    const connect = this.#connect(...this.#preHooks, ...handlers, ...this.#postHooks)
+
     // @ts-expect-error
     for (const method of [].concat(methods)) {
       // @ts-expect-error
       for (const path of [].concat(paths)) {
-        this.#tree.add(method, path, this.#connect(...this.#preHooks, ...handlers, ...this.#postHooks))
+        this.#tree.add(method, path, connect)
       }
     }
     return this
@@ -154,19 +157,14 @@ export class Router {
    * @param {Function} [next]
    */
   handle (req, res, next) {
-    const final = (err) => {
-      if (next) {
-        next(err)
-        return
-      }
-      const _err = err || new HttpError(404)
-      this.#finalHandler(_err, req, res, () => { })
-    }
+    const final = next ||
+      ((err) => this.#finalHandler(err || new HttpError(404), req, res, () => {}))
 
     if (!req.originalUrl) {
       // originalUrl is set as url gets shortened on every router mount
       req.originalUrl = req.url
       // finalHandler will be invoked if response emits an error
+      // @ts-expect-error
       res.once('error', final)
 
       if (req.method === 'HEAD') {

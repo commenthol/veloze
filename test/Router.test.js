@@ -156,7 +156,7 @@ describe('Router', function () {
   describe('preHook and postHook', function () {
     let router
     before(function () {
-      router = new Router()
+      router = new Router({ cacheSize: 0 })
       router.preHook(handleResBodyInit, send)
       router.postHook(handleSend)
       router.use(preHandler('first'), preHandler('second'))
