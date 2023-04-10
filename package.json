@@ -1,8 +1,18 @@
 {
   "name": "veloze",
-  "version": "0.3.1",
+  "version": "0.4.0-0",
   "description": "A modern and fast express-like webserver for the web",
-  "keywords": [],
+  "keywords": [
+    "veloze",
+    "web-framework",
+    "router",
+    "connect",
+    "middlewares",
+    "web",
+    "express-like",
+    "http",
+    "htt2"
+  ],
   "homepage": "https://github.com/commenthol/veloze",
   "repository": {
     "type": "git",

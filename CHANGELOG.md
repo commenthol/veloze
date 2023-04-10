@@ -1,3 +1,20 @@
+# 0.4.0-0
+
+### feat:
+
+- add path to request
+- cache find route results
+
+### docs:
+
+- contentSec is "slow"
+- Server documentation
+
+### chore:
+
+- skip tests for github actions
+- github actions
+
 # 0.3.1 (2023-03-28)
 
 ### fix:

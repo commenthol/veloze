@@ -36,6 +36,7 @@ export class FindRoute {
      * @returns {{
      *  handler: Function
      *  params: object
+     *  path: string
      * }|undefined}
      */
     find({ method, url }: {
@@ -44,6 +45,7 @@ export class FindRoute {
     }): {
         handler: Function;
         params: object;
+        path: string;
     } | undefined;
     #private;
 }

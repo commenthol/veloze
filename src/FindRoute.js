@@ -75,15 +75,16 @@ export class FindRoute {
    * @returns {{
    *  handler: Function
    *  params: object
+   *  path: string
    * }|undefined}
    */
   find ({ method, url }) {
-    const [pathname] = url.split('?')
-    const cached = this._cache?.get(method + pathname)
+    const [path] = url.split('?')
+    const cached = this._cache?.get(method + path)
     if (cached) {
       return cached
     }
-    const parts = (pathname || '/').split('/')
+    const parts = (path || '/').split('/')
     const params = {}
     let wildcard
     let tmp = this.#tree
@@ -109,8 +110,8 @@ export class FindRoute {
     if (!handler) {
       return
     }
-    this._cache?.set(method + pathname, { handler, params })
-    return { handler, params }
+    this._cache?.set(method + path, { handler, params, path })
+    return { handler, params, path }
   }
 }
 

@@ -22,7 +22,8 @@ describe('FindRoute', function () {
     const found = tree.find({ method: 'GET', url: '/?foo=bar' })
     assert.deepEqual(found, {
       handler: 'GET /',
-      params: {}
+      params: {},
+      path: '/'
     })
   })
 
@@ -30,7 +31,8 @@ describe('FindRoute', function () {
     const found = tree.find({ method: 'PUT', url: '/?foo=bar' })
     assert.deepEqual(found, {
       handler: 'ALL /',
-      params: {}
+      params: {},
+      path: '/'
     })
   })
 
@@ -40,7 +42,8 @@ describe('FindRoute', function () {
     const found = tree.find({ method: 'GET', url: '/params/tony' })
     assert.deepEqual(found, {
       handler: 'GET /params/:user',
-      params: { user: 'tony' }
+      params: { user: 'tony' },
+      path: '/params/tony'
     })
   })
 
@@ -55,15 +58,17 @@ describe('FindRoute', function () {
     const found = tree.find({ method: 'GET', url: '/params/tony/ids/1234' })
     assert.deepEqual(found, {
       handler: 'GET /params/:user/ids/:id',
-      params: { user: 'tony', id: '1234' }
+      params: { user: 'tony', id: '1234' },
+      path: '/params/tony/ids/1234'
     })
   })
 
   it('find wildcard route', function () {
-    const found = tree.find({ method: 'GET', url: '/wildcard/test/ids/1234' })
+    const found = tree.find({ method: 'GET', url: '/wildcard/test/ids/1234?foo=bar' })
     assert.deepEqual(found, {
       handler: 'ALL /wildcard/*',
-      params: {}
+      params: {},
+      path: '/wildcard/test/ids/1234'
     })
   })
 
@@ -71,7 +76,8 @@ describe('FindRoute', function () {
     const found = tree.find({ method: 'GET', url: '/wildcard' })
     assert.deepEqual(found, {
       handler: 'GET /wildcard',
-      params: {}
+      params: {},
+      path: '/wildcard'
     })
   })
 
@@ -79,7 +85,8 @@ describe('FindRoute', function () {
     const found = tree.find({ method: 'GET', url: '/wildcard/path' })
     assert.deepEqual(found, {
       handler: 'GET /wildcard/path',
-      params: {}
+      params: {},
+      path: '/wildcard/path'
     })
   })
 
@@ -87,7 +94,8 @@ describe('FindRoute', function () {
     const found = tree.find({ method: 'POST', url: '/wildcard/path' })
     assert.deepEqual(found, {
       handler: 'ALL /wildcard/*',
-      params: {}
+      params: {},
+      path: '/wildcard/path'
     })
   })
 
@@ -103,24 +111,27 @@ describe('FindRoute', function () {
       const found = tree.find({ method: 'GET', url: '/' })
       assert.deepEqual(found, {
         handler: 'GET /',
-        params: {}
+        params: {},
+        path: '/'
       })
       assert.equal(tree._cache.has('GET/'), true)
     })
 
     it('shall read from cache', function () {
-      const found = tree.find({ method: 'GET', url: '/' })
+      const found = tree.find({ method: 'GET', url: '?foo=bar' })
       assert.deepEqual(found, {
         handler: 'GET /',
-        params: {}
+        params: {},
+        path: ''
       })
     })
 
     it('shall create fresh', function () {
-      const found = tree.find({ method: 'GET', url: '/kitty' })
+      const found = tree.find({ method: 'GET', url: '/kitty?v=1' })
       assert.deepEqual(found, {
         handler: 'GET /:hello',
-        params: { hello: 'kitty' }
+        params: { hello: 'kitty' },
+        path: '/kitty'
       })
       assert.equal(tree._cache.has('GET/'), false)
       assert.equal(tree._cache.has('GET/kitty'), true)
@@ -130,8 +141,10 @@ describe('FindRoute', function () {
       const found = tree.find({ method: 'GET', url: '/kitty' })
       assert.deepEqual(found, {
         handler: 'GET /:hello',
-        params: { hello: 'kitty' }
+        params: { hello: 'kitty' },
+        path: '/kitty'
       })
+      assert.equal(tree._cache.has('GET/kitty'), true)
     })
   })
 })

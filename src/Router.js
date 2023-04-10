@@ -173,7 +173,7 @@ export class Router {
       }
     }
 
-    /** @type {{handler: HandlerCb, params: object}|undefined} */
+    /** @type {{handler: HandlerCb, params: object, path: string}|undefined} */
     // @ts-expect-error
     const found = this.#tree.find(req)
     if (!found?.handler) {
@@ -181,6 +181,7 @@ export class Router {
       return
     }
     req.params = found.params || {}
+    req.path = found.path || '/'
     found.handler(req, res, final)
   }
 
