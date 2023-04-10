@@ -13,6 +13,10 @@
 /**
  * Middleware which adding various security headers to html page responses.
  *
+ * This is a "slow" middleware. If performance is required it is recommended to
+ * set the security headers "manually". Use this middleware then to identify the
+ * necessary secure settings to extract the headers into it's own middleware.
+ *
  * - csp: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
  * - hsts: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
  * - referrerPolicy: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy
