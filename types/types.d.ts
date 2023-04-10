@@ -64,7 +64,7 @@ export interface Response extends http.ServerResponse {
   body?: any
   /**
    * send request;
-   * needs send middleware
+   * needs send or sendEtag middleware
    */
   send?: (body: any, status?: number, headers?: object) => void
   /**
@@ -72,6 +72,11 @@ export interface Response extends http.ServerResponse {
    * needs send middleware
    */
   redirect?: (location: string, status?: number, headers?: object) => void
+  /**
+   * send request;
+   * needs json or jsonEtag middleware
+   */
+  json?: (body: any, status?: number, headers?: object) => void
   /**
    * sets a response cookie;
    * needs cookieParser middleware

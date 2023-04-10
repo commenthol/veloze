@@ -11,3 +11,4 @@ export { cacheControl, cacheControlByMethod } from "./cacheControl.js";
 export { contentSec, contentSecJson, cspReport } from "./contentSec.js";
 export { presetHtml, presetJson } from "./presets.js";
 export { send, sendEtag } from "./send.js";
+export { json, jsonEtag, etagHash } from "./json.js";

@@ -2,6 +2,7 @@
 
 ### feat:
 
+- res.json for json responses
 - add path to request
 - cache find route results
 

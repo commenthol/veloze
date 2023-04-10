@@ -10,13 +10,14 @@ Allows you to:
 - reuse connect (express) middlewares
 - use secure defaults
 - pick the pieces to build your server 
+- use async middlewares like `async (req, res) => { ... }`
 
 Comes with:
 - a [Pure ESM Package](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c)
 - Stoppable HTTP2 server
 - Fast Radix Tree Router
 - Follows standards (lower-case headers, ...)
-- Async middlewares `async (req, res) => { ... }`
+- failsafe connecting your handlers by catching thrown errors in middlewares
 - Query-parser middleware to prevent HTTP parameter pollution
 - Body-parser for form, json, raw content
 - content-security-policy and reporting middleware
@@ -27,7 +28,8 @@ Comes with:
 - Too Busy middleware to prevent server from overload
 - Support for server-side rendering engines
 - Safe final handler to prevent info leakage from internal error exposure in responses
-- res.send() with or without Etag generation
+- res.send() to send any content with or without Etag generation
+- res.json() to respond with a JSON object, with or without Etag generation
 
 Project Goals:
 - Provide a fast and modern web-server
@@ -38,15 +40,16 @@ Project Goals:
 - Pure Javascript with the support of TS-types.
 - Secure Defaults
 
+Benchmarks:
+- can be found in [veloze-benchmarks](https://github.com/commenthol/veloze-benchmarks)
+
 # license
 
 MIT licensed
 
 # roadmap
 
-- documentation
 - static file serving...
-- benchmarks
 - examples
 
 [npm-badge]: https://badge.fury.io/js/veloze.svg

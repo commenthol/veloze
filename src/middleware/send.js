@@ -31,14 +31,14 @@ export function sendEtag (options) {
     algorithm = 'sha1'
   } = options || {}
 
-  const hash = (chunk = '') => createHash(algorithm).update(chunk).digest('base64')
+  const hash = (chunk = '') => '"' + createHash(algorithm).update(chunk).digest('base64') + '"'
 
   const calcEtag = (req, res, chunk) => {
     if (res.statusCode !== 200) {
       return
     }
 
-    const etag = '"' + hash(chunk) + '"'
+    const etag = hash(chunk)
     res.setHeader('etag', etag)
 
     if (req.headers['if-none-match'] === etag) {
