@@ -20,6 +20,7 @@ TODO:
 - [queryParser](./middleware/queryParser.md) Parse the query string.
 - [renderEngine](./middleware/renderEngine.md) Using template render engines.
 - [send, sendEtag](./middleware/send.md) res.send(), res.redirect()
+- [json, jsonEtag](./middleware/json.md) res.json()
 - [requestId](./middleware/requestId.md) Sets a random request (correlation) id
 - [tooBusy](./middleware/tooBusy.md) Reject incoming requests if server is too
   busy.
@@ -43,6 +44,7 @@ Response utilities
 - [cookie](./response/cookie.md) TODO:
 - [redirect](./response/redirect.md) TODO:
 - [send](./response/send.md) TODO:
+- [json](./response/json.md) TODO:
 - [setHeaders](./response/setHeaders.md) TODO:
 - [vary](./response/vary.md) TODO:
 
@@ -55,3 +57,4 @@ Response utilities
 - [qs](./utils/qs.md) TODO:
 - [random64](./utils/random64.md) TODO:
 
+[🔝 TOP](#top)

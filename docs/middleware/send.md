@@ -1,3 +1,7 @@
+[◀︎ requestId](../middleware/requestId.md)
+[🛖](../index.md)
+[json ▶](../middleware/json.md)
+
 # send, sendEtag middleware
 
 Adds `res.send()` and `res.redirect()` method to all requests.
@@ -105,3 +109,5 @@ Sends a redirect
 | string | location   | location header content                             |
 | number | \[status]  | response status; defaults to 307 Temporary Redirect |
 | object | \[headers] | additional response headers                         |
+
+[🔝 TOP](#top)

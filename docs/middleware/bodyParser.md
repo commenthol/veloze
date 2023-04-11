@@ -1,3 +1,7 @@
+[◀︎ core/Server](../core/Server.md)
+[🛖](../index.md)
+[cacheControl ▶](../middleware/cacheControl.md)
+
 # bodyParser middleware
 
 Request body parsing middleware.
@@ -63,3 +67,5 @@ app.post(bodyParser.raw({ typeRaw: "text/plain" }));
 | string\|false  | \[typeJson='application/json'\]                        | parse json content                                                                                     |
 | string\|false  | \[typeUrlEncoded='application/x-www-form-urlencoded'\] | parse urlEncoded content                                                                               |
 | string\|false  | \[typeRaw='application/octet-stream'\]                 | parse raw content                                                                                      |
+
+[🔝 TOP](#top)

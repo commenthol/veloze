@@ -1,3 +1,7 @@
+[◀︎ contentSec](../middleware/contentSec.md)
+[🛖](../index.md)
+[cors ▶](../middleware/cors.md)
+
 # cookieParser middleware
 
 Middleware which parses cookies in requests and allows to set or clear cookies
@@ -70,3 +74,5 @@ The `secure` flag will be set, if request uses https or http with http-header
 Clears cookie in response.
 
 Same options as with [res.cookie(name, value, options)](#res-cookie)
+
+[🔝 TOP](#top)

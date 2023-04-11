@@ -1,3 +1,7 @@
+[◀︎ bodyParser](../middleware/bodyParser.md)
+[🛖](../index.md)
+[contentSec ▶](../middleware/contentSec.md)
+
 # cacheControl middleware
 
 Middleware which sets the 'cache-control' header.
@@ -75,3 +79,5 @@ router.use(
 | boolean        | \[immutable]            | response will not be updated while it's fresh                                                                                                           |
 | boolean        | \[staleWhileRevalidate] | cache could reuse a stale response while it revalidates it to a cache.                                                                                  |
 | boolean        | \[staleIfError]         | cache can reuse a stale response when an origin server responds with an error (500, 502, 503, or 504)                                                   |
+
+[🔝 TOP](#top)

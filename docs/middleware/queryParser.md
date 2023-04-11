@@ -1,3 +1,7 @@
+[◀︎ cors](../middleware/cors.md)
+[🛖](../index.md)
+[renderEngine ▶](../middleware/renderEngine.md)
+
 # queryParser middleware
 
 Middleware which parses the query string.
@@ -21,3 +25,5 @@ app.get(queryParser, (req, res) => {
   => req.query = { query: 'string', test: '2' }
 */
 ```
+
+[🔝 TOP](#top)

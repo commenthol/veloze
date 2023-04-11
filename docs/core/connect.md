@@ -1,3 +1,7 @@
+[◀︎ index](../index.md)
+[🛖](../index.md)
+[Router ▶](../core/Router.md)
+
 # connect 
 
 Connect connects middleware handlers. 
@@ -10,7 +14,7 @@ A middleware handler may either be a express/ connect handler
 const syncHandler = (req, res, next) => {
   doSomethingSyncHere()
   next() // NEVER forget next(), 
-         // if the response is not terminated with res.end()
+         // unless the response is not terminated with res.end()
 }
 ```
 
@@ -23,11 +27,11 @@ const asyncHandler = async (req, res) => {
 }
 ```
 
-For async handlers it **must** be an async function. A function returning a `Promise` is **not** recognized.
+For async handlers it **must** be an async function. A function returning "just" a `Promise` is **not** recognized.
 
-`req` is of type `http.IncomingMessage`, where `res` stands for `http.ServerResponse`. 
+`req` is of type `http.IncomingMessage`, where `res` is a `http.ServerResponse`. 
 
-If calling `connect()` the **first handler** which has 4 arguments is considered as errorHandler. In case of an error this handler will be called. The errorHandler has to conform to:
+If calling `connect()` the **first handler** which has 4 arguments is recognized as "errorHandler". In case of an error this handler will be called. The errorHandler has to conform to:
 
 ```js
 const errorHandler = (err, req, res, next) => {
@@ -78,3 +82,4 @@ http.createServer(handle).listen(3000)
 
 If using connect directly with a server (e.g. for nano-services) do not forget to add an errorHandler.
 
+[🔝 TOP](#top)

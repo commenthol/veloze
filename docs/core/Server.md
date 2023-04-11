@@ -1,6 +1,11 @@
+[◀︎ Router](../core/Router.md)
+[🛖](../index.md)
+[middleware/bodyParser ▶](../middleware/bodyParser.md)
+
 # Server
 
-The server provides by default HTTP/2 server. Optionally a HTTP/1 only mode is possible.
+The server provides by default a HTTP/2 server. Optionally a HTTP/1 only mode is
+possible.
 
 The server extends from [Router][], so all of its methods can be used.
 
@@ -29,8 +34,8 @@ const server = new Server({
   key: "./server.key",
   cert: "./server.crt",
 });
-// mount the app
-server.use("/", send, (req, res) => res.send("<h1>Hi, this is veloze</h1>"));
+
+server.get("/", send, (req, res) => res.send("<h1>Hi, this is veloze</h1>"));
 // start server on port 443
 server.listen(443);
 ```
@@ -63,3 +68,5 @@ Starts the server at `port`.
 Obtain the address of the server.
 
 [router]: ./Router.md
+
+[🔝 TOP](#top)

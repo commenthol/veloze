@@ -43,6 +43,9 @@ Project Goals:
 Benchmarks:
 - can be found in [veloze-benchmarks](https://github.com/commenthol/veloze-benchmarks)
 
+Documentation:
+- read more at [./docs/index.md](./blob/main/docs/index.md)
+
 # license
 
 MIT licensed

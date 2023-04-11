@@ -1,3 +1,7 @@
+[◀︎ connect](../core/connect.md)
+[🛖](../index.md)
+[Server ▶](../core/Server.md)
+
 # Router
 
 `Router` is the core of veloze. It uses [`FindRoute`](../../src/FindRoute.js) a fast radix tree router.
@@ -65,8 +69,8 @@ http.createServer(app.handle).listen(3000);
 
 ## Mounting Routers
 
-routers can be mounted on each others, allowing for creation of larger
-applications. 
+Routers can be mounted on each others, allowing for creation of larger
+applications using `.use(path, router)`. 
 
 **NOTE:** A router **must** be mounted on a path which is not yet used by the app.
 Mounting different routers on the same path result in the last router to win.
@@ -186,3 +190,4 @@ For route `POST /` the following handlers are connected:
 
     bodyParser -> sendEtag -> handler -> endHandler
 
+[🔝 TOP](#top)

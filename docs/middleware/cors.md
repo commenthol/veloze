@@ -1,3 +1,7 @@
+[◀︎ cookieParser](../middleware/cookieParser.md)
+[🛖](../index.md)
+[queryParser ▶](../middleware/queryParser.md)
+
 # CORS middleware
 
 Middleware to handle
@@ -41,3 +45,5 @@ where `Origin`: `{(string|RegExp|((req: Request) => boolean))}`
 | string              | \[headers]                                                     | list any number of allowed headers, separated by commas                                     |
 | string              | \[exposeHeaders]                                               | list of comma-separated header names that clients are allowed to access from a response.    |
 | number              | \[maxAge]                                                      | caching max-age in seconds. Is set to 7200 (2h) for NODE_ENV !== development                |
+
+[🔝 TOP](#top)
