@@ -1,20 +1,22 @@
-# 0.4.0-0
+# 0.4.0 (2023-04-16)
 
 ### feat:
 
-- res.json for json responses
-- add path to request
-- cache find route results
+- change HttpError (#d65b75a)
+- res.json for json responses (#86b0655)
+- add path to request (#85374c2)
+- cache find route results (#4010612)
 
 ### docs:
 
-- contentSec is "slow"
-- Server documentation
+- json middleware (#529c6b7)
+- contentSec is "slow" (#92eca07)
+- Server documentation (#26aea00)
 
 ### chore:
 
-- skip tests for github actions
-- github actions
+- skip tests for github actions (#0e07ad5)
+- github actions (#72ba26a)
 
 # 0.3.1 (2023-03-28)
 
