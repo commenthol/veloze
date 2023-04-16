@@ -91,7 +91,7 @@ export class FindRoute {
     for (let i = 0; i < parts.length; i += 1) {
       const part = parts[i]
       let next = tmp?.[part]
-      if (part && tmp[PARAM_PART]) {
+      if (!next && part && tmp[PARAM_PART]) {
         const param = tmp[PARAM]
         params[param] = safeDecodeUriComponent(part)
         next = tmp[PARAM_PART]

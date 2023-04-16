@@ -256,6 +256,8 @@ describe('Router', function () {
       router.get('/', handleName('#0'))
       router.get('/:id', handleName('#1'))
       router.put('/:id', handleName('#2'))
+      router.post('/', handleName('#3'))
+      router.post('/many', handleName('#4'))
       app.use('/', router.handle)
       // router.print()
     })
@@ -276,6 +278,18 @@ describe('Router', function () {
       return supertest(app.handle)
         .put('/two')
         .expect(['#2 PUT /two'])
+    })
+
+    it('POST /', function () {
+      return supertest(app.handle)
+        .post('/')
+        .expect(['#3 POST /'])
+    })
+
+    it('POST /many', function () {
+      return supertest(app.handle)
+        .post('/many')
+        .expect(['#4 POST /many'])
     })
   })
 })
