@@ -1,3 +1,9 @@
+# 0.4.1 (2023-04-16)
+
+### fix:
+
+- routing if exact route found (#72b840a)
+
 # 0.4.0 (2023-04-16)
 
 ### feat:

@@ -1,6 +1,6 @@
 {
   "name": "veloze",
-  "version": "0.4.0",
+  "version": "0.4.1-0",
   "description": "A modern and fast express-like webserver for the web",
   "keywords": [
     "veloze",
