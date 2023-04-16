@@ -1,7 +1,7 @@
 import * as http from 'node:http'
 import * as https from 'node:https'
 import * as http2 from 'node:http2'
-import * as fs from 'node:fs'
+import { readFileSync } from 'node:fs'
 import { Router } from './Router.js'
 import { safeServerShutdown } from './utils/safeServerShutdown.js'
 import { logger } from './utils/logger.js'
@@ -116,7 +116,7 @@ const LOAD_CERTS_KEYS = ['key', 'cert', 'pfx', 'passphrase']
 const loadCerts = (serverOptions = {}) => {
   for (const key of LOAD_CERTS_KEYS) {
     if (serverOptions[key] instanceof URL) {
-      const data = fs.readFileSync(serverOptions[key])
+      const data = readFileSync(serverOptions[key])
       serverOptions[key] = data
       if (key === 'passphrase') {
         serverOptions[key] = data.toString().trimEnd()

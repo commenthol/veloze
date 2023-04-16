@@ -1,33 +1,31 @@
-import * as http from 'node:http'
+import { STATUS_CODES } from 'http'
 
 /**
- * @typedef {object} HttpErrorParam
- * @property {Error} [cause] internal error cause; is logged in finalHandler; use this for any internal error
- * @property {object|string} [description] error description for use in response
- * @property {string|number} [code] optional error code
+ * @typedef {object} ErrorCause
+ * @property {Error} [cause] error cause
+ * @property {string} [code] represents the error code
+ * @property {object} [info] object with details about the error condition, e.g. validation errors
  */
 
 export class HttpError extends Error {
   /**
-   * @param {number} status HTTP status code for response
-   * @param {string} [message] error message for response
-   * @param {Error|HttpErrorParam} [param]
+   * @param {number} [status]
+   * @param {string} [message]
+   * @param {Error|ErrorCause} [options]
    */
-  constructor (status, message, param) {
+  constructor (status = 500, message, options) {
     let cause
-    let description
-    let code
-    if (param instanceof Error) {
-      cause = param
+    message = message || STATUS_CODES[status] || 'General Error'
+    if (options instanceof Error) {
+      cause = options
+      options = {}
     } else {
-      cause = param?.cause
-      description = param?.description
-      code = param?.code
+      cause = options?.cause
     }
-    const _message = message || http.STATUS_CODES[status] || 'general error'
-    super(_message, { cause })
-    this.status = status || 500
-    this.description = description
-    this.code = code
+    super(message, { cause })
+    this.name = this.constructor.name
+    this.status = isNaN(status) ? 500 : status
+    this.code = options?.code
+    this.info = options?.info
   }
 }

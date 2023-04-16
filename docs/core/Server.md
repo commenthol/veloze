@@ -1,6 +1,6 @@
 [◀︎ Router](../core/Router.md)
 [🛖](../index.md)
-[middleware/bodyParser ▶](../middleware/bodyParser.md)
+[HttpError ▶](../core/HttpError.md)
 
 # Server
 

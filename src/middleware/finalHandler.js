@@ -22,7 +22,7 @@ import { buildCsp } from './contentSec.js'
  *
  * @param {object} [options]
  * @param {Log} [options.log] log function
- * @param {(param0: {status: number, message: string, description?: object|string, reqId: string, req: Request}) => string} [options.htmlTemplate] html template for the final error page
+ * @param {(param0: {status: number, message: string, info?: object, reqId: string, req: Request}) => string} [options.htmlTemplate] html template for the final error page
  * @returns {(err: HttpErrorL|Error, req: Request, res: Response, next?: Function) => void}
  */
 export const finalHandler = (options) => {
@@ -34,18 +34,17 @@ export const finalHandler = (options) => {
   // eslint-disable-next-line no-unused-vars
   return function finalHandlerMw (err, req, res, next) {
     // our message to the outside world
+    /** @type {HttpError} */
     // @ts-expect-error
-    const errResp = (err instanceof HttpError || err?.status)
+    const errResp = (err?.status)
       ? err
       : new HttpError(500, 'Oops! That should not have happened!', err)
 
     const {
-      // @ts-expect-error
       status = 500,
-      message,
-      cause, // our internal error message and stack trace -> only for logging...
-      // @ts-expect-error
-      description
+      message, // PUBLIC message
+      info, // PUBLIC info: additional info, e.g. like validation error for the outside world
+      cause // PRIVATE cause: our internal error message and stack trace -> only for logging...
     } = errResp || {}
 
     const { url, originalUrl, method, id = crypto.randomUUID() } = req
@@ -55,8 +54,8 @@ export const finalHandler = (options) => {
       const accept = String(req.headers?.accept || req.headers?.[CONTENT_TYPE])
       const isJsonType = type.includes('/json') || accept.includes('/json')
       const body = res.body || (isJsonType
-        ? { status, message, errors: description, reqId: id }
-        : htmlTemplate({ status, message, description, reqId: id, req })
+        ? { status, message, errors: info, reqId: id }
+        : htmlTemplate({ status, message, info, reqId: id, req })
       )
       if (!isJsonType && !res.getHeader(CONTENT_SECURITY_POLICY)) {
         res.setHeader(CONTENT_SECURITY_POLICY, buildCsp())

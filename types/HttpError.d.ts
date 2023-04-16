@@ -1,31 +1,31 @@
 /**
- * @typedef {object} HttpErrorParam
- * @property {Error} [cause] internal error cause; is logged in finalHandler; use this for any internal error
- * @property {object|string} [description] error description for use in response
- * @property {string|number} [code] optional error code
+ * @typedef {object} ErrorCause
+ * @property {Error} [cause] error cause
+ * @property {string} [code] represents the error code
+ * @property {object} [info] object with details about the error condition, e.g. validation errors
  */
 export class HttpError extends Error {
     /**
-     * @param {number} status HTTP status code for response
-     * @param {string} [message] error message for response
-     * @param {Error|HttpErrorParam} [param]
+     * @param {number} [status]
+     * @param {string} [message]
+     * @param {Error|ErrorCause} [options]
      */
-    constructor(status: number, message?: string | undefined, param?: Error | HttpErrorParam | undefined);
+    constructor(status?: number | undefined, message?: string | undefined, options?: Error | ErrorCause | undefined);
     status: number;
-    description: any;
-    code: string | number | undefined;
+    code: string | undefined;
+    info: any;
 }
-export type HttpErrorParam = {
+export type ErrorCause = {
     /**
-     * internal error cause; is logged in finalHandler; use this for any internal error
+     * error cause
      */
     cause?: Error | undefined;
     /**
-     * error description for use in response
+     * represents the error code
      */
-    description?: object | string;
+    code?: string | undefined;
     /**
-     * optional error code
+     * object with details about the error condition, e.g. validation errors
      */
-    code?: string | number | undefined;
+    info?: object;
 };

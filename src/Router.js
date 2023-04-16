@@ -1,4 +1,4 @@
-import * as http from 'node:http'
+import { METHODS as httpMethods } from 'node:http'
 import { connect as connectDef } from './connect.js'
 import { finalHandler as finalHandlerDef } from './middleware/index.js'
 import { FindRoute } from './FindRoute.js'
@@ -233,7 +233,7 @@ export class Router {
   trace (path, ...handlers) { }// eslint-disable-line no-unused-vars
 }
 
-http.METHODS.filter(method => method !== 'HEAD').forEach(method => {
+httpMethods.filter(method => method !== 'HEAD').forEach(method => {
   const methodLc = method.toLowerCase()
   /**
    * @param {string} path

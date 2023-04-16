@@ -4,7 +4,13 @@ import { HttpError } from '../src/HttpError.js'
 describe('HttpError', function () {
   it('no status', function () {
     const err = new HttpError()
-    assert.equal(err.message, 'general error')
+    assert.equal(err.message, 'Internal Server Error')
+    assert.equal(err.status, 500)
+  })
+
+  it('message instead of status', function () {
+    const err = new HttpError('boom')
+    assert.equal(err.message, 'General Error')
     assert.equal(err.status, 500)
   })
 
@@ -26,5 +32,14 @@ describe('HttpError', function () {
     assert.equal(err.message, 'Uh oh')
     assert.equal(err.status, 402)
     assert.equal(err.cause.message, 'boom')
+  })
+
+  it('with error cause and info', function () {
+    const cause = new Error('boom')
+    const err = new HttpError(402, 'Uh oh', { cause, info: { errors: true } })
+    assert.equal(err.message, 'Uh oh')
+    assert.equal(err.status, 402)
+    assert.equal(err.cause.message, 'boom')
+    assert.deepEqual(err.info, { errors: true })
   })
 })

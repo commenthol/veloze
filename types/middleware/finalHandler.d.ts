@@ -3,7 +3,7 @@ export function finalHandler(options?: {
     htmlTemplate?: ((param0: {
         status: number;
         message: string;
-        description?: object | string;
+        info?: object;
         reqId: string;
         req: Request;
     }) => string) | undefined;
