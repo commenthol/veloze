@@ -4,6 +4,7 @@ import { finalHandler as finalHandlerDef } from './middleware/index.js'
 import { FindRoute } from './FindRoute.js'
 import { HttpError } from './HttpError.js'
 import { REQ_METHOD_HEAD } from './constants.js'
+import { setPath } from './request/setPath.js'
 
 /**
  * @typedef {import('./types').Method} Method
@@ -181,7 +182,7 @@ export class Router {
       return
     }
     req.params = found.params || {}
-    req.path = found.path || '/'
+    setPath(req, found.path || '/')
     found.handler(req, res, final)
   }
 

@@ -3,6 +3,7 @@ import { logger } from '../utils/logger.js'
 import { ms, random64 } from '../utils/index.js'
 import { isHttpsProto } from '../request/isHttpsProto.js'
 import { send } from '../response/send.js'
+import { setPath } from '../request/setPath.js'
 import { bodyParser } from './bodyParser.js'
 import { connect } from '../connect.js'
 
@@ -281,7 +282,7 @@ export function contentSec (options) {
   const strictTransportSecurity = buildHsts(hsts)
 
   return function cspMw (req, res, next) {
-    req.path = req.path || (new URL(req.url, 'local://')).pathname
+    setPath(req, req.path || (new URL(req.url, 'local://')).pathname)
     const ext = extname(req.path)
 
     if (extensions.includes(ext)) {

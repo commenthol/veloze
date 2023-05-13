@@ -1,4 +1,6 @@
 import { qs } from '../utils/index.js'
+import { setPath } from '../request/setPath.js'
+
 /**
  * @typedef { import('../types').Request } Request
  * @typedef { import('../types').Response } Response
@@ -13,7 +15,7 @@ import { qs } from '../utils/index.js'
 export function queryParser (req, res, next) {
   if (!req.query || !req.path) {
     const [path, search] = req.url.split('?')
-    req.path = path
+    setPath(req, path || '/')
     req.query = qs(search)
   }
   next()
