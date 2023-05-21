@@ -1,3 +1,19 @@
+# 0.4.2 (2023-05-21)
+
+### fix:
+
+- middleware/requestId: setResponseHeader option (#60f88a2)
+- types (#69c71d9)
+- change req.path to getter only (#74d398b)
+
+### docs:
+
+- CONTRIBUTING (#2aa7c15)
+
+### chore:
+
+- bump devDependencies (#9afc38b)
+
 # 0.4.1 (2023-04-16)
 
 ### fix:
