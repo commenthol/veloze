@@ -14,21 +14,23 @@ import { getHeader } from '../request/getHeader.js'
  *
  * @param {object} [options]
  * @param {boolean} [options.force] forces setting the requestId on the request
+ * @param {boolean} [options.setResponseHeader] set on response header
  * @returns {HandlerCb}
  */
 export function requestId (options) {
   const {
-    force = false
+    force = false,
+    setResponseHeader: setResponse = false
   } = options || {}
 
   return function requestIdMw (req, res, next) {
-    if (force) {
-      req.id = crypto.randomUUID()
-    } else {
-      const xRequestId = getHeader(req, X_REQUEST_ID)
-      req.id = xRequestId || crypto.randomUUID()
-    }
+    req.id = force
+      ? crypto.randomUUID()
+      : (getHeader(req, X_REQUEST_ID) || crypto.randomUUID())
     req.headers[X_REQUEST_ID] = req.id
+    if (setResponse) {
+      res.setHeader(X_REQUEST_ID, req.id)
+    }
     next()
   }
 }
