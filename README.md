@@ -44,7 +44,7 @@ Benchmarks:
 - can be found in [veloze-benchmarks](https://github.com/commenthol/veloze-benchmarks)
 
 Documentation:
-- read more at [./docs/index.md](./blob/main/docs/index.md)
+- read more at [./docs/index.md](https://github.com/commenthol/veloze/blob/main/docs/index.md)
 
 # license
 
