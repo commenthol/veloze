@@ -283,7 +283,7 @@ export function contentSec (options) {
 
   return function cspMw (req, res, next) {
     setPath(req, req.path || (new URL(req.url, 'local://')).pathname)
-    const ext = extname(req.path)
+    const ext = extname(req.path || '')
 
     if (extensions.includes(ext)) {
       for (const [header, value, valueFn] of headers) {
