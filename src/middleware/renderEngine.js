@@ -23,7 +23,7 @@ import { HttpError } from '../HttpError.js'
  * @property {Map|null} [pathCache] cache implementation for storing pathnames (must implement Map interface); If `null` no cache is used. Defaults to `null` for development and `Map()` for production environments
  */
 
-const log = logger(':render')
+let log
 
 /**
  * Middleware to support render engines like ejs, hbs, ...;
@@ -89,6 +89,8 @@ export class View {
       pathCache = isProdEnv ? new Map() : null,
       locals = {}
     } = options || {}
+
+    log = log || logger(':renderEngine')
 
     if (view instanceof URL) {
       view = fileURLToPath(view)

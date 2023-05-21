@@ -25,15 +25,15 @@ const EXIT_EVENTS = [
  * alternative to [stoppable](https://github.com/hunterloftis/stoppable).
  *
  * @param {Server} server the server instance
- * @param {object} [param1]
- * @param {number} [param1.gracefulTimeout=1000] (ms) graceful timeout for existing connections
- * @param {Log} [param1.log] logger
+ * @param {object} [options]
+ * @param {number} [options.gracefulTimeout=1000] (ms) graceful timeout for existing connections
+ * @param {Log} [options.log] logger
  */
-export function safeServerShutdown (server, param1) {
+export function safeServerShutdown (server, options) {
   const {
     gracefulTimeout = 1000,
     log = logger(':safeShutdown')
-  } = param1 || {}
+  } = options || {}
 
   let isShutdown = false
 

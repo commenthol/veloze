@@ -14,7 +14,7 @@ import { logger } from './utils/logger.js'
  * @typedef {import('node:net').AddressInfo} AddressInfo
  */
 
-const log = logger(':server')
+let log
 
 /**
  * @class
@@ -44,6 +44,8 @@ export class Server extends Router {
       gracefulTimeout,
       ...serverOptions
     } = options || {}
+
+    log = log || logger(':server')
 
     super({ connect, finalHandler, findRoute })
     loadCerts(serverOptions)

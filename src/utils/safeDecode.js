@@ -1,11 +1,12 @@
 import { logger } from './logger.js'
 
-const log = logger(':safeDecode')
+let log
 
 export const safeDecodeUriComponent = (value, def) => {
   try {
     return decodeURIComponent(value)
   } catch (e) {
+    log = log || logger(':safeDecode')
     log.debug(`malformed URI Component: ${value}`)
   }
   return def
