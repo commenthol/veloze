@@ -1,3 +1,17 @@
+# 0.5.0 (2023-05-23)
+
+### feat:
+
+- new middleware basicAuth (#7a42dfd)
+
+### docs:
+
+- fix link to docs (#89f8d08)
+
+### refactor:
+
+- allow logger overwrite (#b4afe0e)
+
 # 0.4.2 (2023-05-21)
 
 ### fix:
