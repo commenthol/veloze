@@ -1,4 +1,4 @@
-[◀︎ core/Server](../core/Server.md)
+[◀︎ core/Server](../core/basicAuth.md)
 [🛖](../index.md)
 [cacheControl ▶](../middleware/cacheControl.md)
 

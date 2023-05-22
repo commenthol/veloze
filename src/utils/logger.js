@@ -12,6 +12,7 @@ let loggerF = loggerFn
  * overwrite logger function
  * @param {LoggerFn} loggerFn
  */
+/* c8 ignore next 3 */
 export const setLoggerFn = (loggerFn) => {
   loggerF = loggerFn
 }

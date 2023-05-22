@@ -1,3 +1,4 @@
+export { basicAuth } from './basicAuth.js'
 export { bodyParser } from './bodyParser.js'
 export { cacheControl, cacheControlByMethod } from './cacheControl.js'
 export { cookieParser } from './cookieParser.js'
