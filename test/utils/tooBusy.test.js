@@ -15,13 +15,16 @@ const defaultValues = {
 }
 
 describe('utils/tooBusy', function () {
+  beforeEach(function () {
+    tooBusy.reset()
+  })
   after(function () {
-    tooBusy.set(defaultValues)
+    tooBusy.reset()
   })
 
   describe('set, get settings', function () {
     before(function () {
-      tooBusy.set(defaultValues)
+      tooBusy.reset()
     })
 
     it('should get default values', function () {
@@ -44,7 +47,7 @@ describe('utils/tooBusy', function () {
         maxLagMs: 15,
         smoothingFactor: 0
       }
-      tooBusy.set(defaultValues)
+      tooBusy.reset()
       tooBusy.set(change)
       assert.deepEqual(tooBusy.get(), defaultValues)
     })
@@ -62,8 +65,9 @@ describe('utils/tooBusy', function () {
     it('shall return true with load', function (done) {
       function repeat () {
         if (tooBusy()) {
-          assert.ok(tooBusy.lag() < 50)
-          assert.ok(tooBusy.lag() > 16)
+          const lag = tooBusy.lag()
+          assert.ok(lag < 50, `lag ${lag} shall be less than 50ms`)
+          assert.ok(lag > 16, `lag ${lag} shall be greater than 16ms`)
           done()
           return
         }
@@ -78,7 +82,8 @@ describe('utils/tooBusy', function () {
     beforeEach(function (done) {
       tooBusy.set({
         intervalMs: 50,
-        maxLagMs: 20
+        maxLagMs: 20,
+        smoothingFactor: 0.2
       })
       setTimeout(done, 50)
     })
@@ -89,7 +94,7 @@ describe('utils/tooBusy', function () {
       function repeat () {
         cycle++
         if (tooBusy()) {
-          assert.ok(cycle >= 2, cycle)
+          assert.ok(cycle >= 2, `cycle ${cycle} is less then 2`)
           done()
           return
         }

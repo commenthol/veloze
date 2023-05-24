@@ -3,15 +3,13 @@ import { tooBusy, Router } from '../../src/index.js'
 import { tooBusy as tooBusyCheck } from '../../src/utils/index.js'
 import { makeLoad } from '../../test/support/makeLoad.js'
 
-const defaultValues = tooBusyCheck.get()
+const start = ({ port }) => {
+  tooBusyCheck.set({
+    intervalMs: 50,
+    maxLagMs: 16,
+    smoothingFactor: 0.9
+  })
 
-tooBusyCheck.set({
-  intervalMs: 50,
-  maxLagMs: 16,
-  smoothingFactor: 0.9
-})
-
-const start = () => {
   let underLoad = false
 
   const end = (req, res) => {
@@ -28,13 +26,13 @@ const start = () => {
     end
   )
 
-  const server = http.createServer(router.handle).listen(56789)
+  const server = http.createServer(router.handle).listen(Number(port))
   console.log(server.address())
 
-  process.on('SIGTERM', () => {
-    tooBusyCheck.set(defaultValues)
-    process.exit(1)
-  })
+  ;['exit', 'SIGINT'].forEach(ev => process.on(ev, () => {
+    tooBusyCheck.reset()
+    server.close()
+  }))
 
   function createLoad () {
     makeLoad(100)
@@ -42,6 +40,27 @@ const start = () => {
   }
 }
 
-if (process.argv.includes('--run-too-busy-server')) {
-  start()
+function argv (args) {
+  const argv = args || process.argv.slice(2)
+  const cmd = { port: 56789 }
+
+  while (argv.length) {
+    const arg = argv.shift()
+
+    switch (arg) {
+      case '--run-too-busy-server':
+        cmd.run = true
+        break
+      case '--port':
+        cmd.port = argv.shift()
+        break
+    }
+  }
+  return cmd
+}
+
+const cmd = argv()
+
+if (cmd.run) {
+  start(cmd)
 }
