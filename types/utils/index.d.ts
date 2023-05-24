@@ -6,5 +6,6 @@ export { qs } from "./qs.js";
 export { random64 } from "./random64.js";
 export { safeServerShutdown } from "./safeServerShutdown.js";
 export { tooBusy } from "./tooBusy.js";
+export { timingSafeEqual } from "./timingSafeEqual.js";
 export { cookieParse, cookieSerialize } from "./cookie.js";
 export { escapeHtmlLit, escapeHtml } from "./escapeHtml.js";
