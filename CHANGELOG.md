@@ -1,3 +1,9 @@
+# 0.5.2 (2023-05-30)
+
+### chore:
+
+- fix linter issue; bump dependencies (#6bac6db)
+
 # 0.5.1 (2023-05-30)
 
 ### fix:
