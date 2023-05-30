@@ -1,3 +1,20 @@
+# 0.5.1 (2023-05-30)
+
+### fix:
+
+- types (#70892de)
+- Server: this.#server may be undefined (#af074c2)
+- utils/cookie: remove regex (#68d3633)
+- types (#e373295)
+
+### chore:
+
+- package with docs (#2a42eae)
+
+### test:
+
+- fix failing tests on utils/tooBusy (#b54822d)
+
 # 0.5.0 (2023-05-23)
 
 ### feat:
