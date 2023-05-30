@@ -23,6 +23,10 @@ export namespace tooBusy {
      * @returns {number} current lag in ms
      */
     function lag(): number;
+    /**
+     * reset function for testing
+     */
+    function reset(): void;
 }
 export type TooBusyOptions = {
     /**
