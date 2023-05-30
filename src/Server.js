@@ -94,7 +94,7 @@ export class Server extends Router {
    * @returns {string | AddressInfo | null}
    */
   address () {
-    return this.#server.address()
+    return this.#server?.address()
   }
 
   /**
