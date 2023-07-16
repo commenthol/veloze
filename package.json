@@ -46,14 +46,14 @@
     "mnemonist": "^0.39.5"
   },
   "devDependencies": {
-    "@types/node": "^18.16.19",
-    "c8": "^7.14.0",
-    "consolidate": "^0.16.0",
+    "@types/node": "^20.4.2",
+    "c8": "^8.0.0",
+    "consolidate": "^1.0.1",
     "ejs": "^3.1.9",
     "eslint": "^8.45.0",
     "eslint-config-standard": "^17.1.0",
     "eslint-plugin-import": "^2.27.5",
-    "eslint-plugin-n": "^15.7.0",
+    "eslint-plugin-n": "^16.0.1",
     "eslint-plugin-promise": "^6.1.1",
     "express": "^4.18.2",
     "express-hbs": "^2.4.0",
