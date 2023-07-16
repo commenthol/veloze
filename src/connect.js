@@ -24,7 +24,8 @@ export const connect = (...handlers) => {
   let errorHandler
   const stack = []
   let c = 0
-  for (const handler of handlers.flat(Infinity).filter(Boolean)) {
+  const flattenedHandlers = handlers.flat(Infinity).filter(Boolean)
+  for (const handler of flattenedHandlers) {
     assert(typeof handler === 'function', 'handler must be of type function')
     const isAsync = isAsyncFunction(handler)
     const arity = handler?.length
