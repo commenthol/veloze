@@ -72,7 +72,7 @@ export class Router {
      * @param {string|string[]|Handler} path
      * @param  {...(Handler|Handler[]|undefined)} handlers
      */
-    use(path: string | string[] | Handler, ...handlers: (Handler | Handler[] | undefined)[]): Router;
+    use(path: string | string[] | Handler, ...handlers: (Handler | Handler[] | undefined)[]): this;
     /**
      * @param {string} path
      * @param {...(Handler|Handler[]|undefined)} handlers

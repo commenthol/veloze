@@ -16,7 +16,7 @@ describeBool(!process.env.CI)('middleware/tooBusy', function () {
     child.on('error', (err) => {
       console.error(err)
     })
-    await nap(100)
+    await nap(200)
 
     const agent = supertest(`http://localhost:${port}`)
     let cycle = 0
