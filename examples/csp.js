@@ -5,7 +5,7 @@
  * requires a certificate; run `./scripts/certs.sh` before.
  */
 
-import { Server, csp, cspReport, send, redirect2Https } from '../src/index.js'
+import { Server, contentSec, cspReport, send, redirect2Https } from '../src/index.js'
 
 const page = `<!DOCTYPE html>
 <html lang="en-US">
@@ -38,7 +38,7 @@ const app = new Server({ key, cert })
 
 app.use(
   send,
-  csp({
+  contentSec({
     csp: {
       omitDefaults: true,
       'default-src': ['self'],

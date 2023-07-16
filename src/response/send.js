@@ -57,6 +57,10 @@ export function send (res, body, status, headers) {
     case 204:
     case 304:
       // strip irrelevant headers
+      res.removeHeader('content-encoding')
+      res.removeHeader('content-language')
+      res.removeHeader('content-length')
+      res.removeHeader('content-range')
       res.removeHeader('content-type')
       res.removeHeader('transfer-encoding')
       chunk = ''

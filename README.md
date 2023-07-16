@@ -52,8 +52,8 @@ MIT licensed
 
 # roadmap
 
-- static file serving...
 - examples
+- documentation
 
 [npm-badge]: https://badge.fury.io/js/veloze.svg
 [npm]: https://www.npmjs.com/package/veloze

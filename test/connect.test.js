@@ -37,17 +37,18 @@ describe('connect', function () {
     assert.equal(err.message, 'handler must be of type function')
   })
 
-  it('async handlers with next shall throw', function () {
+  it('async handlers with next shall not throw', function (done) {
     const req = new Request()
     const res = new Response()
-    let err
-    try {
-      const handler = async (req, res, next) => { next() }
-      connect(handler)(req, res, () => { })
-    } catch (e) {
-      err = e
-    }
-    assert.equal(err.message, 'async handlers must only have (req, res) as arguments')
+    const handler = async (req, res, next) => { next() }
+    connect(handler)(req, res, (err) => {
+      try {
+        assert.deepEqual(res, { body: [] })
+        done(err)
+      } catch (e) {
+        done(e)
+      }
+    })
   })
 
   it('only supports first error handler per route', function (done) {

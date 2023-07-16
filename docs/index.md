@@ -19,9 +19,10 @@ TODO:
 - [finalHandler](./middleware/finalHandler.md) TODO:
 - [queryParser](./middleware/queryParser.md) Parse the query string.
 - [renderEngine](./middleware/renderEngine.md) Using template render engines.
+- [requestId](./middleware/requestId.md) Sets a random request (correlation) id
 - [send, sendEtag](./middleware/send.md) res.send(), res.redirect()
 - [json, jsonEtag](./middleware/json.md) res.json()
-- [requestId](./middleware/requestId.md) Sets a random request (correlation) id
+- [serve](./middleware/serve.md) serve static files
 - [tooBusy](./middleware/tooBusy.md) Reject incoming requests if server is too
   busy.
 

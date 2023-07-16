@@ -9,11 +9,12 @@ import { logger as loggerFn } from 'debug-level'
 let loggerF = loggerFn
 
 /**
- * overwrite logger function
+ * overwrite logger function;
+ * call before any middleware
  * @param {LoggerFn} loggerFn
  */
 /* c8 ignore next 3 */
-export const setLoggerFn = (loggerFn) => {
+export const setLogger = (loggerFn) => {
   loggerF = loggerFn
 }
 

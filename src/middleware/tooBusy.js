@@ -22,7 +22,7 @@ export function tooBusy (options) {
   tooBusyCheck.set(options)
   const retryAfter = ms(options?.retryAfter || '15s', true)
 
-  return function _tooBusy (req, res, next) {
+  return function tooBusyMw (req, res, next) {
     if (tooBusyCheck()) {
       // @ts-expect-error
       res.setHeader('retry-after', retryAfter)

@@ -27,15 +27,14 @@ export const connect = (...handlers) => {
   const flattenedHandlers = handlers.flat(Infinity).filter(Boolean)
   for (const handler of flattenedHandlers) {
     assert(typeof handler === 'function', 'handler must be of type function')
-    const isAsync = isAsyncFunction(handler)
     const arity = handler?.length
+    const isAsync = isAsyncFunction(handler) && arity === 2
     if (arity === 4) {
       if (!errorHandler) {
         // connect only supports one error handler
         errorHandler = handler
       }
     } else {
-      assert(!isAsync || arity === 2, 'async handlers must only have (req, res) as arguments')
       if (++c % 100 === 0) {
         // allow event loop to kick in
         stack.push([breakSync, false])
@@ -50,6 +49,9 @@ export const connect = (...handlers) => {
    */
   return (req, res, done) => {
     let i = 0
+    /**
+     * @param {Error} [err] - The error object, if any.
+     */
     const run = (err) => {
       if (err) {
         errorHandler
@@ -69,8 +71,8 @@ export const connect = (...handlers) => {
         if (isAsync) {
           p.then(() => run()).catch(run)
         }
-      } catch (e) {
-        run(e)
+      } catch (/** @type {Error|any} */ err) {
+        run(err)
       }
     }
     run()

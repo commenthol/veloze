@@ -7,6 +7,7 @@ export { queryParser } from "./queryParser.js";
 export { requestId } from "./requestId.js";
 export { redirect2Https } from "./redirect2Https.js";
 export { renderEngine } from "./renderEngine.js";
+export { serve } from "./serve.js";
 export { tooBusy } from "./tooBusy.js";
 export { cacheControl, cacheControlByMethod } from "./cacheControl.js";
 export { contentSec, contentSecJson, cspReport } from "./contentSec.js";

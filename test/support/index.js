@@ -63,3 +63,15 @@ export const shouldHaveHeaders = (expected) => ({ headers }) => {
   const { date, connection, ...other } = headers
   assert.deepEqual(other, expected)
 }
+
+export const shouldHaveSomeHeaders = exp => ({ headers }) => {
+  Object.entries(exp).forEach(([header, value]) => {
+    if (value instanceof RegExp) {
+      assert.ok(value.test(headers[header]), `${header} ${value} !== ${headers[header]}`)
+    } else if (typeof value === 'boolean') {
+      assert.ok(header in headers, `${header} : ${headers[header]}`)
+    } else {
+      assert.strictEqual(headers[header], value)
+    }
+  })
+}
