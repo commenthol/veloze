@@ -34,9 +34,9 @@ TODO:
 
 Request utilities
 
-- [accept](./request/accept.md) TODO:
-- [getHeader](./request/getHeader.md) TODO:
-- [isHttpsProto](./request/isHttpsProto.md) TODO:
+- [accept](./request/accept.md) Parses the 'accept' request header
+- [getHeader](./request/getHeader.md) Returns the HTTP header from the request
+- [isHttpsProto](./request/isHttpsProto.md) Verify if request was made using TLS.
 
 # response
 

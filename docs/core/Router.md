@@ -4,7 +4,8 @@
 
 # Router
 
-`Router` is the core of veloze. It uses [`FindRoute`](../../src/FindRoute.js) a fast radix tree router.
+`Router` is the core of veloze. It uses [`FindRoute`](../../src/FindRoute.js) a
+fast radix tree router.
 
 It implements a
 
@@ -25,6 +26,7 @@ The following routing syntax can be used:
 
 <!-- !toc -->
 
+* [Router](#router)
 * [Usage](#usage)
   * [Mounting Routers](#mounting-routers)
 * [API](#api)
@@ -70,16 +72,17 @@ http.createServer(app.handle).listen(3000);
 ## Mounting Routers
 
 Routers can be mounted on each others, allowing for creation of larger
-applications using `.use(path, router)`. 
+applications using `.use(path, router)`.
 
-**NOTE:** A router **must** be mounted on a path which is not yet used by the app.
-Mounting different routers on the same path result in the last router to win.
+**NOTE:** A router **must** be mounted on a path which is not yet used by the
+app. Mounting different routers on the same path result in the last router to
+win.
 
 ```js
 import { Router } from "veloze";
 
 const router = new Router();
-router.mountPath = "/route"
+router.mountPath = "/route";
 router.get("/", (req, res) => {
   res.end("route");
 });
@@ -112,16 +115,16 @@ http.createServer(app.handle).listen(3000);
 
 ```js
 // router to `handler` for method `PURGE` on path '/notify'
-router.method('PURGE', '/notify', handler)
+router.method("PURGE", "/notify", handler);
 // router to connected handlers for multiple methods and paths
-router.method(['GET', 'DELETE'], ['/', '/foo'], handler1, [handler2, handler3])
+router.method(["GET", "DELETE"], ["/", "/foo"], handler1, [handler2, handler3]);
 ```
 
 ## all(paths, ...handlers)
 
 ```js
 // routes all methods for path /all to handler
-router.all('/all', handler)
+router.all("/all", handler);
 ```
 
 ## acl|...|get|post|put|delete|...|trace(paths, ...handlers)
@@ -130,9 +133,9 @@ shortcut methods for all a HTTP methods.
 
 ```js
 // router to `handler` for method `GET` on path '/get'
-router.get('/get', handler)
+router.get("/get", handler);
 // router to connected handlers for POST method and paths
-router.post(['/', '/foo'], handler1, [handler2, handler3])
+router.post(["/", "/foo"], handler1, [handler2, handler3]);
 ```
 
 ## use(path, ...handlers)
@@ -140,21 +143,21 @@ router.post(['/', '/foo'], handler1, [handler2, handler3])
 For path being a handler function all handlers are applied as preHook.
 
 ```js
-router.use(handler1, handler2)
+router.use(handler1, handler2);
 // is the same as calling
-router.preHook(handler1, handler2)
+router.preHook(handler1, handler2);
 ```
 
 With a path this mounts all handlers for all methods on that path.
 Most commonly used to mount routers on routers.
 
 ```js
-const sub = new Router()
-sub.mountPath = '/mount'
-sub.get('/', handler)
+const sub = new Router();
+sub.mountPath = "/mount";
+sub.get("/", handler);
 
-const router = new Router()
-router.use(sub.mountPath, sub.handle)
+const router = new Router();
+router.use(sub.mountPath, sub.handle);
 ```
 
 ## handle(req, res, next)
@@ -163,10 +166,10 @@ Serves a request with a response.
 Use for creating a server or mount routers on other routers.
 
 ```js
-const app = new Router()
-app.get('/', handler)
+const app = new Router();
+app.get("/", handler);
 
-http.createServer(app.handle).listen(3000)
+http.createServer(app.handle).listen(3000);
 ```
 
 ## preHook|postHook(...handlers)
@@ -175,18 +178,20 @@ Apply preHook handlers on all routes.
 Define first before setting any routes.
 
 ```js
-const handler = (name) => async (req, res) => { res.body = name }
-const endHandler = (req, res) => res.send()
+const handler = (name) => async (req, res) => {
+  res.body = name;
+};
+const endHandler = (req, res) => res.send();
 
-const app = new Router()
+const app = new Router();
 // define hooks first
-app.preHook(bodyParser(), sendEtag())
-app.postHook(endHandler)
+app.preHook(bodyParser(), sendEtag());
+app.postHook(endHandler);
 // then apply routes
-app.post('/', handler('home'))
+app.post("/", handler("home"));
 ```
 
-For route `POST /` the following handlers are connected:
+For route `POST /` the following handlers are connected in the above setup:
 
     bodyParser -> sendEtag -> handler -> endHandler
 

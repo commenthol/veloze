@@ -72,12 +72,12 @@ app.post("/records",
 The properties `code` and `info` follow the conventions from 
 [node:SystemError](https://nodejs.org/docs/latest/api/errors.html#class-systemerror).
 
-| type   | property      | description                                             |
-| ------ | ------------- | ------------------------------------------------------- |
-| number | \[number=500] | the HTTP status-code for this error; defaults to 500    |
-| string | \[message]    | error message; if empty defaults to HTTP status message |
-| Error  | \[cause]      | specific original cause of the error                    |
-| object | \[info]       | an object with details about the error condition        |
-| string | \[code]       | string representing the error code                      |
+| type          | property      | description                                             |
+| ------------- | ------------- | ------------------------------------------------------- |
+| number        | \[status=500] | the HTTP status-code for this error; defaults to 500    |
+| string        | \[message]    | error message; if empty defaults to HTTP status message |
+| Error\|object | \[cause]      | specific original cause of the error                    |
+| object        | \[info]       | an object with details about the error condition        |
+| string        | \[code]       | string representing the error code                      |
 
 [🔝 TOP](#top)

@@ -44,10 +44,11 @@ server.listen(443);
 
 ## new Server(serverOptions)
 
-**ServerOptions**
+**serverOptions**
 
 | type                | property                | description                                                                    |
 | ------------------- | ----------------------- | ------------------------------------------------------------------------------ |
+| object              | serverOptions           |                                                                                |
 | URL\|string\|Buffer | \[key]                  | Private key in PEM format. If URL then file is loaded from that file location. |
 | URL\|string\|Buffer | \[cert]                 | Cert chains in PEM format. One cert chain should be provided per private key.  |
 | URL\|string\|Buffer | \[pfx]                  | PFX or PKCS12 encoded private key and certificate chain.                       |
@@ -63,9 +64,14 @@ server.listen(443);
 Starts the server at `port`.  
 `hostname` defaults to "0.0.0.0" which listens on on all interfaces.
 
+| type   | property    | description |
+| ------ | ----------- | ----------- |
+| number | port        |             |
+| string | \[hostname] |             |
+
 ## address() 
 
-Obtain the address of the server.
+Returns the address of the server.
 
 [router]: ./Router.md
 
