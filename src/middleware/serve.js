@@ -7,7 +7,7 @@ import { redirect } from '../response/index.js'
 import { logger } from '../utils/logger.js'
 import {
   bytes,
-  mimeTypes,
+  mimeTypes as mimeTypesDef,
   rangeParser,
   compressStream
 } from '../utils/index.js'
@@ -37,7 +37,8 @@ const RE_TRAVERSE = /(?:^|[\\/])\.\.(?:[\\/]|$)/
  * @property {boolean} [compress=true] compresses all text files with file-size greater than compressThreshold
  * @property {number|string} [threshold=1024] compress threshold in bytes
  * @property {(req: Request, res: Response) => boolean} [filter] filter to decide if response shall be compressible. If `true` then response is potentially compressible
- * @property {CompressOptions} [compressOptions]
+ * @property {CompressOptions} [compressOptions] zlib.Options
+ * @property {Record<string,string>} [mimeTypes] Dictionary of MIME-types by file extension e.g. `{'.txt':'text/plain'}`
  */
 
 /**
@@ -53,7 +54,8 @@ export function serve (root, options) {
     strip,
     compress = true,
     compressOptions,
-    filter
+    filter,
+    mimeTypes = mimeTypesDef
   } = options || {}
 
   const threshold = bytes(options?.threshold) || 1024
@@ -128,7 +130,8 @@ export function serve (root, options) {
           compress,
           threshold,
           compressOptions,
-          filter
+          filter,
+          mimeTypes
         })
         return
       }
@@ -154,7 +157,8 @@ export function serve (root, options) {
             compress,
             threshold,
             compressOptions,
-            filter
+            filter,
+            mimeTypes
           })
           return
         }
@@ -183,6 +187,7 @@ export function serve (root, options) {
  *  threshold: number
  *  compressOptions?: CompressOptions
  *  filter?: (req: Request, res: Response) => boolean
+ *  mimeTypes: Record<string,string>
  * }} param0
  */
 const streamFile = (param0) => {
@@ -197,7 +202,8 @@ const streamFile = (param0) => {
     compress,
     threshold,
     compressOptions,
-    filter
+    filter,
+    mimeTypes
   } = param0
 
   const eTag = setEtag(res, stats)
@@ -223,7 +229,7 @@ const streamFile = (param0) => {
     return
   }
 
-  setMimeType(res, filename)
+  setMimeType(res, filename, mimeTypes)
 
   const stream = fs.createReadStream(filename, { start, end })
   stream.on('error', (err) => {
@@ -260,7 +266,7 @@ const setEtag = (res, stats) => {
  * @param {string} filename The name of the file.
  * @returns {string} mimeType
  */
-const setMimeType = (res, filename) => {
+const setMimeType = (res, filename, mimeTypes) => {
   const fileExtension = path.extname(filename)
   const mimeType = mimeTypes[fileExtension] || 'application/octet-stream'
   res.setHeader(CONTENT_TYPE, mimeType)

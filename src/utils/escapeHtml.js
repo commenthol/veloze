@@ -24,7 +24,7 @@ export const escapeHtml = string => String(string ?? '')
  * @param  {...any} vars
  * @returns {string}
  * @example
- * escapeHtmlLit(`<h1>${"One" & 'Two' &amp; Works}</h1>`)
+ * escapeHtmlLit`<h1>${"One" & 'Two' &amp; Works}</h1>`
  * // <h1>&quot;One&quot; &amp; &#39;Two&#39; &amp; Works</h1>;
  */
 export const escapeHtmlLit = (literals, ...vars) => literals

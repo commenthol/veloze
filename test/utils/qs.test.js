@@ -10,7 +10,7 @@ describe('utils/qs', function () {
     )
   })
 
-  it('shall only serialize first query value', function () {
+  it('shall only serialize last query value', function () {
     const obj = qs('name=1&name=2&name=3&name=4')
     assert.deepStrictEqual(
       obj,

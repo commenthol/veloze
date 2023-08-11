@@ -32,7 +32,6 @@ describe('middleware/finalHandler', function () {
     assert.deepEqual(log, {
       _warn: [
         {
-          level: 'warn',
           method: 'GET',
           msg: 'Bad Request',
           stack: undefined,
@@ -52,7 +51,6 @@ describe('middleware/finalHandler', function () {
     assert.deepEqual(log, {
       _info: [
         {
-          level: 'info',
           method: 'GET',
           msg: 'Strange Code',
           stack: undefined,
@@ -79,7 +77,6 @@ describe('middleware/finalHandler', function () {
     assert.deepEqual(log, {
       _error: [
         {
-          level: 'error',
           method: 'DELETE',
           msg: 'Internal Server Error',
           stack: 'Error: boom\n    at Context.<anonymous> (',

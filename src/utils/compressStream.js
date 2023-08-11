@@ -1,7 +1,7 @@
 import * as zlib from 'node:zlib'
 import { webcrypto as crypto } from 'node:crypto'
 import { acceptEncoding } from '../request/index.js'
-import { vary, getHeaderValue } from '../response/index.js'
+import { vary } from '../response/index.js'
 import {
   ACCEPT_ENCODING,
   CONTENT_ENCODING,
@@ -39,7 +39,7 @@ export function compressStream (req, res, options) {
 
   // Don't compress for Cache-Control: no-transform
   // https://tools.ietf.org/html/rfc7234#section-5.2.2.4
-  if (/\bno-transform\b/.test('' + getHeaderValue(res, 'cache-control'))) {
+  if (/\bno-transform\b/.test('' + res.getHeader('cache-control'))) {
     return
   }
 
@@ -49,7 +49,7 @@ export function compressStream (req, res, options) {
     vary(res, ACCEPT_ENCODING)
   }
 
-  const length = Number(getHeaderValue(res, CONTENT_LENGTH))
+  const length = Number(res.getHeader(CONTENT_LENGTH))
   if (
     !isCompressible ||
     req.method === 'HEAD' ||
@@ -93,7 +93,7 @@ export function compressStream (req, res, options) {
  * @returns {boolean}
  */
 export const filterCompressibleMimeType = (req, res) => {
-  const mimeType = getHeaderValue(res, CONTENT_TYPE)
+  const mimeType = res.getHeader(CONTENT_TYPE)
   return isCompressibleMimeType('' + mimeType)
 }
 

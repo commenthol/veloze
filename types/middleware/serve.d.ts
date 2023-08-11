@@ -7,7 +7,8 @@
  * @property {boolean} [compress=true] compresses all text files with file-size greater than compressThreshold
  * @property {number|string} [threshold=1024] compress threshold in bytes
  * @property {(req: Request, res: Response) => boolean} [filter] filter to decide if response shall be compressible. If `true` then response is potentially compressible
- * @property {CompressOptions} [compressOptions]
+ * @property {CompressOptions} [compressOptions] zlib.Options
+ * @property {Record<string,string>} [mimeTypes] Dictionary of MIME-types by file extension e.g. `{'.txt':'text/plain'}`
  */
 /**
  * @param {string|URL} root directory
@@ -44,7 +45,14 @@ export type ServeOptions = {
      * filter to decide if response shall be compressible. If `true` then response is potentially compressible
      */
     filter?: ((req: Request, res: Response) => boolean) | undefined;
+    /**
+     * zlib.Options
+     */
     compressOptions?: import("../utils/compressStream.js").CompressOptions | undefined;
+    /**
+     * Dictionary of MIME-types by file extension e.g. `{'.txt':'text/plain'}`
+     */
+    mimeTypes?: Record<string, string> | undefined;
 };
 export type Request = import('../types.js').Request;
 export type Response = import('../types.js').Response;

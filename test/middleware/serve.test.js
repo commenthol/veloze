@@ -2,7 +2,7 @@ import assert from 'node:assert/strict'
 import * as path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import supertest from 'supertest'
-import { serve, Server, Router } from '../../src/index.js'
+import { serve, Router } from '../../src/index.js'
 import { shouldHaveSomeHeaders } from '../support/index.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -177,7 +177,7 @@ describe('middleware/serve', () => {
   })
 
   it('should use an URL as root', async () => {
-    const app = new Server({ onlyHTTP1: true, gracefulTimeout: 0 })
+    const app = new Router()
     app.use('/*', serve(new URL('./fixtures', import.meta.url)))
     await supertest(app.handle, ST_OPTS)
       .get('/a.txt')
@@ -190,7 +190,7 @@ describe('middleware/serve', () => {
   })
 
   it('should different index', async () => {
-    const app = new Server({ onlyHTTP1: true, gracefulTimeout: 0 })
+    const app = new Router()
     app.use('/*', serve(new URL('./fixtures', import.meta.url), { index: 'a.txt' }))
     await supertest(app.handle, ST_OPTS)
       .get('/')
@@ -203,13 +203,31 @@ describe('middleware/serve', () => {
   })
 
   it('should strip path', async () => {
-    const app = new Server({ onlyHTTP1: true, gracefulTimeout: 0 })
+    const app = new Router()
     app.use('/static/*', serve(new URL('./fixtures', import.meta.url), { strip: '/static' }))
     await supertest(app.handle, ST_OPTS)
       .get('/static/a.txt')
       .expect(200, 'a text\n')
       .expect(shouldHaveSomeHeaders({
         'content-type': 'text/plain; charset=utf-8',
+        etag: /^W\/"/,
+        'content-length': '7'
+      }))
+  })
+
+  it('should serve unknown MIME type', async () => {
+    const app = new Router()
+    app.use('/*', serve(
+      new URL('./fixtures', import.meta.url),
+      { mimeTypes: { '.html': 'text/html' } }
+    ))
+
+    await supertest(app.handle, ST_OPTS)
+      .get('/a.txt')
+      .expect(200)
+      .expect(({ _body }) => assert.equal(_body.toString(), 'a text\n'))
+      .expect(shouldHaveSomeHeaders({
+        'content-type': 'application/octet-stream',
         etag: /^W\/"/,
         'content-length': '7'
       }))

@@ -58,7 +58,6 @@ const REFERRER_POLICY = [
 ]
 
 const X_DNS_PREFETCH_CONTROL = ['off', 'on']
-
 const CROSS_ORIGIN_EMBEDDER_POLICY = ['require-corp', 'unsafe-none', 'credentialless']
 const CROSS_ORIGIN_OPENER_POLICY = ['same-origin', 'same-origin-allow-popups', 'unsafe-none']
 const CROSS_ORIGIN_RESOURCE_POLICY = ['same-origin', 'same-site', 'cross-origin']
@@ -235,47 +234,40 @@ export function contentSec (options) {
     throw new Error('cspReportOnly needs report-uri')
   }
 
-  const headers = []
+  let cspNonce
+
+  const headers = {}
   if (csp) {
     const cspHeaderValue = buildCsp(csp)
-    let value = cspHeaderValue
-    let valueFn
 
-    if (cspHeaderValue.indexOf("'nonce'")) {
-      valueFn = (res) => {
-        const nonce = random64(16, true)
-        res.locals = res.locals || {}
-        res.locals.nonce = nonce
-        return cspHeaderValue.replaceAll("'nonce'", `'nonce-${nonce}'`)
-      }
-      value = ''
+    const cspHeaderName = cspReportOnly
+      ? 'content-security-policy-report-only'
+      : 'content-security-policy'
+
+    if (cspHeaderValue.includes("'nonce'")) {
+      cspNonce = setCspNonce(cspHeaderName, cspHeaderValue)
+    } else {
+      headers[cspHeaderName] = cspHeaderValue
     }
-
-    headers.push([
-      cspReportOnly
-        ? 'content-security-policy-report-only'
-        : 'content-security-policy',
-      value,
-      valueFn
-    ])
   }
+
   if (includes(REFERRER_POLICY, referrerPolicy)) {
-    headers.push(['referrer-policy', referrerPolicy])
+    headers['referrer-policy'] = referrerPolicy
   }
   if (xContentTypeOptions) {
-    headers.push(['x-content-type-options', 'nosniff'])
+    headers['x-content-type-options'] = 'nosniff'
   }
   if (includes(X_DNS_PREFETCH_CONTROL, xDnsPrefetchControl)) {
-    headers.push(['x-dns-prefetch-control', xDnsPrefetchControl])
+    headers['x-dns-prefetch-control'] = xDnsPrefetchControl
   }
   if (includes(CROSS_ORIGIN_EMBEDDER_POLICY, crossOriginEmbedderPolicy)) {
-    headers.push(['cross-origin-embedder-policy', crossOriginEmbedderPolicy])
+    headers['cross-origin-embedder-policy'] = crossOriginEmbedderPolicy
   }
   if (includes(CROSS_ORIGIN_OPENER_POLICY, crossOriginOpenerPolicy)) {
-    headers.push(['cross-origin-opener-policy', crossOriginOpenerPolicy])
+    headers['cross-origin-opener-policy'] = crossOriginOpenerPolicy
   }
   if (includes(CROSS_ORIGIN_RESOURCE_POLICY, crossOriginResourcePolicy)) {
-    headers.push(['cross-origin-resource-policy', crossOriginResourcePolicy])
+    headers['cross-origin-resource-policy'] = crossOriginResourcePolicy
   }
 
   // @ts-expect-error
@@ -286,13 +278,15 @@ export function contentSec (options) {
     const ext = extname(req.path || '')
 
     if (extensions.includes(ext)) {
-      for (const [header, value, valueFn] of headers) {
-        res.setHeader(header, value || (valueFn && valueFn(res)))
+      for (const [name, value] of Object.entries(headers)) {
+        res.setHeader(name, value)
       }
+      cspNonce && cspNonce(res)
     }
     if (strictTransportSecurity && isHttpsProto(req)) {
       res.setHeader('strict-transport-security', strictTransportSecurity)
     }
+
     next()
   }
 }
@@ -339,4 +333,12 @@ export function cspReport (options) {
       send(res, '', 204)
     }
   )
+}
+
+const setCspNonce = (headerName, headerValue) => (res) => {
+  const nonce = random64(16, true)
+  res.locals = res.locals || {}
+  res.locals.nonce = nonce
+  const value = headerValue.replaceAll("'nonce'", `'nonce-${nonce}'`)
+  res.setHeader(headerName, value)
 }

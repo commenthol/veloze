@@ -3,6 +3,6 @@
  *
  * @throws {TypeError}
  * @param {import("../types").Response} res
- * @param {string} value
+ * @param {string} reqHeader request header name
  */
-export function vary(res: import("../types").Response, value: string): void;
+export function vary(res: import("../types").Response, reqHeader: string): void;

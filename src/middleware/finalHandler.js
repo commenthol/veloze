@@ -73,7 +73,6 @@ export const finalHandler = (options) => {
         : 'error'
 
     log[level]({
-      level,
       status,
       method,
       id,

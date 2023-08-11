@@ -1,6 +1,7 @@
 export { bytes } from "./bytes.js";
 export { headerParser } from "./headerParser.js";
 export { isProdEnv } from "./isProdEnv.js";
+export { setLogger } from "./logger.js";
 export { mimeTypes } from "./mime.js";
 export { ms } from "./ms.js";
 export { qs } from "./qs.js";

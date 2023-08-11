@@ -8,7 +8,7 @@
  */
 
 import { Transform } from 'node:stream'
-import { onWriteHead, getHeaderValue } from '../response/index.js'
+import { onWriteHead } from '../response/index.js'
 import {
   bytes,
   filterCompressibleMimeType,
@@ -82,7 +82,7 @@ export function compress (options) {
 
       if (healTheBreach && bChunk &&
         filter(req, res) &&
-        isCompressibleMimeTypeHTB('' + getHeaderValue(res, CONTENT_TYPE))
+        isCompressibleMimeTypeHTB('' + res.getHeader(CONTENT_TYPE))
       ) {
         bChunk = Buffer.concat([
           bChunk,
