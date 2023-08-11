@@ -1,6 +1,8 @@
 import supertest from 'supertest'
 import { bodyParser, connect } from '../../src/index.js'
 
+const ST_OPTS = { http2: true }
+
 const echo = (req, res) => {
   const body = req.body
   const type = req.headers['content-type']
@@ -18,7 +20,7 @@ const final = (err, req, res, next) => {
 describe('middleware/bodyParser', function () {
   it('should parse url encoded', function () {
     const app = connect(bodyParser(), echo, final)
-    return supertest(app)
+    return supertest(app, ST_OPTS)
       .post('/')
       .send('test12345')
       .expect(200, {
@@ -30,7 +32,7 @@ describe('middleware/bodyParser', function () {
   it('should limit upload with 413', function () {
     const text = new Array(1000).fill('x').join('')
     const app = connect(bodyParser({ limit: 100 }), echo, final)
-    return supertest(app)
+    return supertest(app, ST_OPTS)
       .post('/')
       .send(text)
       .expect(413, {
@@ -40,7 +42,8 @@ describe('middleware/bodyParser', function () {
       // .then(res => console.log(res))
   })
 
-  it('should limit upload with 400 if content-length is wrong', function () {
+  // HTTP2 mode throws NGHTTP2_PROTOCOL_ERROR as not being a valid request node@20.5.0
+  it('should limit upload with 400 if content-length is wrong HTTP/1', function () {
     const text = new Array(2000).fill('x').join('')
     const app = connect(bodyParser({ limit: '1kB' }), echo, final)
     return supertest(app)
@@ -56,7 +59,7 @@ describe('middleware/bodyParser', function () {
   it('should parse json', function () {
     const payload = { test: 123 }
     const app = connect(bodyParser(), echo, final)
-    return supertest(app)
+    return supertest(app, ST_OPTS)
       .post('/')
       .set('content-type', 'application/json; charset=utf-8')
       .send(payload)
@@ -69,7 +72,7 @@ describe('middleware/bodyParser', function () {
   it('should fail with 400 on json parse', function () {
     const payload = 'test: 123'
     const app = connect(bodyParser(), echo, final)
-    return supertest(app)
+    return supertest(app, ST_OPTS)
       .post('/')
       .set('content-type', 'application/json')
       .send(payload)
@@ -82,7 +85,7 @@ describe('middleware/bodyParser', function () {
   it('should parse urlencoded', function () {
     const payload = { test: 123, foo: 'bar', emoji: '🌈🦄' }
     const app = connect(bodyParser(), echo, final)
-    return supertest(app)
+    return supertest(app, ST_OPTS)
       .post('/')
       .type('form')
       .send(payload)
@@ -95,7 +98,7 @@ describe('middleware/bodyParser', function () {
   it('should parse raw', function () {
     const payload = Buffer.from('abcdefghij')
     const app = connect(bodyParser(), echo, final)
-    return supertest(app)
+    return supertest(app, ST_OPTS)
       .post('/')
       .type('application/octet-stream')
       .send(payload)
@@ -111,7 +114,7 @@ describe('middleware/bodyParser', function () {
   it('should parse raw if mime-type is set to text/plain', function () {
     const payload = Buffer.from('abcdefghij')
     const app = connect(bodyParser({ typeRaw: 'text/plain' }), echo, final)
-    return supertest(app)
+    return supertest(app, ST_OPTS)
       .post('/')
       .type('text/plain')
       .send(payload)
@@ -124,25 +127,25 @@ describe('middleware/bodyParser', function () {
       })
   })
 
-  it('should pass on get', function () {
+  it('should pass on get HTTP/1', function () {
     const payload = { test: 123, foo: 'bar', emoji: '🌈🦄' }
     const app = connect(bodyParser(), echo, final)
     return supertest(app)
       .get('/')
       .type('json')
-      .send(payload)
+      .send(payload) // get + send won't work in HTTP/2
       .expect(200, {
         type: 'application/json'
       })
   })
 
-  it('should parse get if set in methods', function () {
+  it('should parse get if set in methods HTTP/1', function () {
     const payload = { test: 123, foo: 'bar', emoji: '🌈🦄' }
     const app = connect(bodyParser({ methods: ['GET'] }), echo, final)
     return supertest(app)
       .get('/')
       .type('json')
-      .send(payload)
+      .send(payload) // get + send won't work in HTTP/2
       .expect(200, {
         body: { test: 123, foo: 'bar', emoji: '🌈🦄' },
         type: 'application/json'
@@ -152,7 +155,7 @@ describe('middleware/bodyParser', function () {
   it('shall correct limit', function () {
     const payload = null
     const app = connect(bodyParser({ limit: 'aaa' }), echo, final)
-    return supertest(app)
+    return supertest(app, ST_OPTS)
       .post('/')
       .type('json')
       .send(payload)
@@ -165,7 +168,7 @@ describe('middleware/bodyParser', function () {
   it('shall only parse json', function () {
     const payload = null
     const app = connect(bodyParser.json(), echo, final)
-    return supertest(app)
+    return supertest(app, ST_OPTS)
       .post('/')
       .type('json')
       .send(payload)
@@ -178,7 +181,7 @@ describe('middleware/bodyParser', function () {
   it('shall only parse json fails', function () {
     const payload = 'test=1'
     const app = connect(bodyParser.json(), echo, final)
-    return supertest(app)
+    return supertest(app, ST_OPTS)
       .post('/')
       .type('form')
       .send(payload)
@@ -190,7 +193,7 @@ describe('middleware/bodyParser', function () {
   it('shall only parse urlEncoded', function () {
     const payload = null
     const app = connect(bodyParser.urlEncoded(), echo, final)
-    return supertest(app)
+    return supertest(app, ST_OPTS)
       .post('/')
       .type('json')
       .send(payload)
@@ -202,7 +205,7 @@ describe('middleware/bodyParser', function () {
   it('shall only parse urlEncoded fails', function () {
     const payload = { test: 1 }
     const app = connect(bodyParser.urlEncoded(), echo, final)
-    return supertest(app)
+    return supertest(app, ST_OPTS)
       .post('/')
       .type('json')
       .send(payload)
@@ -214,7 +217,7 @@ describe('middleware/bodyParser', function () {
   it('shall only parse raw', function () {
     const payload = 'abcd'
     const app = connect(bodyParser.raw({ typeRaw: 'text/plain' }), echo, final)
-    return supertest(app)
+    return supertest(app, ST_OPTS)
       .post('/')
       .set('content-type', 'text/plain')
       .send(payload)
@@ -227,7 +230,7 @@ describe('middleware/bodyParser', function () {
   it('shall only parse raw fails', function () {
     const payload = { test: 1 }
     const app = connect(bodyParser.urlEncoded(), echo, final)
-    return supertest(app)
+    return supertest(app, ST_OPTS)
       .post('/')
       .type('json')
       .send(payload)

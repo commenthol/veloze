@@ -3,7 +3,7 @@ import { json } from '../../src/response/json.js'
 import { REQ_METHOD_HEAD } from '../../src/constants.js'
 import { shouldNotHaveHeader } from '../support/index.js'
 
-describe('middleware/json', function () {
+describe('response/json', function () {
   describe('json(res)', function () {
     it('should set body to ""', async function () {
       const handle = (req, res) => json(res)

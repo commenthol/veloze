@@ -68,8 +68,10 @@ export const shouldHaveSomeHeaders = exp => ({ headers }) => {
   Object.entries(exp).forEach(([header, value]) => {
     if (value instanceof RegExp) {
       assert.ok(value.test(headers[header]), `${header} ${value} !== ${headers[header]}`)
-    } else if (typeof value === 'boolean') {
+    } else if (typeof value === 'boolean' && value === true) {
       assert.ok(header in headers, `${header} : ${headers[header]}`)
+    } else if (typeof value === 'boolean' && value === false) {
+      assert.ok(!(header in headers), `${header} : ${headers[header]}`)
     } else {
       assert.strictEqual(headers[header], value)
     }

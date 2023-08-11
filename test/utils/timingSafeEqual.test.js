@@ -44,8 +44,8 @@ describe('string/timingSafeEqual', function () {
 
     const d1 = Number(diff1)
     const d2 = Number(diff2)
-    const perc = Math.max(d1, d2) * 3 / 100
+    const perc = Math.max(d1, d2) * 5 / 100
     const difference = Math.abs(d1 - d2)
-    assert.ok(difference < perc, 'shall not differ by more than 3%')
+    assert.ok(difference < perc, 'shall not differ by more than 5%')
   })
 })

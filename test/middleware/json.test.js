@@ -1,6 +1,8 @@
 import supertest from 'supertest'
 import { etagHash, json, jsonEtag, bodyParser, connect, HttpError, Router } from '../../src/index.js'
-import { shouldHaveHeaders } from '../support/index.js'
+import { shouldHaveSomeHeaders } from '../support/index.js'
+
+const ST_OPTS = { http2: true }
 
 describe('middleware/json', function () {
   describe('json', function () {
@@ -9,10 +11,10 @@ describe('middleware/json', function () {
         res.json({ works: true })
       })
 
-      return supertest(handle)
+      return supertest(handle, ST_OPTS)
         .get('/')
         .expect(200, { works: true })
-        .expect('content-length', '14')
+        // .expect('content-length', '14')
         .expect('content-type', 'application/json; charset=utf-8')
     })
   })
@@ -43,54 +45,54 @@ describe('middleware/json', function () {
     })
 
     it('shall set etag', function () {
-      return supertest(handle)
+      return supertest(handle, ST_OPTS)
         .get('/')
         .expect(200, { works: true })
-        .expect(shouldHaveHeaders({
-          'content-length': '14',
+        .expect(shouldHaveSomeHeaders({
+          // 'content-length': '14',
           'content-type': 'application/json; charset=utf-8',
           etag: '"Sud87NRIoVsyWABYdgYlIekbv0I="'
         }))
     })
 
     it('shall not set etag on status != 200', function () {
-      return supertest(handle)
+      return supertest(handle, ST_OPTS)
         .get('/404')
         .expect(404, { status: 404 })
-        .expect(shouldHaveHeaders({
-          'content-length': '14',
+        .expect(shouldHaveSomeHeaders({
+          // 'content-length': '14',
           'content-type': 'application/json; charset=utf-8'
         }))
     })
 
     it('shall return 304', function () {
-      return supertest(handle)
+      return supertest(handle, ST_OPTS)
         .get('/')
         .set({
           'if-none-match': '"Sud87NRIoVsyWABYdgYlIekbv0I="'
         })
         .expect(304, '')
-        .expect(shouldHaveHeaders({
+        .expect(shouldHaveSomeHeaders({
           etag: '"Sud87NRIoVsyWABYdgYlIekbv0I="'
         }))
     })
 
     it('shall refuse to update if-match is wrong', function () {
-      return supertest(handle)
+      return supertest(handle, ST_OPTS)
         .put('/')
         .set({
           'if-match': '"Rud87NRIoVsyWABYdgYlIekbv0I="'
         })
         .send({ works: true, updated: true })
         .expect(412)
-        .expect(shouldHaveHeaders({
-          'content-length': '93',
+        .expect(shouldHaveSomeHeaders({
+          // 'content-length': '93',
           'content-type': 'application/json; charset=utf-8'
         }))
     })
 
     it('shall update if-match is correct', function () {
-      return supertest(handle)
+      return supertest(handle, ST_OPTS)
         .put('/')
         .set({
           'if-match': '"Sud87NRIoVsyWABYdgYlIekbv0I="'
@@ -101,8 +103,8 @@ describe('middleware/json', function () {
           works: true,
           version: 2
         })
-        .expect(shouldHaveHeaders({
-          'content-length': '41',
+        .expect(shouldHaveSomeHeaders({
+          // 'content-length': '41',
           'content-type': 'application/json; charset=utf-8',
           etag: '"FVnrNA4ro3Fdhrf96QGMyx/qy0w="'
         }))

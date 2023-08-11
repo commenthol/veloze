@@ -27,7 +27,7 @@ const start = ({ port }) => {
   )
 
   const server = http.createServer(router.handle).listen(Number(port))
-  console.log(server.address())
+  // console.log(server.address())
 
   ;['exit', 'SIGINT'].forEach(ev => process.on(ev, () => {
     tooBusyCheck.reset()

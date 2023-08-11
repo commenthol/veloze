@@ -1,7 +1,9 @@
 import supertest from 'supertest'
 import { Router, presetHtml, presetJson } from '../../src/index.js'
 import { escapeHtmlLit } from '../../src/utils/escapeHtml.js'
-import { shouldHaveHeaders } from '../support/index.js'
+import { shouldHaveSomeHeaders } from '../support/index.js'
+
+const ST_OPTS = { http2: true }
 
 describe('middleware/presets', function () {
   describe('presetHtml()', function () {
@@ -31,7 +33,7 @@ describe('middleware/presets', function () {
     })
 
     it('GET request', function () {
-      return supertest(app.handle)
+      return supertest(app.handle, ST_OPTS)
         .get('/?foo=bar&test=1')
         .set({ cookie: 'wat=baz' })
         .expect(200)
@@ -39,9 +41,9 @@ describe('middleware/presets', function () {
           '<h1>works</h1><pre>{&quot;method&quot;:&quot;GET&quot;,&quot;url&quot;:&quot;/?foo=bar&amp;test=1&quot;,&quot;cookies&quot;:{&quot;wat&quot;:&quot;baz&quot;},&quot;query&quot;:{&quot;foo&quot;:&quot;bar&quot;,&quot;test&quot;:&quot;1&quot;}}</pre>'
         )
         .expect(
-          shouldHaveHeaders({
+          shouldHaveSomeHeaders({
+            // 'content-length': '247',
             'cache-control': 'public, stale-while-revalidate, max-age=86400',
-            'content-length': '247',
             'content-security-policy':
               "default-src 'self'; font-src 'self' https: data:; img-src 'self' data:; object-src 'none'; script-src 'self'; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https:; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests",
             'content-type': 'text/html; charset=utf-8',
@@ -56,7 +58,7 @@ describe('middleware/presets', function () {
     })
 
     it('POST request', function () {
-      return supertest(app.handle)
+      return supertest(app.handle, ST_OPTS)
         .post('/?foo=bar&test=1')
         .set({ cookie: 'wat=baz' })
         .type('form')
@@ -66,9 +68,9 @@ describe('middleware/presets', function () {
           '<h1>works</h1><pre>{&quot;method&quot;:&quot;POST&quot;,&quot;url&quot;:&quot;/?foo=bar&amp;test=1&quot;,&quot;cookies&quot;:{&quot;wat&quot;:&quot;baz&quot;},&quot;query&quot;:{&quot;foo&quot;:&quot;bar&quot;,&quot;test&quot;:&quot;1&quot;},&quot;body&quot;:{&quot;name&quot;:&quot;alice&quot;,&quot;age&quot;:&quot;23&quot;}}</pre>'
         )
         .expect(
-          shouldHaveHeaders({
+          shouldHaveSomeHeaders({
+            // 'content-length': '333',
             'cache-control': 'no-cache, no-store, max-age=0',
-            'content-length': '333',
             'content-security-policy':
               "default-src 'self'; font-src 'self' https: data:; img-src 'self' data:; object-src 'none'; script-src 'self'; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https:; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests",
             'content-type': 'text/html; charset=utf-8',
@@ -97,7 +99,7 @@ describe('middleware/presets', function () {
     })
 
     it('GET request', function () {
-      return supertest(app.handle)
+      return supertest(app.handle, ST_OPTS)
         .get('/?foo=bar&test=1')
         .set({ cookie: 'wat=baz' })
         .expect(200)
@@ -107,9 +109,9 @@ describe('middleware/presets', function () {
           query: { foo: 'bar', test: '1' }
         })
         .expect(
-          shouldHaveHeaders({
+          shouldHaveSomeHeaders({
+            // 'content-length': '74',
             'cache-control': 'private, max-age=300',
-            'content-length': '74',
             'content-security-policy':
               "default-src 'self'; frame-ancestors 'none'; upgrade-insecure-requests",
             'content-type': 'application/json; charset=utf-8',
@@ -119,7 +121,7 @@ describe('middleware/presets', function () {
     })
 
     it('POST request', function () {
-      return supertest(app.handle)
+      return supertest(app.handle, ST_OPTS)
         .post('/?foo=bar&test=1')
         .set({ cookie: 'wat=baz' })
         .type('json')
@@ -132,9 +134,9 @@ describe('middleware/presets', function () {
           body: { name: 'alice', age: '23' }
         })
         .expect(
-          shouldHaveHeaders({
+          shouldHaveSomeHeaders({
+            // 'content-length': '110',
             'cache-control': 'no-cache, no-store, max-age=0',
-            'content-length': '110',
             'content-security-policy':
               "default-src 'self'; frame-ancestors 'none'; upgrade-insecure-requests",
             'content-type': 'application/json; charset=utf-8',

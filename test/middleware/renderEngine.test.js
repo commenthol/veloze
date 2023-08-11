@@ -54,9 +54,11 @@ const finalHandlerTest = (result) => (err, req, res, next) => {
   finalHandler({ log })(err, req, res, next)
 }
 
+const ST_OPTS = { http2: true }
+
 describe('middleware/render', function () {
   it('shall render ejs template', function () {
-    return supertest(createApp().handle)
+    return supertest(createApp().handle, ST_OPTS)
       .get('/ejs')
       .expect(200)
       .expect('content-type', 'text/html; charset=utf-8')
@@ -64,7 +66,7 @@ describe('middleware/render', function () {
   })
 
   it('shall lookup template at test/index.ejs', function () {
-    return supertest(createApp().handle)
+    return supertest(createApp().handle, ST_OPTS)
       .get('/ejs/test-index')
       .expect(200)
       .expect('content-type', 'text/html; charset=utf-8')
@@ -75,7 +77,7 @@ describe('middleware/render', function () {
     const result = {}
     const finalHandler = finalHandlerTest(result)
 
-    return supertest(createApp({ finalHandler }).handle)
+    return supertest(createApp({ finalHandler }).handle, ST_OPTS)
       .get('/ejs/not-there')
       .expect(500, /<h2>Template Error<\/h2>/)
       .expect('content-type', 'text/html; charset=utf-8')
@@ -88,7 +90,7 @@ describe('middleware/render', function () {
     const result = {}
     const finalHandler = finalHandlerTest(result)
 
-    return supertest(createApp({ finalHandler }).handle)
+    return supertest(createApp({ finalHandler }).handle, ST_OPTS)
       .get('/ejs/error')
       .expect(500, /<h2>Template Error<\/h2>/)
       .expect('content-type', 'text/html; charset=utf-8')
@@ -98,7 +100,7 @@ describe('middleware/render', function () {
   })
 
   it('shall render hbs template', function () {
-    return supertest(createApp().handle)
+    return supertest(createApp().handle, ST_OPTS)
       .get('/hbs')
       .expect(200)
       .expect('content-type', 'text/html; charset=utf-8')
