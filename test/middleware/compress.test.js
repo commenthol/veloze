@@ -390,12 +390,12 @@ describe('middleware/compress', function () {
     const app = createApp({ threshold: 0 }, (req, res) => {
       serverRes = res
       res.setHeader('content-type', 'text/plain')
+      res.write('start')
       res.on('drain', function () {
         assert.ok(res.write('end') !== false)
         res.end()
       })
       res.on('finish', cb)
-      res.write('start')
       pressure()
     })
 

@@ -1,5 +1,5 @@
-import * as fsp from 'node:fs/promises'
 import * as fs from 'node:fs'
+import * as fsp from 'node:fs/promises'
 import * as path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { HttpError } from '../HttpError.js'
@@ -12,10 +12,10 @@ import {
   compressStream
 } from '../utils/index.js'
 import {
-  REQ_METHOD_HEAD,
   CONTENT_LENGTH,
   CONTENT_RANGE,
-  CONTENT_TYPE
+  CONTENT_TYPE,
+  REQ_METHOD_HEAD
 } from '../constants.js'
 
 /** @typedef {import('../types.js').Request} Request */

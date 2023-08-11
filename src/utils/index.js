@@ -13,6 +13,7 @@ export { tooBusy } from './tooBusy.js'
 export { timingSafeEqual } from './timingSafeEqual.js'
 export {
   compressStream,
+  filterCompressibleMimeType,
   isCompressibleMimeType,
   isCompressibleMimeTypeHTB,
   healTheBreachRandomSpaces

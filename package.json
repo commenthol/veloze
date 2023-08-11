@@ -32,7 +32,7 @@
     "all": "npm-run-all lint coverage types",
     "ci": "CI=true npm-run-all lint coverage types",
     "changelog": "conv-changelog -t groups -o",
-    "coverage": "c8 -r html npm t",
+    "coverage": "c8 npm t",
     "lint": "eslint --ext js .",
     "test": "mocha",
     "debug:http2": "NODE_DEBUG_NATIVE=http2 mocha",
@@ -47,11 +47,11 @@
     "mnemonist": "^0.39.5"
   },
   "devDependencies": {
-    "@types/node": "^20.4.9",
+    "@types/node": "^20.4.10",
     "c8": "^8.0.1",
     "consolidate": "^1.0.1",
     "ejs": "^3.1.9",
-    "eslint": "^8.46.0",
+    "eslint": "^8.47.0",
     "eslint-config-standard": "^17.1.0",
     "eslint-plugin-import": "^2.28.0",
     "eslint-plugin-n": "^16.0.1",

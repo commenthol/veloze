@@ -8,9 +8,10 @@
  */
 
 import { Transform } from 'node:stream'
-import { onWriteHead } from '../response/index.js'
+import { onWriteHead, getHeaderValue } from '../response/index.js'
 import {
   bytes,
+  filterCompressibleMimeType,
   isCompressibleMimeTypeHTB,
   healTheBreachRandomSpaces,
   compressStream
@@ -29,7 +30,11 @@ import { CONTENT_LENGTH, CONTENT_TYPE } from '../constants.js'
  * @returns {import('../types.js').Handler}
  */
 export function compress (options) {
-  const { healTheBreach = true, compressOptions, filter } = options || {}
+  const {
+    healTheBreach = true,
+    compressOptions,
+    filter = filterCompressibleMimeType
+  } = options || {}
 
   const threshold = bytes(options?.threshold ?? 1024)
 
@@ -75,8 +80,10 @@ export function compress (options) {
 
       let bChunk = toBuffer(chunk, encoding)
 
-      const mimeType = res.getHeader(CONTENT_TYPE)
-      if (healTheBreach && bChunk && isCompressibleMimeTypeHTB(mimeType)) {
+      if (healTheBreach && bChunk &&
+        filter(req, res) &&
+        isCompressibleMimeTypeHTB('' + getHeaderValue(res, CONTENT_TYPE))
+      ) {
         bChunk = Buffer.concat([
           bChunk,
           Buffer.from(healTheBreachRandomSpaces())

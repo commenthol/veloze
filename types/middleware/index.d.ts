@@ -1,6 +1,7 @@
 export { basicAuth } from "./basicAuth.js";
 export { bodyParser } from "./bodyParser.js";
 export { cookieParser } from "./cookieParser.js";
+export { compress } from "./compress.js";
 export { cors } from "./cors.js";
 export { finalHandler } from "./finalHandler.js";
 export { queryParser } from "./queryParser.js";

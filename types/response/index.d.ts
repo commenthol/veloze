@@ -1,3 +1,4 @@
+export { getHeaderValue } from "./getHeaderValue.js";
 export { json } from "./json.js";
 export { onWriteHead } from "./onWriteHead.js";
 export { redirect } from "./redirect.js";

@@ -13,7 +13,7 @@ export function compressStream(req: Request, res: Response, options?: {
     threshold?: number | undefined;
     filter?: ((req: Request, res: Response) => boolean) | undefined;
 } | undefined): import('node:stream').Transform | undefined;
-export function getHeader(res: any, header: any): any;
+export function filterCompressibleMimeType(req: Request, res: Response): boolean;
 export function isCompressibleMimeType(mimeType: string): boolean;
 export function isCompressibleMimeTypeHTB(mimeType: string): boolean;
 export function healTheBreachRandomSpaces(): string;
