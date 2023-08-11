@@ -60,7 +60,9 @@ export const connect = (...handlers) => {
         return
       }
       const [handler, isAsync] = stack[i++] || []
-      if (res.writableEnded) {
+      // res.writablePiped is needed to stop stack processing if response is
+      // streamed.
+      if (res.writableEnded || res.writablePiped) {
         return
       } else if (!handler) {
         done()

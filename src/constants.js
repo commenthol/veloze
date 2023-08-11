@@ -13,7 +13,9 @@ export const MIME_HTML_UTF8 = MIME_HTML + CHARSET_UTF8
 export const MIME_JSON_UTF8 = MIME_JSON + CHARSET_UTF8
 
 export const CONTENT_LENGTH = 'content-length'
-
+export const CONTENT_RANGE = 'content-range'
+export const CONTENT_ENCODING = 'content-encoding'
+export const ACCEPT_ENCODING = 'accept-encoding'
 export const CONTENT_SECURITY_POLICY = 'content-security-policy'
 
 export const X_REQUEST_ID = 'x-request-id'

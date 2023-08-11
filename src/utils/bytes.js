@@ -9,7 +9,7 @@ const RE = /^([\d.]+)\s?(b|k|m|g|t|p)?/
  * - gb for gigabytes
  * - tb for terabytes
  * - pb for petabytes
- * @param {string|number} val
+ * @param {string|number|undefined} val
  * @returns {number|undefined}
  * @example
  * bytes('100kB') = 102400

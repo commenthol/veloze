@@ -11,3 +11,4 @@ export { tooBusy } from "./tooBusy.js";
 export { timingSafeEqual } from "./timingSafeEqual.js";
 export { cookieParse, cookieSerialize } from "./cookie.js";
 export { escapeHtmlLit, escapeHtml } from "./escapeHtml.js";
+export { compressStream, isCompressibleMimeType, isCompressibleMimeTypeHTB, healTheBreachRandomSpaces } from "./compressStream.js";

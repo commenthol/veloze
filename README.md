@@ -27,9 +27,12 @@ Comes with:
 - Cookie-parser and response helpers to set and clear cookies
 - Too Busy middleware to prevent server from overload
 - Support for server-side rendering engines
-- Safe final handler to prevent info leakage from internal error exposure in responses
+- Safe final handler to prevent info leakage from internal error exposure in
+  responses
 - res.send() to send any content with or without Etag generation
 - res.json() to respond with a JSON object, with or without Etag generation
+- Serve middleware to serve static files with brotli, gzip, deflate
+  compression
 
 Project Goals:
 - Provide a fast and modern web-server

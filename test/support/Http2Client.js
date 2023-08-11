@@ -4,11 +4,11 @@ const PATH = ':path'
 const METHOD = ':method'
 
 export class Http2Client {
-  #connect = { [METHOD]: 'GET', [PATH]: '/' }
-  #options = {}
-  #baseUrl
-  #body
-  #server
+  _connect = { [METHOD]: 'GET', [PATH]: '/' }
+  _options = {}
+  _baseUrl
+  _body
+  _server
 
   /**
    * @param {string|import('../types').Handler} baseUrl
@@ -18,20 +18,20 @@ export class Http2Client {
     if (typeof baseUrl === 'function') {
       const handle = baseUrl
       const httpsOptionsExt = { allowHTTP1: true, ...httpsOptions }
-      this.#server = httpsOptions
+      this._server = httpsOptions
         ? http2.createSecureServer(httpsOptionsExt, handle).listen()
         : http2.createServer(handle).listen()
-      const { port } = this.#server.address()
+      const { port } = this._server.address()
       const proto = httpsOptions ? 'https' : 'http'
-      this.#baseUrl = `${proto}://localhost:${port}`
+      this._baseUrl = `${proto}://localhost:${port}`
     } else {
-      this.#baseUrl = baseUrl
+      this._baseUrl = baseUrl
     }
   }
 
   method (method, path) {
-    this.#connect[METHOD] = method.toUpperCase()
-    this.#connect[PATH] = path
+    this._connect[METHOD] = method.toUpperCase()
+    this._connect[PATH] = path
     return this
   }
 
@@ -60,32 +60,46 @@ export class Http2Client {
   }
 
   set (headers) {
-    Object.assign(this.#connect, headers)
+    Object.assign(this._connect, headers)
     return this
   }
 
   send (body) {
-    this.#body = body
+    this._body = body
     if (typeof body !== 'string') {
-      this.#body = JSON.stringify()
-      this.#connect['content-type'] = 'application/json'
+      this._body = JSON.stringify()
+      this._connect['content-type'] = 'application/json'
     }
-    this.#connect['content-length'] = Buffer.byteLength(this.#body)
+    this._connect['content-length'] = Buffer.byteLength(this._body)
     return this
   }
 
   disableTLSCerts () {
-    this.#options.rejectUnauthorized = false
+    this._options.rejectUnauthorized = false
     return this
+  }
+
+  request () {
+    const client = http2.connect(this._baseUrl, this._options)
+    client.on('error', (_err) => {
+      client.close()
+      this._server && this._server.close()
+    })
+    const req = client.request(this._connect)
+    req.on('end', () => {
+      client.close()
+      this._server && this._server.close()
+    })
+    return req
   }
 
   then (resolveF) {
     return new Promise((resolve, reject) => {
-      const client = http2.connect(this.#baseUrl, this.#options)
+      const client = http2.connect(this._baseUrl, this._options)
       client.on('error', (err) => {
         reject(err)
       })
-      const req = client.request(this.#connect)
+      const req = client.request(this._connect)
       const res = { headers: {}, raw: Buffer.alloc(0) }
       req.on('response', (headers) => {
         for (const [name, value] of Object.entries(headers)) {
@@ -116,9 +130,9 @@ export class Http2Client {
         client.close()
         reject(err)
       })
-      req.end(this.#body)
+      req.end(this._body)
     }).finally(() => {
-      this.#server && this.#server.close()
+      this._server && this._server.close()
     })
   }
 
@@ -126,7 +140,7 @@ export class Http2Client {
     return this.then(() => { })
       .catch(errorF)
       .finally(() => {
-        this.#server && this.#server.close()
+        this._server && this._server.close()
       })
   }
 }

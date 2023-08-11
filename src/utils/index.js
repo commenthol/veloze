@@ -11,3 +11,9 @@ export { rangeParser } from './rangeParser.js'
 export { safeServerShutdown } from './safeServerShutdown.js'
 export { tooBusy } from './tooBusy.js'
 export { timingSafeEqual } from './timingSafeEqual.js'
+export {
+  compressStream,
+  isCompressibleMimeType,
+  isCompressibleMimeTypeHTB,
+  healTheBreachRandomSpaces
+} from './compressStream.js'

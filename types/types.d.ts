@@ -97,6 +97,11 @@ export interface Response extends http.ServerResponse {
    * needs renderEngine middleware
    */
   render?: (name: string, locals: Record<string, any>) => Promise<void>
+  /**
+   * set flag for connect to indicate that response is ended by a streaming
+   * pipeline. Causes connect to exit stack loop.
+   */
+  writablePiped?: boolean
 }
 
 export function HandlerCb (
