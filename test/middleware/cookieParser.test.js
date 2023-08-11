@@ -3,6 +3,8 @@ import supertest from 'supertest'
 import sinon from 'sinon'
 import { Router, cookieParser, send } from '../../src/index.js'
 
+const ST_OPTS = { http2: true }
+
 describe('middleware/cookieParser', function () {
   let app
   before(function () {
@@ -32,7 +34,7 @@ describe('middleware/cookieParser', function () {
   })
 
   it('shall parse cookies, set and clear cookie in response', function () {
-    return supertest(app.handle)
+    return supertest(app.handle, ST_OPTS)
       .get('/')
       .set({ cookie: 'foo=bar; test=1' })
       .expect({ foo: 'bar', test: '1' })
@@ -48,7 +50,7 @@ describe('middleware/cookieParser', function () {
   })
 
   it('shall add req.cookies object', function () {
-    return supertest(app.handle)
+    return supertest(app.handle, ST_OPTS)
       .get('/cookie')
       .expect(200, {})
   })

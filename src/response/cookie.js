@@ -28,7 +28,9 @@ export function setCookie (res, name, value, opts = {}) {
   }
 
   const cookie = cookieSerialize(name, String(value), _opts)
-  res.appendHeader('set-cookie', cookie)
+  // @ts-expect-error
+  const values = [...(res.getHeader('set-cookie') || []), cookie]
+  res.setHeader('set-cookie', values)
 
   return res
 }
