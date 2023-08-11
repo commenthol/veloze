@@ -1,6 +1,6 @@
-[◀︎ Router](../core/Router.md)
+[◀︎ core/Router](../core/Router.md)
 [🛖](../index.md)
-[HttpError ▶](../core/HttpError.md)
+[core/HttpError ▶](../core/HttpError.md)
 
 # Server
 

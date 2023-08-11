@@ -1,6 +1,6 @@
-[◀︎ send](../middleware/send.md)
+[◀︎ middleware/send](../middleware/send.md)
 [🛖](../index.md)
-[serve ▶](../middleware/serve.md)
+[middleware/serve ▶](../middleware/serve.md)
 
 # json, jsonEtag middleware
 

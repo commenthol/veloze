@@ -10,7 +10,7 @@ let loggerF = loggerFn
 
 /**
  * overwrite logger function;
- * call before any middleware
+ * Must be called before any middleware or utility
  * @param {LoggerFn} loggerFn
  */
 /* c8 ignore next 3 */

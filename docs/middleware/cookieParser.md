@@ -1,6 +1,6 @@
-[◀︎ contentSec](../middleware/contentSec.md)
+[◀︎ middleware/contentSec](../middleware/contentSec.md)
 [🛖](../index.md)
-[cors ▶](../middleware/cors.md)
+[middleware/cors ▶](../middleware/cors.md)
 
 # cookieParser middleware
 

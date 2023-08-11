@@ -1,6 +1,6 @@
-[◀︎ core/Server](../core/Server.md)
+[◀︎ core/HttpError](../core/HttpError.md)
 [🛖](../index.md)
-[cacheControl ▶](../middleware/bodyParser.md)
+[middleware/bodyParser ▶](../middleware/bodyParser.md)
 
 # basicAuth middleware
 

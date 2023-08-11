@@ -1,6 +1,6 @@
-[◀︎ accept](../request/accept.md)
+[◀︎ request/accept](../request/accept.md)
 [🛖](../index.md)
-[isHttpsProto ▶](../request/isHttpsProto.md)
+[request/isHttpsProto ▶](../request/isHttpsProto.md)
 
 # request/getHeader
 

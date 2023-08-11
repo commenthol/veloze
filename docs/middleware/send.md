@@ -1,6 +1,6 @@
-[◀︎ requestId](../middleware/requestId.md)
+[◀︎ middleware/requestId](../middleware/requestId.md)
 [🛖](../index.md)
-[json ▶](../middleware/json.md)
+[middleware/json ▶](../middleware/json.md)
 
 # send, sendEtag middleware
 

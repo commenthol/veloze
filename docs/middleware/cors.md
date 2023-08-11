@@ -1,6 +1,6 @@
-[◀︎ cookieParser](../middleware/cookieParser.md)
+[◀︎ middleware/cookieParser](../middleware/cookieParser.md)
 [🛖](../index.md)
-[queryParser ▶](../middleware/queryParser.md)
+[middleware/finalHandler ▶](../middleware/finalHandler.md)
 
 # CORS middleware
 

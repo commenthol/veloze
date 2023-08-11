@@ -1,4 +1,4 @@
-[◀︎ serve](../middleware/serve.md)
+[◀︎ middleware/serve](../middleware/serve.md)
 [🛖](../index.md)
 [request/accept ▶](../request/accept.md)
 

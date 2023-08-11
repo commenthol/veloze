@@ -1,6 +1,6 @@
-[◀︎ connect](../core/connect.md)
+[◀︎ core/connect](../core/connect.md)
 [🛖](../index.md)
-[Server ▶](../core/Server.md)
+[core/Server ▶](../core/Server.md)
 
 # Router
 

@@ -1,30 +1,36 @@
 # veloze
 
-TODO:
+A modern and fast express-like HTTP/2 webserver for the web.
+
+Allows you to:
+- reuse connect (express) middlewares
+- use secure defaults
+- pick the pieces to build your server 
+- use async middlewares like `async (req, res) => { ... }`
 
 # Core
 
 - [connect](./core/connect.md) Connects middlewares
 - [Router](./core/Router.md) Routes to connected 
 - [Server](./core/Server.md) Runs the server
+- [HttpError](./core/HttpError.md) HTTP Error
 
-# middlewares
+# Middlewares
 
-- [bodyParser](./middleware/bodyParser.md) Parse body for POST, PUT, PATCH and
-  SEARCH requests.
+- [bodyParser](./middleware/bodyParser.md) Parse body for POST, PUT, PATCH and SEARCH requests.
 - [cacheControl](./middleware/cacheControl.md) Set 'cache-control' header.
+- [compress](./middleware/compress.md) Compression middleware.
 - [cookieParser](./middleware/cookieParser.md) Parse cookies or set them.
 - [contentSec](./middleware/contentSec.md) Add security headers.
-- [cors](./middleware/cors.md) CORS preflight and response headers
-- [finalHandler](./middleware/finalHandler.md) TODO:
+- [cors](./middleware/cors.md) CORS preflight and response headers.
+- [finalHandler](./middleware/finalHandler.md) Provides a error response according to a given error.
 - [queryParser](./middleware/queryParser.md) Parse the query string.
 - [renderEngine](./middleware/renderEngine.md) Using template render engines.
-- [requestId](./middleware/requestId.md) Sets a random request (correlation) id
-- [send, sendEtag](./middleware/send.md) res.send(), res.redirect()
-- [json, jsonEtag](./middleware/json.md) res.json()
-- [serve](./middleware/serve.md) serve static files
-- [tooBusy](./middleware/tooBusy.md) Reject incoming requests if server is too
-  busy.
+- [requestId](./middleware/requestId.md) Sets a random request (correlation) id.
+- [send, sendEtag](./middleware/send.md) res.send(), res.redirect() utility middleware.
+- [json, jsonEtag](./middleware/json.md) res.json() utility middleware.
+- [serve](./middleware/serve.md) Serves static files.
+- [tooBusy](./middleware/tooBusy.md) Reject incoming requests if server is too busy.
 
 # presets
 
@@ -34,28 +40,29 @@ TODO:
 
 Request utilities
 
-- [accept](./request/accept.md) Parses the 'accept' request header
-- [getHeader](./request/getHeader.md) Returns the HTTP header from the request
+- [accept](./request/accept.md) Parses the 'accept' request header.
+- [getHeader](./request/getHeader.md) Returns the HTTP header from the request.
 - [isHttpsProto](./request/isHttpsProto.md) Verify if request was made using TLS.
 
 # response
 
 Response utilities
 
-- [cookie](./response/cookie.md) TODO:
-- [redirect](./response/redirect.md) TODO:
-- [send](./response/send.md) TODO:
-- [json](./response/json.md) TODO:
-- [setHeaders](./response/setHeaders.md) TODO:
-- [vary](./response/vary.md) TODO:
+- [cookie](./response/cookie.md) Set and clear cookie functions on response.
+- [redirect](./response/redirect.md) Send redirect dependent of content-type.
+- [send](./response/send.md) Sends response.
+- [json](./response/json.md) Sends JSON response.
+- [setHeaders](./response/setHeaders.md) Set response headers from a headers object.
+- [vary](./response/vary.md) Set vary response header.
 
 # utilities
 
-- [bytes](./utils/bytes.md) TODO:
-- [cookie](./utils/cookie.md) TODO:
-- [escapeHtml](./utils/escapeHtml.md) TODO:
-- [ms](./utils/ms.md) TODO:
-- [qs](./utils/qs.md) TODO:
+- [bytes](./utils/bytes.md) Convert string to byte value.
+- [cookie](./utils/cookie.md) Cookie parse and serialize functions.
+- [escapeHtml](./utils/escapeHtml.md) Escape HTML.
+- [logger](./utils/logger.md) Logging.
+- [ms](./utils/ms.md) Convert string to milliseconds (or seconds) value.
+- [qs](./utils/qs.md) Parses a query string.
 - [random64](./utils/random64.md) TODO:
 
 [🔝 TOP](#top)

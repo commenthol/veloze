@@ -1,6 +1,6 @@
-[◀︎ bodyParser](../middleware/bodyParser.md)
+[◀︎ middleware/bodyParser](../middleware/bodyParser.md)
 [🛖](../index.md)
-[contentSec ▶](../middleware/contentSec.md)
+[middleware/compress ▶](../middleware/compress.md)
 
 # cacheControl middleware
 

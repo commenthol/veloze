@@ -1,6 +1,6 @@
-[◀︎ queryParser](../middleware/queryParser.md)
+[◀︎ middleware/queryParser](../middleware/queryParser.md)
 [🛖](../index.md)
-[requestId ▶](../middleware/requestId.md)
+[middleware/requestId ▶](../middleware/requestId.md)
 
 # renderEngine middleware
 

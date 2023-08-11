@@ -1,4 +1,4 @@
-[◀︎ getHeader](../request/getHeader.md)
+[◀︎ request/getHeader](../request/getHeader.md)
 [🛖](../index.md)
 [response/cookie ▶](../response/cookie.md)
 

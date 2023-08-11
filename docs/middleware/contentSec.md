@@ -1,10 +1,14 @@
-[◀︎ cacheControl](../middleware/cacheControl.md)
+[◀︎ middleware/compress](../middleware/compress.md)
 [🛖](../index.md)
-[cookieParser ▶](../middleware/cookieParser.md)
+[middleware/cookieParser ▶](../middleware/cookieParser.md)
 
 # contentSec middleware
 
 Middleware which adds various security headers on pages.
+
+> This is a "slow" middleware. If performance is required it is recommended to
+> set the security headers "manually". Use this middleware then to identify the
+> necessary secure settings to extract the headers into it's own middleware. 
 
 **Table of Contents**
 
@@ -296,5 +300,7 @@ Defaults to:
 'cross-origin-resource-policy': 'same-origin'
 
 See https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Resource-Policy
+
+
 
 [🔝 TOP](#top)

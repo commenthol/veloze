@@ -1,4 +1,4 @@
-[◀︎ Server](../core/Server.md)
+[◀︎ core/Server](../core/Server.md)
 [🛖](../index.md)
 [middleware/bodyParser ▶](../middleware/bodyParser.md)
 

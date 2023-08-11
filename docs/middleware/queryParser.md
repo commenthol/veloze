@@ -1,6 +1,6 @@
-[◀︎ cors](../middleware/cors.md)
+[◀︎ middleware/finalHandler](../middleware/finalHandler.md)
 [🛖](../index.md)
-[renderEngine ▶](../middleware/renderEngine.md)
+[middleware/renderEngine ▶](../middleware/renderEngine.md)
 
 # queryParser middleware
 

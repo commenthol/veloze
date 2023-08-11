@@ -1,6 +1,6 @@
-[◀︎ core/Server](../core/basicAuth.md)
+[◀︎ core/basicAuth](../core/basicAuth.md)
 [🛖](../index.md)
-[cacheControl ▶](../middleware/cacheControl.md)
+[middleware/cacheControl ▶](../middleware/cacheControl.md)
 
 # bodyParser middleware
 
