@@ -1,3 +1,30 @@
+# 0.6.0 (2023-08-11)
+
+### feat:
+
+- compress middleware (#482c2a3)
+- middleware/serve (#73c8bee)
+
+### fix:
+
+- response/cookie: appendHeader not supported in http2 (#fd8d6c4)
+
+### docs:
+
+- documentation (#3a04696)
+
+### chore:
+
+- bump dependencies (#cdcb1e7,#5566d78,#2e73504)
+
+### refactor:
+
+- flattened handlers (#b08cc23)
+
+### test:
+
+- run tests with http2 agent (#fd3cf3b)
+
 # 0.5.2 (2023-05-30)
 
 ### chore:
