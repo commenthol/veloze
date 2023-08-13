@@ -26,37 +26,36 @@ import { buildCsp } from './contentSec.js'
  * @returns {(err: HttpErrorL|Error, req: Request, res: Response, next?: Function) => void}
  */
 export const finalHandler = (options) => {
-  const {
-    log = logger(':final'),
-    htmlTemplate = finalHtml
-  } = options || {}
+  const { htmlTemplate = finalHtml } = options || {}
+
+  const _finalLogger = finalLogger(options)
 
   // eslint-disable-next-line no-unused-vars
   return function finalHandlerMw (err, req, res, next) {
     // our message to the outside world
     /** @type {HttpError} */
     // @ts-expect-error
-    const errResp = (err?.status)
+    const errResp = err?.status
       ? err
       : new HttpError(500, 'Oops! That should not have happened!', err)
 
     const {
       status = 500,
       message, // PUBLIC message
-      info, // PUBLIC info: additional info, e.g. like validation error for the outside world
-      cause // PRIVATE cause: our internal error message and stack trace -> only for logging...
+      info // PUBLIC info: additional info, e.g. like validation error for the outside world
+      // cause // PRIVATE cause: our internal error message and stack trace -> only for logging...
     } = errResp || {}
 
-    const { url, originalUrl, method, id = crypto.randomUUID() } = req
-
     if (!res.headersSent) {
+      const reqId = (req.id = req.id || crypto.randomUUID())
       const type = String(res.getHeader(CONTENT_TYPE))
       const accept = String(req.headers?.accept || req.headers?.[CONTENT_TYPE])
       const isJsonType = type.includes('/json') || accept.includes('/json')
-      const body = res.body || (isJsonType
-        ? { status, message, errors: info, reqId: id }
-        : htmlTemplate({ status, message, info, reqId: id, req })
-      )
+      const body =
+        res.body ||
+        (isJsonType
+          ? { status, message, errors: info, reqId }
+          : htmlTemplate({ status, message, info, reqId, req }))
       if (!isJsonType && !res.getHeader(CONTENT_SECURITY_POLICY)) {
         res.setHeader(CONTENT_SECURITY_POLICY, buildCsp())
       }
@@ -65,12 +64,38 @@ export const finalHandler = (options) => {
       res.end()
     }
 
+    _finalLogger(err, req, res)
+  }
+}
+
+/**
+ * Logs the error together with the requests url and method;
+ * Don't use as a middleware. Instead call from a middleware.
+ * @param {object} [options]
+ * @param {Log} [options.log] log function
+ * @returns {(err: HttpErrorL|Error, req: Request, res: Response) => void}
+ */
+export const finalLogger = (options) => {
+  const { log = logger(':final') } = options || {}
+
+  return (err, req, _res) => {
+    // @ts-expect-error
+    const errResp = err?.status
+      ? err
+      : new HttpError(500, 'Oops! That should not have happened!', err)
+
+    const {
+      // @ts-expect-error
+      status = 500,
+      message, // PUBLIC message
+      // info, // PUBLIC info: additional info, e.g. like validation error for the outside world
+      cause // PRIVATE cause: our internal error message and stack trace -> only for logging...
+    } = errResp || {}
+
+    const { url, originalUrl, method, id = crypto.randomUUID() } = req
+
     // log different log-level by status code
-    const level = status < 400
-      ? 'info'
-      : status < 500
-        ? 'warn'
-        : 'error'
+    const level = status < 400 ? 'info' : status < 500 ? 'warn' : 'error'
 
     log[level]({
       status,
