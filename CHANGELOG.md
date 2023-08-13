@@ -1,3 +1,14 @@
+# 0.6.1 (2023-08-12)
+
+### fix:
+
+- allow custom MIME types in serve (#9ce1beb)
+- filter function in compress and serve (#55856e2)
+
+### docs:
+
+- documenting compress and finalHandler middleware (#15730b0)
+
 # 0.6.0 (2023-08-11)
 
 ### feat:
