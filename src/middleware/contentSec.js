@@ -21,11 +21,14 @@ import { connect } from '../connect.js'
 
 /**
  * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
- * @param {HstsOptions|undefined} options
+ * @param {HstsOptions|boolean|undefined} options
  * @returns {string|undefined}
  */
 export const buildHsts = (options) => {
-  if (!options) return
+  if (options === false) return
+  if (!options || options === true) {
+    options = { maxAge: '180days', includeSubDomains: true }
+  }
   const { maxAge: _maxAge, includeSubDomains, preload } = options
 
   const maxAge = ms(_maxAge, true)
@@ -226,7 +229,7 @@ export function contentSec (options) {
     crossOriginEmbedderPolicy = 'require-corp',
     crossOriginOpenerPolicy = 'same-origin',
     crossOriginResourcePolicy = 'same-origin',
-    hsts = { maxAge: '180days', includeSubDomains: true }
+    hsts
   } = options || {}
 
   const cspReportOnly = csp && csp.reportOnly
@@ -270,7 +273,6 @@ export function contentSec (options) {
     headers['cross-origin-resource-policy'] = crossOriginResourcePolicy
   }
 
-  // @ts-expect-error
   const strictTransportSecurity = buildHsts(hsts)
 
   return function cspMw (req, res, next) {

@@ -50,7 +50,7 @@ export function contentSecJson(options?: CspMiddlewareOptions | undefined): Hand
 export function cspReport(options: {
     log: Log;
 }): HandlerCb;
-export function buildHsts(options: HstsOptions | undefined): string | undefined;
+export function buildHsts(options: HstsOptions | boolean | undefined): string | undefined;
 export function buildCsp(options?: {} | CspOptions | undefined): string;
 export type CspMiddlewareOptions = {
     /**
