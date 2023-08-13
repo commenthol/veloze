@@ -17,7 +17,7 @@ import { HttpError } from '../HttpError.js'
  * @typedef {object} ViewOptions
  * @property {EngineExtension} ext The default engine extension to use when omitted.
  * @property {Engine} engine Record of engines for rendering
- * @property {string|string[]} [view] Root path(s) for views; defaults to `process.cwd() + '/views`
+ * @property {string|string[]} [views] Root path(s) for views; defaults to `process.cwd() + '/views`
  * @property {Record<string, any>|{}} locals default locals for the later template
  * @property {boolean} [cache] if `true` use template cache provided by template `engine`. Defaults to `true` for `process.env_NODE_ENV='production'`
  * @property {Map|null} [pathCache] cache implementation for storing pathnames (must implement Map interface); If `null` no cache is used. Defaults to `null` for development and `Map()` for production environments
@@ -84,7 +84,7 @@ export class View {
     let {
       ext,
       engine,
-      view = path.resolve(process.cwd(), '/views'),
+      views: _views = path.resolve(process.cwd(), '/views'),
       cache = isProdEnv,
       pathCache = isProdEnv ? new Map() : null,
       locals = {}
@@ -92,23 +92,21 @@ export class View {
 
     log = log || logger(':renderEngine')
 
-    if (view instanceof URL) {
-      view = fileURLToPath(view)
-    }
+    // @ts-expect-error
+    const views = [].concat(_views).map(view => view instanceof URL ? fileURLToPath(view) : view)
+
     if (ext[0] === '.') {
       ext = ext.slice(1)
     }
 
     // @ts-expect-error
-    locals.settings = { view, ...locals.settings }
-    this.#options = { ext, engine, view, cache, pathCache, locals }
+    locals.settings = { views, ...locals.settings }
+    this.#options = { ext, engine, views, cache, pathCache, locals }
   }
 
   async lookup (name) {
-    const { view, ext } = this.#options
+    const { views: viewDirs, ext } = this.#options
 
-    // @ts-expect-error
-    const viewDirs = [].concat(view)
     log.debug('lookup "%s"', name)
 
     for (let i = 0; i < viewDirs.length; i++) {

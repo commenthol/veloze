@@ -11,7 +11,7 @@ const createApp = ({ finalHandler } = {}) => {
   ejsRouter.use(renderEngine({
     ext: 'ejs',
     engine: consolidate.ejs,
-    view: viewsRoot,
+    views: viewsRoot,
     locals: { app: 'this app' }
   }))
   ejsRouter.get('/', (req, res) => {
@@ -32,7 +32,7 @@ const createApp = ({ finalHandler } = {}) => {
   hbsRouter.use(renderEngine({
     ext: '.hbs', // use extension with or without leading dot.
     engine: hbs.express4(),
-    view: viewsRoot,
+    views: viewsRoot,
     locals: { app: 'this app' },
     pathCache: new Map() // always use a Cache for filenames
   }))

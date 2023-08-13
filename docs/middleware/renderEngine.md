@@ -18,7 +18,7 @@ const viewsRoot = new URL("./views", import.meta.url);
 const renderHandle = renderEngine({
   ext: "ejs",
   engine: consolidate.ejs,
-  view: viewsRoot,
+  views: viewsRoot,
   locals: { app: "this app" }, // app locals
 });
 
@@ -42,7 +42,7 @@ const viewsRoot = new URL("./views", import.meta.url);
 const renderHandle = renderEngine({
   ext: ".hbs", // use extension with or without leading dot.
   engine: hbs.express4(),
-  view: viewsRoot,
+  views: viewsRoot,
   locals: { app: "this app" }, // app locals
   pathCache: new Map(), // always use a Cache for filenames
 });

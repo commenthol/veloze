@@ -74,7 +74,7 @@ export type ViewOptions = {
     /**
      * Root path(s) for views; defaults to `process.cwd() + '/views`
      */
-    view?: string | string[] | undefined;
+    views?: string | string[] | undefined;
     /**
      * default locals for the later template
      */
