@@ -5,7 +5,6 @@ import { contentSec, contentSecJson } from './contentSec.js'
 import { queryParser } from './queryParser.js'
 import { requestId } from './requestId.js'
 import { send } from './send.js'
-import { tooBusy } from './tooBusy.js'
 
 /**
  * @typedef {import('../types').Handler} Handler
@@ -13,8 +12,8 @@ import { tooBusy } from './tooBusy.js'
  * @typedef {object} PresetOptions
  * @property {number|string} limit body-parser limit
  * @property {import('./contentSec').CspMiddlewareOptions} cspOpts security header options
- * @property {import('../types').TooBusyOptions} tooBusyOpts Note: tooBusy options are set globally for the whole server
  * @property {import('./cacheControl.js').CacheControlDirectivesByMethod} cacheControlOpts}
+ * @property {import('./requestId.js').RequestIdOptions} requestIdOpts}
  */
 
 /**
@@ -26,13 +25,12 @@ export const presetHtml = (options) => {
   const {
     limit = '100kb',
     cspOpts,
-    tooBusyOpts,
-    cacheControlOpts
+    cacheControlOpts,
+    requestIdOpts
   } = options || {}
 
   return [
-    tooBusy(tooBusyOpts),
-    requestId(),
+    requestId(requestIdOpts),
     contentSec(cspOpts),
     cacheControlByMethod(cacheControlOpts),
     send,
@@ -51,13 +49,12 @@ export const presetJson = (options) => {
   const {
     limit = '100kb',
     cspOpts,
-    tooBusyOpts,
-    cacheControlOpts = { noStore: true }
+    cacheControlOpts = { noStore: true },
+    requestIdOpts
   } = options || {}
 
   return [
-    tooBusy(tooBusyOpts),
-    requestId(),
+    requestId(requestIdOpts),
     contentSecJson(cspOpts),
     cacheControlByMethod(cacheControlOpts),
     send,

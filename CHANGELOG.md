@@ -1,3 +1,11 @@
+# 0.6.2 (2023-08-13)
+
+### fix:
+
+- expose finalLogger (#e5dc159)
+- middleware/contentSec: allow true in buildHsts options (#12f3674)
+- middleware/renderEngine: use views as option (#a9fc5f4)
+
 # 0.6.1 (2023-08-12)
 
 ### fix:
