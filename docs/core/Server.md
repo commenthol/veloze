@@ -75,4 +75,6 @@ Returns the address of the server.
 
 [router]: ./Router.md
 
+---
+
 [🔝 TOP](#top)

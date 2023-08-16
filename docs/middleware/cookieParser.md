@@ -75,4 +75,6 @@ Clears cookie in response.
 
 Same options as with [res.cookie(name, value, options)](#res-cookie)
 
+---
+
 [🔝 TOP](#top)

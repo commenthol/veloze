@@ -25,6 +25,7 @@ Allows you to:
 - [cors](./middleware/cors.md) CORS preflight and response headers.
 - [finalHandler](./middleware/finalHandler.md) Provides a error response according to a given error.
 - [queryParser](./middleware/queryParser.md) Parse the query string.
+- [redirect2https](./middleware/redirect2https.md) Redirect from http to https.
 - [renderEngine](./middleware/renderEngine.md) Using template render engines.
 - [requestId](./middleware/requestId.md) Sets a random request (correlation) id.
 - [send, sendEtag](./middleware/send.md) res.send(), res.redirect() utility middleware.
@@ -34,7 +35,9 @@ Allows you to:
 
 # presets
 
-TODO:
+Presets define commonly used collection of middlewares.
+
+- [presets](./middleware/presets.md)
 
 # request
 
@@ -64,5 +67,7 @@ Response utilities
 - [ms](./utils/ms.md) Convert string to milliseconds (or seconds) value.
 - [qs](./utils/qs.md) Parses a query string.
 - [random64](./utils/random64.md) TODO:
+
+---
 
 [🔝 TOP](#top)

@@ -66,4 +66,6 @@ Defaults to:
 }
 ```
 
+---
+
 [🔝 TOP](#top)

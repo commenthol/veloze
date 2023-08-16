@@ -26,4 +26,6 @@ app.get(queryParser, (req, res) => {
 */
 ```
 
+---
+
 [🔝 TOP](#top)

@@ -27,5 +27,6 @@ vary(res, 'User-Agent')
 // { 'vary': 'accept-encoding, user-agent' }
 ```
 
+---
 
 [🔝 TOP](#top)

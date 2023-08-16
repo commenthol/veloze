@@ -37,4 +37,6 @@ app.get(
 | object | users            | object with usernames as keys and plain text passwords as values |
 | string | \[realm=Secure\] | realm name                                                       |
 
+---
+
 [🔝 TOP](#top)

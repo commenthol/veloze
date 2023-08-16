@@ -27,4 +27,6 @@ app.all("/*", (req, res) => {
 | ------- | -------- | ------------------------------------------- |
 | boolean | \[force] | forces setting the requestId on the request |
 
+---
+
 [🔝 TOP](#top)

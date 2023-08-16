@@ -32,5 +32,6 @@ const { redirect } = response
 redirect(res, 'https://foo.bar', 301, { 'x-request-id': 'abcde' })
 ```
 
+---
 
 [🔝 TOP](#top)

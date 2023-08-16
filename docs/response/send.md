@@ -46,5 +46,6 @@ send(res, { foo: 'bar' })
 //  'content-length:': '13'}
 ```
 
+---
 
 [🔝 TOP](#top)

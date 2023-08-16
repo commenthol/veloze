@@ -32,4 +32,6 @@ cookieSerialize('foo', 'bar', { maxAge: 10e3 })
 // 'foo=bar; Max-Age=10000; HttpOnly; SameSite=Strict'
 ```
 
+---
+
 [🔝 TOP](#top)

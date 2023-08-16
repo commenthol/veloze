@@ -61,5 +61,6 @@ clearCookie(res: Response, name: string, opts?: CookieOpts): Response
 | boolean                          | \[secure]   | Marks the cookie to be used with HTTPS only.                                                                                                       |
 | boolean\|'Lax'\|'Strict'\|'None' | \[sameSite] | Value of the "SameSite" Set-Cookie attribute. More information at https://tools.ietf.org/html/draft-ietf-httpbis-cookie-same-site-00#section-4.1.1 |
 
+---
 
 [🔝 TOP](#top)

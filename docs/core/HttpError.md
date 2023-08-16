@@ -80,4 +80,6 @@ The properties `code` and `info` follow the conventions from
 | object        | \[info]       | an object with details about the error condition        |
 | string        | \[code]       | string representing the error code                      |
 
+---
+
 [🔝 TOP](#top)

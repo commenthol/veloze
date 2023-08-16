@@ -31,4 +31,6 @@ const app = Router()
 // ...
 ```
 
+---
+
 [🔝 TOP](#top)

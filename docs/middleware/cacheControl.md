@@ -80,4 +80,6 @@ router.use(
 | boolean        | \[staleWhileRevalidate] | cache could reuse a stale response while it revalidates it to a cache.                                                                                  |
 | boolean        | \[staleIfError]         | cache can reuse a stale response when an origin server responds with an error (500, 502, 503, or 504)                                                   |
 
+---
+
 [🔝 TOP](#top)

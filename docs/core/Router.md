@@ -195,4 +195,6 @@ For route `POST /` the following handlers are connected in the above setup:
 
     bodyParser -> sendEtag -> handler -> endHandler
 
+---
+
 [🔝 TOP](#top)

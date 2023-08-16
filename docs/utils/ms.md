@@ -31,4 +31,6 @@ ms('4hours')        // 14400000 (ms)
 ms('2weeks', true)  // 1209600 (in seconds)!
 ```
 
+---
+
 [🔝 TOP](#top)

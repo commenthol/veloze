@@ -10,7 +10,7 @@ import { redirect } from '../response/redirect.js'
  * @param {object} options
  * @param {string} options.redirectUrl
  * @param {number} [options.status=308] redirect status code; defaults to 308
- * @param {string[]} [options.allowedHosts] list of allowed vhosts (Don't append any port info)
+ * @param {string[]} [options.allowedHosts] list of allowed vhosts (Doesn't append any port info)
  * @returns {HandlerCb}
  */
 export function redirect2Https (options) {

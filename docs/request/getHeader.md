@@ -20,4 +20,6 @@ getHeader(req, "Content-Type");
 // 'application/json'
 ```
 
+---
+
 [🔝 TOP](#top)

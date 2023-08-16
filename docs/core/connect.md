@@ -102,4 +102,6 @@ http.createServer(handle).listen(3000);
 If using connect directly with a server (e.g. for nano-services) do not forget
 to add an errorHandler.
 
+---
+
 [🔝 TOP](#top)

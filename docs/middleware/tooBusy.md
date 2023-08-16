@@ -1,6 +1,6 @@
 [◀︎ middleware/serve](../middleware/serve.md)
 [🛖](../index.md)
-[request/accept ▶](../request/accept.md)
+[middleware/presets ▶](../middleware/presets.md)
 
 # tooBusy middleware
 
@@ -42,5 +42,7 @@ app.all("/*", (req, res) => {
 | number         | \[intervalMs]      | (global setting) interval to check lag (ms); shall be greater 50ms                                                                                                                     |
 | number         | \[maxLagMs]        | (global setting) max tolerable lag (ms); shall be greater 16ms                                                                                                                         |
 | number         | \[smoothingFactor] | (global setting) damping factor with range [0..1]; high values cause faster blocking than low values; see [Exponential smoothing](https://en.wikipedia.org/wiki/Exponential_smoothing) |
+
+---
 
 [🔝 TOP](#top)

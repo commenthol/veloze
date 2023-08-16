@@ -49,4 +49,6 @@ Parses the 'accept-encoding' request header
 
 Uses same API as `accept()`.
 
+---
+
 [🔝 TOP](#top)

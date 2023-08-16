@@ -28,5 +28,6 @@ const finalHandler = finalHandlerDef({ htmlTemplate })
 const app = new Router({ finalHandler })
 ```
 
+[---
 
-[🔝 TOP](#top)
+🔝 TOP](#top)

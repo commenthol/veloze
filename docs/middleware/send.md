@@ -110,4 +110,6 @@ Sends a redirect
 | number | \[status]  | response status; defaults to 307 Temporary Redirect |
 | object | \[headers] | additional response headers                         |
 
+---
+
 [🔝 TOP](#top)

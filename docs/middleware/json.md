@@ -103,4 +103,6 @@ Send response body as JSON.
 | number         | \[status]  | response status; defaults to 200 |
 | object         | \[headers] | additional response headers      |
 
+---
+
 [🔝 TOP](#top)

@@ -301,6 +301,6 @@ Defaults to:
 
 See https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Resource-Policy
 
-
+---
 
 [🔝 TOP](#top)

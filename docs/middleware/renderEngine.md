@@ -1,4 +1,4 @@
-[◀︎ middleware/queryParser](../middleware/queryParser.md)
+[◀︎ middleware/redirect2https](../middleware/redirect2https.md)
 [🛖](../index.md)
 [middleware/requestId ▶](../middleware/requestId.md)
 
@@ -56,5 +56,7 @@ app.get("/", (req, res) => {
   res.render("home", { title: "home" });
 });
 ```
+
+---
 
 [🔝 TOP](#top)

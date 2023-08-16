@@ -14,5 +14,6 @@ function random64(length?: number, noDashes?: boolean): string;
 
 For `noDashes=true` the random string only uses the chars `[0-9a-zA-Z]`.
 
+---
 
 [🔝 TOP](#top)
