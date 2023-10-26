@@ -21,9 +21,12 @@ export function cookieParse (cookieStr = '') {
   const cookies = {}
   for (const part of parts) {
     const [key, val] = part.trim().split('=')
-    if (key && typeof val === 'string') {
+    if (!key) continue
+    if (typeof val === 'string') {
       const value = safeDecodeUriComponent(val)
       cookies[key] = value
+    } else if (val === undefined) {
+      cookies[key] = true
     }
   }
   return cookies
@@ -55,7 +58,7 @@ export function cookieSerialize (name, value, options) {
     path,
     expires,
     httpOnly = true,
-    secure = false,
+    secure = true,
     sameSite = 'Strict'
   } = options || {}
 

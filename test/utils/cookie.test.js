@@ -11,9 +11,10 @@ describe('utils/cookie', function () {
     })
     it('cookie string', function () {
       assert.deepStrictEqual(
-        cookieParse('_foobar=FB.1.12.24; preferred_color_mode=light; tz=Asia%2FTokyo'),
+        cookieParse('_foobar=FB.1.12.24; flag; preferred_color_mode=light; tz=Asia%2FTokyo'),
         {
           _foobar: 'FB.1.12.24',
+          flag: true,
           preferred_color_mode: 'light',
           tz: 'Asia/Tokyo'
         }
@@ -34,79 +35,81 @@ describe('utils/cookie', function () {
     it('name value', function () {
       assert.strictEqual(
         cookieSerialize('foo', 'bar or bär'),
-        'foo=bar%20or%20b%C3%A4r; HttpOnly; SameSite=Strict'
+        'foo=bar%20or%20b%C3%A4r; HttpOnly; Secure; SameSite=Strict'
       )
     })
     it('maxAge', function () {
       assert.strictEqual(
         cookieSerialize('foo', 'bar', { maxAge: 10e3 }),
-        'foo=bar; Max-Age=10000; HttpOnly; SameSite=Strict'
+        'foo=bar; Max-Age=10000; HttpOnly; Secure; SameSite=Strict'
       )
     })
     it('domain', function () {
       assert.strictEqual(
         cookieSerialize('foo', 'bar', { domain: 'foo.bar' }),
-        'foo=bar; Domain=foo.bar; HttpOnly; SameSite=Strict'
+        'foo=bar; Domain=foo.bar; HttpOnly; Secure; SameSite=Strict'
       )
     })
     it('invalid domain', function () {
       assert.strictEqual(
         cookieSerialize('foo', 'bar', { domain: 'f😀o.bar' }),
-        'foo=bar; HttpOnly; SameSite=Strict'
+        'foo=bar; HttpOnly; Secure; SameSite=Strict'
       )
     })
     it('path', function () {
       assert.strictEqual(
         cookieSerialize('foo', 'bar', { path: '/foobar' }),
-        'foo=bar; Path=/foobar; HttpOnly; SameSite=Strict'
+        'foo=bar; Path=/foobar; HttpOnly; Secure; SameSite=Strict'
       )
     })
     it('invalid path', function () {
       assert.strictEqual(
         cookieSerialize('foo', 'bar', { path: 'f😀o.bar' }),
-        'foo=bar; HttpOnly; SameSite=Strict'
+        'foo=bar; HttpOnly; Secure; SameSite=Strict'
       )
     })
     it('expires', function () {
       assert.strictEqual(
         cookieSerialize('foo', 'bar', { expires: 0 }),
-        'foo=bar; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; SameSite=Strict'
+        'foo=bar; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; Secure; SameSite=Strict'
       )
     })
     it('expires string', function () {
       assert.strictEqual(
         cookieSerialize('foo', 'bar', { expires: '01 Jan 1970 00:00:00 GMT' }),
-        'foo=bar; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; SameSite=Strict'
+        'foo=bar; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; Secure; SameSite=Strict'
       )
     })
     it('expires Date', function () {
       assert.strictEqual(
-        cookieSerialize('foo', 'bar', { expires: new Date('01 Jan 1970 00:00:00 GMT') }),
-        'foo=bar; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; SameSite=Strict'
+        cookieSerialize('foo', 'bar', {
+          expires: new Date('01 Jan 1970 00:00:00 GMT')
+        }),
+        'foo=bar; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; Secure; SameSite=Strict'
       )
     })
     it('invalid expires', function () {
       assert.strictEqual(
         cookieSerialize('foo', 'bar', { expires: 'foobar' }),
-        'foo=bar; HttpOnly; SameSite=Strict'
+        'foo=bar; HttpOnly; Secure; SameSite=Strict'
       )
     })
     it('no httpOnly', function () {
       assert.strictEqual(
         cookieSerialize('foo', 'bar', { httpOnly: false }),
-        'foo=bar; SameSite=Strict'
+        'foo=bar; Secure; SameSite=Strict'
       )
     })
     it('no httpOnly, no sameSite', function () {
       assert.strictEqual(
         cookieSerialize('foo', 'bar', { httpOnly: false, sameSite: false }),
-        'foo=bar'
+        'foo=bar; Secure'
       )
     })
     it('sameSite Lax', function () {
       assert.strictEqual(
         cookieSerialize('foo', 'bar', { sameSite: 'Lax' }),
-        'foo=bar; HttpOnly; SameSite=Lax'
+        'foo=bar; HttpOnly; Secure; SameSite=Lax'
       )
     })
     it('secure', function () {
