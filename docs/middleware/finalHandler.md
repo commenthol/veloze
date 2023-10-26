@@ -1,6 +1,6 @@
 [◀︎ middleware/cors](../middleware/cors.md)
 [🛖](../index.md)
-[middleware/queryParser ▶](../middleware/queryParser.md)
+[middleware/implictHeader ▶](../middleware/implicitHeader.md)
 
 # finalHandler middleware
 
