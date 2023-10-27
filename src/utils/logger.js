@@ -24,4 +24,5 @@ export const setLogger = (loggerFn) => {
  * @returns {LogBase}
  */
 export const logger = (namespace, opts) =>
+  // @ts-expect-error
   loggerF(`veloze${namespace || ''}`, opts)

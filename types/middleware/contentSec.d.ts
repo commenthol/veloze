@@ -76,7 +76,7 @@ export type CspMiddlewareOptions = {
     /**
      * x-dns-prefetch-control header
      */
-    xDnsPrefetchControl?: false | "on" | "off" | undefined;
+    xDnsPrefetchControl?: false | "off" | "on" | undefined;
     /**
      * cross-origin-embedder-policy header; see https://web.dev/coop-coep/
      */

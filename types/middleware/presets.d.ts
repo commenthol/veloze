@@ -11,11 +11,11 @@ export type PresetOptions = {
      */
     cspOpts: import('./contentSec').CspMiddlewareOptions;
     /**
-     * Note: tooBusy options are set globally for the whole server
-     */
-    tooBusyOpts: import('../types').TooBusyOptions;
-    /**
      * }
      */
     cacheControlOpts: import('./cacheControl.js').CacheControlDirectivesByMethod;
+    /**
+     * }
+     */
+    requestIdOpts: import('./requestId.js').RequestIdOptions;
 };
