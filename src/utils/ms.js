@@ -10,10 +10,10 @@ const RE = /^(-?[\d.]+)\s?(y|mo|w|d|h|m|s)?/
 
 /**
  * @param {number|string|undefined} value
- * @param {boolean} inSeconds if `true` convert `value` to seconds; Only valid if value is string
+ * @param {boolean} [inSeconds] if `true` convert `value` to seconds; Only valid if value is string
  * @returns {number|undefined}
  */
-export function ms (value, inSeconds) {
+export function ms (value, inSeconds = false) {
   if (typeof value === 'string') {
     const m = RE.exec(value.toLowerCase())
     if (!m) return
