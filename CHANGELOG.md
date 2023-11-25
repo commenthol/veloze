@@ -1,10 +1,25 @@
-# 0.6.2 (2023-08-13)
+# 0.7.0 (2023-11-25)
+
+### feat:
+
+- middleware/implicitHeader: new middleware (#244141c)
 
 ### fix:
 
+- utils/cookie: set secure flag as default (#0e6c29f)
+- add request id opts to presets and remove toobusy (#b166a30)
 - expose finalLogger (#e5dc159)
 - middleware/contentSec: allow true in buildHsts options (#12f3674)
 - middleware/renderEngine: use views as option (#a9fc5f4)
+
+### docs:
+
+- presets and redirect2Https (#9fb7233)
+
+### chore:
+
+- fix types (#d25cddb)
+- bump dependencies (#39c4b4f)
 
 # 0.6.1 (2023-08-12)
 
