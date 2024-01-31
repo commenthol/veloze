@@ -1,3 +1,13 @@
+# 0.7.1 (2024-01-31)
+
+### fix:
+
+- utils/ms: make inSeconds optional (#786bfd9)
+
+### chore:
+
+- bump dependencies (#a38f2db)
+
 # 0.7.0 (2023-11-25)
 
 ### feat:
