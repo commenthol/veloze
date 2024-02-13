@@ -1,6 +1,6 @@
 [◀︎ request/getHeader](../request/getHeader.md)
 [🛖](../index.md)
-[response/cookie ▶](../response/cookie.md)
+[request/remoteAddress ▶](../request/remoteAddress.md)
 
 # request/isHttpProto
 
