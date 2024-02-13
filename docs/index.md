@@ -46,6 +46,7 @@ Request utilities
 - [accept](./request/accept.md) Parses the 'accept' request header.
 - [getHeader](./request/getHeader.md) Returns the HTTP header from the request.
 - [isHttpsProto](./request/isHttpsProto.md) Verify if request was made using TLS.
+- [remoteAddress](./request/remoteAddress.md) Obtain the remote address of the connection.
 
 # response
 
