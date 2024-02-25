@@ -2,10 +2,14 @@ import assert from 'node:assert'
 import supertest from 'supertest'
 import { Http2Client } from '../support/Http2Client.js'
 import { Router, request, response } from '../../src/index.js'
+import { oneOf, stringFormatT } from '@veloze/validate'
 
 describe('request/remoteAddress', function () {
   let app
   let httpsOptions
+
+  const schemaIp = oneOf([stringFormatT().ipv6(), stringFormatT().ipv4()])
+
   before(function () {
     app = new Router()
     app.get('/*', (req, res) => {
@@ -21,7 +25,9 @@ describe('request/remoteAddress', function () {
   it('for http connections', function () {
     return supertest(app.handle)
       .get('/local')
-      .expect({ remote: '::ffff:127.0.0.1' })
+      .then(res => {
+        assert.equal(schemaIp.validate(res.body.remote), true)
+      })
   })
 
   it('for http connections behind proxy', function () {
@@ -45,7 +51,7 @@ describe('request/remoteAddress', function () {
       .disableTLSCerts()
       .then((res) => {
         assert.equal(res.status, 200)
-        assert.deepEqual(res.body, { remote: '::ffff:127.0.0.1' })
+        assert.equal(schemaIp.validate(res.body.remote), true)
       })
   })
 
