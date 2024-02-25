@@ -1,3 +1,17 @@
+# 0.8.1 (2024-02-25)
+
+### fix:
+
+- bump dependencies (#b1228d7)
+
+### docs:
+
+- fix missing reference in index for remoteAddress (#a4ef3c1)
+
+### test:
+
+- fix remote address tests (#e60cf50)
+
 # 0.8.0 (2024-02-13)
 
 ### feat:
