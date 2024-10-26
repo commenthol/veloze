@@ -9,7 +9,7 @@
  * @param {number} size
  * @returns {[start: number, end: number]|[-1]|[]}
  */
-export function rangeParser(rangeHeader: string | undefined, size: number): [] | [start: number, end: number] | [-1];
+export function rangeParser(rangeHeader: string | undefined, size: number): [start: number, end: number] | [-1] | [];
 export type Range = {
     start: number;
     end: number;

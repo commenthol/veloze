@@ -1,6 +1,6 @@
 import { getHeader } from './getHeader.js'
 
-/** @typedef {import('../types').Request} Request */
+/** @typedef {import('#types.js').Request} Request */
 
 const X_FORWARDED_FOR = 'x-forwarded-for'
 

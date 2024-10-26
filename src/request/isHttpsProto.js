@@ -1,4 +1,4 @@
-/** @typedef {import('../types').Request} Request */
+/** @typedef {import('#types.js').Request} Request */
 
 const X_FORWARDED_PROTO = 'x-forwarded-proto'
 const HTTPS_PROTO = 'https'

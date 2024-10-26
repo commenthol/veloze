@@ -8,8 +8,8 @@ import { bodyParser } from './bodyParser.js'
 import { connect } from '../connect.js'
 
 /**
- * @typedef {import('../types').HandlerCb} HandlerCb
- * @typedef {import('../types').Log} Log
+ * @typedef {import('#types.js').HandlerCb} HandlerCb
+ * @typedef {import('#types.js').Log} Log
  */
 
 /**

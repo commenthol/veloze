@@ -3,7 +3,7 @@ import { getHeader } from '../request/getHeader.js'
 import { timingSafeEqual } from '../utils/index.js'
 
 /**
- * @typedef {import('../types').Handler} Handler
+ * @typedef {import('#types.js').Handler} Handler
  */
 
 /**

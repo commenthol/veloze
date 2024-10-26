@@ -8,7 +8,7 @@ import { logger } from './utils/logger.js'
 
 /**
  * @typedef {import('http2').SecureServerOptions} Http2SecureServerOptions
- * @typedef {import('./Router').RouterOptions} RouterOptions
+ * @typedef {import('#Router.js').RouterOptions} RouterOptions
  * @typedef {http2.Http2Server|http2.Http2SecureServer} Http2Server
  * @typedef {Http2SecureServerOptions & RouterOptions & {onlyHTTP1: boolean, gracefulTimeout: number}} ServerOptions
  * @typedef {import('node:net').AddressInfo} AddressInfo

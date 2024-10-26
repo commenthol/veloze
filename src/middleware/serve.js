@@ -18,8 +18,8 @@ import {
   REQ_METHOD_HEAD
 } from '../constants.js'
 
-/** @typedef {import('../types.js').Request} Request */
-/** @typedef {import('../types.js').Response} Response */
+/** @typedef {import('#types.js').Request} Request */
+/** @typedef {import('#types.js').Response} Response */
 /** @typedef {import('../utils/compressStream.js').CompressOptions} CompressOptions */
 
 let log

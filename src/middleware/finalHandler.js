@@ -7,10 +7,10 @@ import { CONTENT_TYPE, CONTENT_SECURITY_POLICY } from '../constants.js'
 import { buildCsp } from './contentSec.js'
 
 /**
- * @typedef {import('../types').Request} Request
- * @typedef {import('../types').Response} Response
- * @typedef {import('../types').HttpError} HttpErrorL
- * @typedef {import('../types').Log} Log
+ * @typedef {import('#types.js').Request} Request
+ * @typedef {import('#types.js').Response} Response
+ * @typedef {import('#types.js').HttpError} HttpErrorL
+ * @typedef {import('#types.js').Log} Log
  */
 
 /**

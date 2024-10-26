@@ -8,8 +8,8 @@ import { CONTENT_TYPE, MIME_HTML_UTF8, RES_NEXT } from '../constants.js'
 import { HttpError } from '../HttpError.js'
 
 /**
- * @typedef {import('../types').HandlerCb} HandlerCb
- * @typedef {import('../types').Response} Response
+ * @typedef {import('#types.js').HandlerCb} HandlerCb
+ * @typedef {import('#types.js').Response} Response
  *
  * @typedef {string} EngineExtension the engine extension e.g. `html`, `hbs`, `ejs`
  * @typedef {object} Engine engine compliant with [consolidate](https://www.npmjs.com/package/consolidate)

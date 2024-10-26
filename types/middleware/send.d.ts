@@ -1,7 +1,7 @@
 /**
- * @typedef {import('../types').HandlerCb} HandlerCb
- * @typedef {import('../types').Response} Response
- * @typedef { import('../types').Request } Request
+ * @typedef {import('#types.js').HandlerCb} HandlerCb
+ * @typedef {import('#types.js').Response} Response
+ * @typedef { import('#types.js').Request } Request
  */
 /**
  * connect middleware which adds `res.send` to the response.
@@ -19,6 +19,6 @@ export function send(req: Request, res: Response, next: Function): void;
 export function sendEtag(options?: {
     algorithm?: string | undefined;
 } | undefined): HandlerCb;
-export type HandlerCb = typeof import("../types").HandlerCb;
-export type Response = import('../types').Response;
-export type Request = import('../types').Request;
+export type HandlerCb = typeof import("#types.js").HandlerCb;
+export type Response = import("#types.js").Response;
+export type Request = import("#types.js").Request;

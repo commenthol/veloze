@@ -11,7 +11,7 @@ export class Http2Client {
   _server
 
   /**
-   * @param {string|import('../types').Handler} baseUrl
+   * @param {string|import('#types.js').Handler} baseUrl
    * @param {http2.SecureServerOptions} httpsOptions
    */
   constructor (baseUrl, httpsOptions) {

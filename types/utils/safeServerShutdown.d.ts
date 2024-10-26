@@ -9,13 +9,13 @@
  */
 export function safeServerShutdown(server: Server, options?: {
     gracefulTimeout?: number | undefined;
-    log?: import("../types").Log | undefined;
+    log?: import("#types.js").Log | undefined;
 } | undefined): void;
-export type Log = import('../types').Log;
-export type HttpServer = import('http').Server;
-export type HttpSecureServer = import('https').Server;
-export type Http2Server = import('http2').Http2Server;
-export type Http2SecureServer = import('http2').Http2SecureServer;
+export type Log = import("#types.js").Log;
+export type HttpServer = import("http").Server;
+export type HttpSecureServer = import("https").Server;
+export type Http2Server = import("http2").Http2Server;
+export type Http2SecureServer = import("http2").Http2SecureServer;
 export type CloseAsync = {
     closeAsync: () => Promise<void>;
 };

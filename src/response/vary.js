@@ -16,7 +16,7 @@ const RE_FIELD_NAME = /^[!#$%&'*+\-.^_`|~0-9A-Za-z]+$/
  * Sets vary header on response
  *
  * @throws {TypeError}
- * @param {import("../types").Response} res
+ * @param {import('#types.js').Response} res
  * @param {string} reqHeader request header name
  */
 export function vary (res, reqHeader) {

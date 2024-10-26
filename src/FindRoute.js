@@ -7,7 +7,7 @@ const PARAM_PART = Symbol('paramPart')
 const WILDCARD = Symbol('*')
 
 /**
- * @typedef {import('./types').Method} Method
+ * @typedef {import('#types.js').Method} Method
  */
 
 /**
@@ -29,6 +29,7 @@ export class FindRoute {
    */
   constructor (size = 1000) {
     this._cache = size > 0
+      // @ts-expect-error
       ? new LruCache(size)
       : null
   }

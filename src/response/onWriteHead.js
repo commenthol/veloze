@@ -1,5 +1,5 @@
 /**
- * @typedef {import('../types').Response} Response
+ * @typedef {import('#types.js').Response} Response
  */
 
 /**

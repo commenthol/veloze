@@ -1,6 +1,6 @@
 /**
- * @typedef { import('../types').Response } Response
- * @typedef { import('../../src/utils/cookie').CookieOpts } CookieOpts
+ * @typedef { import('#types.js').Response } Response
+ * @typedef { import('#utils/cookie.js').CookieOpts } CookieOpts
  */
 /**
  * set cookie on response
@@ -10,7 +10,7 @@
  * @param {CookieOpts} [opts]
  * @returns {Response}
  */
-export function setCookie(res: Response, name: string, value: string | number | boolean, opts?: import("../types").CookieOpts | undefined): Response;
+export function setCookie(res: Response, name: string, value: string | number | boolean, opts?: import("#types.js").CookieOpts | undefined): Response;
 /**
  * clear cookie on response
  * @param {Response} res
@@ -18,6 +18,6 @@ export function setCookie(res: Response, name: string, value: string | number | 
  * @param {CookieOpts} [opts]
  * @returns {Response}
  */
-export function clearCookie(res: Response, name: string, opts?: import("../types").CookieOpts | undefined): Response;
-export type Response = import('../types').Response;
-export type CookieOpts = import('../../src/utils/cookie').CookieOpts;
+export function clearCookie(res: Response, name: string, opts?: import("#types.js").CookieOpts | undefined): Response;
+export type Response = import("#types.js").Response;
+export type CookieOpts = import("#utils/cookie.js").CookieOpts;

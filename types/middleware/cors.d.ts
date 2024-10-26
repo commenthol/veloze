@@ -6,10 +6,10 @@
  * @returns {HandlerCb}
  */
 export function cors(options?: CorsOptions): HandlerCb;
-export type Request = import('../types').Request;
-export type Response = import('../types').Response;
-export type HandlerCb = typeof import("../types").HandlerCb;
-export type Origin = string | RegExp | ((req: Request) => boolean);
+export type Request = import("#types.js").Request;
+export type Response = import("#types.js").Response;
+export type HandlerCb = typeof import("#types.js").HandlerCb;
+export type Origin = (string | RegExp | ((req: Request) => boolean));
 export type CorsOptions = {
     /**
      * if `true` next middleware is called instead of responding the request
