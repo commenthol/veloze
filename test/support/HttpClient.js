@@ -9,7 +9,7 @@ export class HttpClient {
   _transport
 
   /**
-   * @param {string|import('../types').Handler} baseUrl
+   * @param {string|import('#types.js').Handler} baseUrl
    * @param {http.ServerOptions} httpsOptions
    */
   constructor (baseUrl, httpsOptions) {

@@ -1,5 +1,5 @@
 /**
- * @typedef {import('./types').Method} Method
+ * @typedef {import('#types.js').Method} Method
  */
 /**
  * Radix Tree Router
@@ -16,7 +16,7 @@ export class FindRoute {
      * @param {number} [size=1000]
      */
     constructor(size?: number | undefined);
-    _cache: LruCache<any, any> | null;
+    _cache: any;
     /**
      * add handler by method and pathname to routing tree
      * @param {Method} method
@@ -49,5 +49,4 @@ export class FindRoute {
     } | undefined;
     #private;
 }
-export type Method = import('./types').Method;
-import LruCache from 'mnemonist/lru-cache.js';
+export type Method = import("#types.js").Method;

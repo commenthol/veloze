@@ -1,6 +1,6 @@
 /**
- * @typedef {import('../types').Request} Request
- * @typedef {import('../types').Response} Response
+ * @typedef {import('#types.js').Request} Request
+ * @typedef {import('#types.js').Response} Response
  */
 /**
  * For compatibility only; Adds undocumented _implicitHeader() method to res;

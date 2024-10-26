@@ -1,5 +1,5 @@
 /**
- * @typedef {import('../types').Handler} Handler
+ * @typedef {import('#types.js').Handler} Handler
  */
 /**
  * @see https://datatracker.ietf.org/doc/html/rfc7617
@@ -13,4 +13,4 @@ export function basicAuth(options: {
     realm?: string | undefined;
 }): Handler;
 export function compareLc(str?: string, compare?: string): boolean;
-export type Handler = import('../types').Handler;
+export type Handler = import("#types.js").Handler;

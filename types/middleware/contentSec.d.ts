@@ -76,7 +76,7 @@ export type CspMiddlewareOptions = {
     /**
      * x-dns-prefetch-control header
      */
-    xDnsPrefetchControl?: false | "off" | "on" | undefined;
+    xDnsPrefetchControl?: false | "on" | "off" | undefined;
     /**
      * cross-origin-embedder-policy header; see https://web.dev/coop-coep/
      */
@@ -90,8 +90,8 @@ export type CspMiddlewareOptions = {
      */
     crossOriginResourcePolicy?: false | "same-origin" | "same-site" | "cross-origin" | undefined;
 };
-export type HandlerCb = typeof import("../types").HandlerCb;
-export type Log = import('../types').Log;
+export type HandlerCb = typeof import("#types.js").HandlerCb;
+export type Log = import("#types.js").Log;
 export type HstsOptions = {
     /**
      * max-age in seconds (defaults to 180days) or ms string
@@ -100,7 +100,7 @@ export type HstsOptions = {
     includeSubDomains?: boolean | undefined;
     preload?: boolean | undefined;
 };
-export type ReferrerPolicy = 'no-referrer' | 'no-referrer-when-downgrade' | 'origin' | 'origin-when-cross-origin' | 'same-origin' | 'strict-origin' | 'strict-origin-when-cross-origin' | 'unsafe-url';
+export type ReferrerPolicy = "no-referrer" | "no-referrer-when-downgrade" | "origin" | "origin-when-cross-origin" | "same-origin" | "strict-origin" | "strict-origin-when-cross-origin" | "unsafe-url";
 export type CspOptions = {
     /**
      * if `true` CspOptions are not patched with CSP_DEFAULTS

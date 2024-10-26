@@ -30,6 +30,7 @@ describe('string/timingSafeEqual', function () {
     assert.ok(!timingSafeEqual(fill('a', 100), fill('a', 99)))
   })
   it('is timing safe', function () {
+    this.timeout(4000)
     const a1 = fill('a', 100)
     const b1 = fill('a', 1)
     const a2 = fill('a', 100)

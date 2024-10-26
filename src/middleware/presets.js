@@ -7,11 +7,12 @@ import { requestId } from './requestId.js'
 import { send } from './send.js'
 
 /**
- * @typedef {import('../types').Handler} Handler
- *
+ * @typedef {import('#types.js').Handler} Handler
+ */
+/**
  * @typedef {object} PresetOptions
  * @property {number|string} limit body-parser limit
- * @property {import('./contentSec').CspMiddlewareOptions} cspOpts security header options
+ * @property {import('./contentSec.js').CspMiddlewareOptions} cspOpts security header options
  * @property {import('./cacheControl.js').CacheControlDirectivesByMethod} cacheControlOpts}
  * @property {import('./requestId.js').RequestIdOptions} requestIdOpts}
  */

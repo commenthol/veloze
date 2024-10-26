@@ -24,9 +24,9 @@
  */
 export function cookieParser(req: Request, res: Response, next: Function): void;
 /**
- * @typedef { import('../types').Request } Request
- * @typedef { import('../types').Response } Response
+ * @typedef { import('#types.js').Request } Request
+ * @typedef { import('#types.js').Response } Response
  */
 export const COOKIE_OPTS_SECURE: unique symbol;
-export type Request = import('../types').Request;
-export type Response = import('../types').Response;
+export type Request = import("#types.js").Request;
+export type Response = import("#types.js").Response;

@@ -2,8 +2,8 @@ import { COOKIE_OPTS_SECURE } from '../middleware/cookieParser.js'
 import { cookieSerialize } from '../utils/cookie.js'
 
 /**
- * @typedef { import('../types').Response } Response
- * @typedef { import('../../src/utils/cookie').CookieOpts } CookieOpts
+ * @typedef { import('#types.js').Response } Response
+ * @typedef { import('#utils/cookie.js').CookieOpts } CookieOpts
  */
 
 /**

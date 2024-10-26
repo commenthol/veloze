@@ -3,9 +3,9 @@ import { send as resSend, redirect as resRedirect } from '../response/index.js'
 import { RES_ETAG } from '../constants.js'
 
 /**
- * @typedef {import('../types').HandlerCb} HandlerCb
- * @typedef {import('../types').Response} Response
- * @typedef { import('../types').Request } Request
+ * @typedef {import('#types.js').HandlerCb} HandlerCb
+ * @typedef {import('#types.js').Response} Response
+ * @typedef { import('#types.js').Request } Request
  */
 
 /**

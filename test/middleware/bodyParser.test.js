@@ -1,6 +1,8 @@
 import supertest from 'supertest'
 import { bodyParser, connect } from '../../src/index.js'
 
+const nodeVersion = Number(process.version.slice(1).split('.')[0])
+
 const ST_OPTS = { http2: true }
 
 const echo = (req, res) => {
@@ -46,14 +48,18 @@ describe('middleware/bodyParser', function () {
   it('should limit upload with 400 if content-length is wrong HTTP/1', function () {
     const text = new Array(2000).fill('x').join('')
     const app = connect(bodyParser({ limit: '1kB' }), echo, final)
-    return supertest(app)
+    const req = supertest(app)
       .post('/')
       .send(text)
       .set('content-length', 10)
-      .expect(200, {
+    if (nodeVersion < 22) {
+      return req.expect(200, {
         body: { xxxxxxxxxx: '' },
         type: 'application/x-www-form-urlencoded'
       })
+    } else {
+      return req.expect(400)
+    }
   })
 
   it('should parse json', function () {

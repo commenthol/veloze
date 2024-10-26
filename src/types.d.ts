@@ -1,16 +1,16 @@
 import * as http from 'node:http'
 
-import { CookieOpts } from './utils/cookie'
+import { CookieOpts } from '#utils/cookie.js'
 export { CookieOpts }
-export { TooBusyOptions } from './utils/tooBusy'
-export { HeaderParserResult } from './utils/headerParser'
+export { TooBusyOptions } from '#utils/tooBusy.js'
+export { HeaderParserResult } from '#utils/headerParser.js'
 
-export { BodyParserOptions } from './middleware/bodyParser'
-export { CacheControlDirectives } from './middleware/cacheControl'
-export { CspMiddlewareOptions, CspOptions, HstsOptions, ReferrerPolicy } from './middleware/contentSec'
-export { CorsOptions } from './middleware/cors'
-export { PresetOptions } from './middleware/presets'
-export { RetryAfterOption } from './middleware/tooBusy'
+export { BodyParserOptions } from '#middleware/bodyParser.js'
+export { CacheControlDirectives } from '#middleware/cacheControl.js'
+export { CspMiddlewareOptions, CspOptions, HstsOptions, ReferrerPolicy } from '#middleware/contentSec.js'
+export { CorsOptions } from '#middleware/cors.js'
+export { PresetOptions } from '#middleware/presets.js'
+export { RetryAfterOption } from '#middleware/tooBusy.js'
 
 export type Method = 'ALL'|'ACL'|'BIND'|'CHECKOUT'|'CONNECT'|'COPY'|'DELETE'|'GET'|'HEAD'|'LINK'|'LOCK'|'M-SEARCH'|'MERGE'|'MKACTIVITY'|'MKCALENDAR'|'MKCOL'|'MOVE'|'NOTIFY'|'OPTIONS'|'PATCH'|'POST'|'PROPFIND'|'PROPPATCH'|'PURGE'|'PUT'|'REBIND'|'REPORT'|'SEARCH'|'SOURCE'|'SUBSCRIBE'|'TRACE'|'UNBIND'|'UNLINK'|'UNLOCK'|'UNSUBSCRIBE'
 
