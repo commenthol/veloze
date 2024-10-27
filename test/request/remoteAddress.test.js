@@ -43,7 +43,7 @@ describe('request/remoteAddress', function () {
     return supertest(app.handle)
       .get('/')
       .set({
-        'x-forwarded-for': 'hi'
+        'x-forwarded-for': "I am feeling fragmented, I'll go to therapy"
       })
       .expect({ remote: '::ffff:127.0.0.1' })
   })

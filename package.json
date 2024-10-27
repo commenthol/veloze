@@ -46,16 +46,16 @@
     "types": "node scripts/types.js"
   },
   "mocha": {
-    "timeout": 2000,
-    "recursive": true
+    "recursive": true,
+    "timeout": 2000
   },
   "dependencies": {
+    "@veloze/validate": "^0.11.2",
     "debug-level": "^3.2.1",
     "mnemonist": "^0.39.8"
   },
   "devDependencies": {
     "@types/node": "^22.8.1",
-    "@veloze/validate": "^0.11.2",
     "c8": "^10.1.2",
     "consolidate": "^1.0.4",
     "ejs": "^3.1.10",
