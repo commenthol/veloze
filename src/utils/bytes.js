@@ -1,4 +1,4 @@
-const RE = /^([\d.]+)\s?(b|k|m|g|t|p)?/
+const RE = /^([\d.]+)\s?([bkmgtp])?/
 
 /**
  * convert string to byte value

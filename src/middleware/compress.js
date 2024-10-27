@@ -65,7 +65,7 @@ export function compress(options) {
     }
 
     res.flush = function flush() {
-      stream?.flush && stream.flush()
+      stream?.flush?.()
     }
 
     res.end = function end(chunk, encoding) {
@@ -136,11 +136,11 @@ export function compress(options) {
       }
       stream.on('data', (chunk) => {
         if (_write.call(res, chunk) === false) {
-          stream.pause && stream.pause()
+          stream.pause?.()
         }
       })
       _on.call(res, 'drain', () => {
-        stream.resume && stream.resume()
+        stream.resume?.()
       })
       stream.on('end', () => {
         _end.call(res)

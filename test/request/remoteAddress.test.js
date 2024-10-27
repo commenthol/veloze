@@ -39,6 +39,15 @@ describe('request/remoteAddress', function () {
       .expect({ remote: '203.0.113.195' })
   })
 
+  it('for bogus header', function () {
+    return supertest(app.handle)
+      .get('/')
+      .set({
+        'x-forwarded-for': 'hi'
+      })
+      .expect({ remote: '::ffff:127.0.0.1' })
+  })
+
   it('for http connections behind proxy without x-forwarded-for', function () {
     return supertest(app.handle).get('/').expect({ remote: '::ffff:127.0.0.1' })
   })

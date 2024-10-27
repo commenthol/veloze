@@ -186,7 +186,7 @@ describe('middleware/serve', () => {
       .expect(200)
       .expect(
         shouldHaveSomeHeaders({
-          'content-length': '47',
+          'content-length': '73',
           'content-type': 'text/html; charset=utf-8'
         })
       )

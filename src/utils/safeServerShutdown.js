@@ -79,7 +79,6 @@ export function safeServerShutdown(server, options) {
       const res = socket._httpMessage
       if (res) {
         setHeaderConnectionClose(res)
-        continue
       }
     }
 

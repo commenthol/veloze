@@ -138,7 +138,7 @@ export class Router {
     const paths = [].concat(path)
 
     for (const p of paths) {
-      const path = p.replace(/([/]+)$/, '')
+      const path = p.replace(/([/]{1,5})$/, '')
 
       const { length } = path
       function rewrite(req, res, next) {

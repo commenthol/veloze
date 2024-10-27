@@ -10,10 +10,14 @@ import { HttpError } from '../HttpError.js'
 /**
  * @typedef {import('#types.js').HandlerCb} HandlerCb
  * @typedef {import('#types.js').Response} Response
- *
+ */
+/**
  * @typedef {string} EngineExtension the engine extension e.g. `html`, `hbs`, `ejs`
+ */
+/**
  * @typedef {object} Engine engine compliant with [consolidate](https://www.npmjs.com/package/consolidate)
- *
+ */
+/**
  * @typedef {object} ViewOptions
  * @property {EngineExtension} ext The default engine extension to use when omitted.
  * @property {Engine} engine Record of engines for rendering

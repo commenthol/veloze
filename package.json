@@ -20,6 +20,7 @@
   },
   "license": "MIT",
   "author": "commenthol <commenthol@gmail.com>",
+  "sideEffects": false,
   "type": "module",
   "imports": {
     "#*": {
@@ -34,10 +35,10 @@
     "types"
   ],
   "scripts": {
-    "all": "npm-run-all lint coverage types",
-    "ci": "CI=true npm-run-all lint coverage types",
+    "all": "npm-run-all lint c8 types",
+    "ci": "CI=true npm-run-all lint c8 types",
     "changelog": "conv-changelog -t groups -o",
-    "coverage": "c8 npm t",
+    "c8": "c8 -r lcov -r text npm t",
     "lint": "eslint .",
     "test": "mocha",
     "debug:http2": "NODE_DEBUG_NATIVE=http2 mocha",
@@ -45,6 +46,7 @@
     "types": "node scripts/types.js"
   },
   "mocha": {
+    "timeout": 2000,
     "recursive": true
   },
   "dependencies": {
@@ -52,23 +54,23 @@
     "mnemonist": "^0.39.8"
   },
   "devDependencies": {
-    "@types/node": "^20.17.1",
-    "@veloze/validate": "0.10.0",
-    "c8": "^9.1.0",
+    "@types/node": "^22.8.1",
+    "@veloze/validate": "^0.11.2",
+    "c8": "^10.1.2",
     "consolidate": "^1.0.4",
     "ejs": "^3.1.10",
-    "eslint": "^9.7.0",
+    "eslint": "^9.13.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
-    "globals": "^15.8.0",
     "express": "^4.21.1",
     "express-hbs": "^2.5.0",
+    "globals": "^15.11.0",
     "handlebars": "^4.7.8",
     "mocha": "^10.7.3",
     "npm-run-all": "^4.1.5",
     "shelljs": "^0.8.5",
-    "sinon": "^17.0.2",
-    "supertest": "^6.3.4",
+    "sinon": "^19.0.2",
+    "supertest": "^7.0.0",
     "typescript": "^5.6.3"
   },
   "engines": {

@@ -22,7 +22,10 @@ describe('middleware/cookieParser', function () {
   })
 
   before(function () {
-    this.clock = sinon.useFakeTimers(new Date('2020-12-25T00:00:00Z'))
+    this.clock = sinon.useFakeTimers({
+      now: new Date('2020-12-25T00:00:00Z'),
+      shouldAdvanceTime: true
+    })
   })
   after(function () {
     this.clock.restore()

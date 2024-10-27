@@ -29,7 +29,7 @@ export function vary(res, reqHeader) {
     .filter(Boolean)
     .join(', ')
     .toLowerCase()
-  const values = [...new Set(header.split(/\s*,\s*/))]
+  const values = [...new Set(header.split(/,\s?/))]
   const newValue = values.includes('*') ? '*' : values.join(', ')
   res.setHeader(VARY, newValue)
 }

@@ -46,7 +46,7 @@ export class FindRoute {
       pathname.forEach((path) => this.add(method, path, handler))
       return
     }
-    const parts = pathname.replace(/[/]+$/, '/').split('/')
+    const parts = pathname.replace(/[/]{1,5}$/, '/').split('/')
     let tmp = this.#tree
     for (const part of parts) {
       if (part === '*') {
@@ -118,4 +118,4 @@ export class FindRoute {
 }
 
 const getHandler = (tmp, method) =>
-  tmp && tmp[METHODS] && (tmp[METHODS][method] || tmp[METHODS].ALL)
+  tmp?.[METHODS]?.[method] || tmp?.[METHODS]?.ALL

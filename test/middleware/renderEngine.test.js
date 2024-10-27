@@ -119,7 +119,21 @@ describe('middleware/render', function () {
       .expect(200)
       .expect('content-type', 'text/html; charset=utf-8')
       .expect(
-        '<!DOCTYPE html>\n<html>\n\n<head>\n  <meta charset="utf-8">\n  <title>home</title>\n</head>\n\n<body>\n  \n<h1>It work\'s</h1>\n\n</body>\n\n</html>'
+        '<!DOCTYPE html>\n' +
+          '<html lang="en">\n' +
+          '\n' +
+          '<head>\n' +
+          '  <meta charset="utf-8">\n' +
+          '  <title>home</title>\n' +
+          '</head>\n' +
+          '\n' +
+          '<body>\n' +
+          '  \n' +
+          "<h1>It work's</h1>\n" +
+          '\n' +
+          '</body>\n' +
+          '\n' +
+          '</html>\n'
       )
   })
 })
