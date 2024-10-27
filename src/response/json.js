@@ -20,7 +20,7 @@ import { setHeaders } from './setHeaders.js'
  * @param {number} [status]
  * @param {Record<string, string|number|boolean>|{}} [headers]
  */
-export function json (res, body, status, headers) {
+export function json(res, body, status, headers) {
   let chunk = body
 
   setHeaders(res, headers)

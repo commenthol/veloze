@@ -2,16 +2,16 @@ import assert from 'node:assert'
 import { vary } from '../../src/response/vary.js'
 
 class Response {
-  constructor (vary) {
+  constructor(vary) {
     this.vary = vary
   }
 
   // eslint-disable-next-line no-unused-vars
-  getHeader (header) {
+  getHeader(header) {
     return this.vary
   }
 
-  setHeader (header, value) {
+  setHeader(header, value) {
     this.vary = value
   }
 }

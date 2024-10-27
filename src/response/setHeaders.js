@@ -17,7 +17,7 @@
  *  })
  * }
  */
-export function setHeaders (res, headers) {
+export function setHeaders(res, headers) {
   for (const [name, value] of Object.entries(headers || {})) {
     if (value === false) {
       res.removeHeader(name)

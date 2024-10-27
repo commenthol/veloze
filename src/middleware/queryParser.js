@@ -12,7 +12,7 @@ import { setPath } from '../request/setPath.js'
  * @param {Response} res
  * @param {Function} next
  */
-export function queryParser (req, res, next) {
+export function queryParser(req, res, next) {
   if (!req.query || !req.path) {
     const [path, search] = req.url.split('?')
     setPath(req, path || '/')

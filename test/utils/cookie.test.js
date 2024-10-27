@@ -4,14 +4,13 @@ import { cookieParse, cookieSerialize } from '../../src/utils/index.js'
 describe('utils/cookie', function () {
   describe('cookieParse', function () {
     it('empty string', function () {
-      assert.deepStrictEqual(
-        cookieParse(),
-        {}
-      )
+      assert.deepStrictEqual(cookieParse(), {})
     })
     it('cookie string', function () {
       assert.deepStrictEqual(
-        cookieParse('_foobar=FB.1.12.24; flag; preferred_color_mode=light; tz=Asia%2FTokyo'),
+        cookieParse(
+          '_foobar=FB.1.12.24; flag; preferred_color_mode=light; tz=Asia%2FTokyo'
+        ),
         {
           _foobar: 'FB.1.12.24',
           flag: true,

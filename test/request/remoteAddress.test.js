@@ -25,7 +25,7 @@ describe('request/remoteAddress', function () {
   it('for http connections', function () {
     return supertest(app.handle)
       .get('/local')
-      .then(res => {
+      .then((res) => {
         assert.equal(schemaIp.validate(res.body.remote), true)
       })
   })
@@ -34,8 +34,7 @@ describe('request/remoteAddress', function () {
     return supertest(app.handle)
       .get('/')
       .set({
-        'x-forwarded-for':
-        '203.0.113.195, 2001:db8:85a3:8d3:1319:8a2e:370:7348'
+        'x-forwarded-for': '203.0.113.195, 2001:db8:85a3:8d3:1319:8a2e:370:7348'
       })
       .expect({ remote: '203.0.113.195' })
   })
@@ -60,8 +59,7 @@ describe('request/remoteAddress', function () {
     return client
       .get('/')
       .set({
-        'x-forwarded-for':
-        '203.0.113.195, 2001:db8:85a3:8d3:1319:8a2e:370:7348'
+        'x-forwarded-for': '203.0.113.195, 2001:db8:85a3:8d3:1319:8a2e:370:7348'
       })
       .disableTLSCerts()
       .then((res) => {

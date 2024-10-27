@@ -11,11 +11,8 @@
  * @param {boolean} [options.weight] return only values with weight
  * @returns {HeaderParserResult[]}
  */
-export function headerParser (value = '', options) {
-  const {
-    weight: optWeight,
-    fn
-  } = options || {}
+export function headerParser(value = '', options) {
+  const { weight: optWeight, fn } = options || {}
 
   const order = new Set()
   const values = new Map()
@@ -27,7 +24,7 @@ export function headerParser (value = '', options) {
     const weight = extractWeight(_weight)
 
     // @ts-expect-error
-    const results = [].concat((fn ? fn(value) : value))
+    const results = [].concat(fn ? fn(value) : value)
 
     for (const result of results) {
       if (!result || order.has(result)) {
@@ -52,7 +49,7 @@ export function headerParser (value = '', options) {
 
 const RE_WEIGHT = /^\s*q=(0\.\d{1,3})\s*$/
 
-function extractWeight (weight) {
+function extractWeight(weight) {
   if (!weight) {
     return 1
   }

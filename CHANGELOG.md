@@ -1,3 +1,19 @@
+# 0.8.3 (2024-10-27)
+
+### chore:
+
+- change to eslint-prettier (#5b2c408)
+
+# 0.8.2 (2024-10-26)
+
+### fix:
+
+- types (#4962e23)
+
+### chore:
+
+- upgrade gh actions to v4; deprecate node 18 in favor of node 22 (#a9e372a)
+
 # 0.8.1 (2024-02-25)
 
 ### fix:

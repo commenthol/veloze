@@ -10,20 +10,15 @@ describe('middleware/cookieParser', function () {
   before(function () {
     app = new Router()
     app.use(send)
-    app.get('/cookie',
-      cookieParser,
-      (req, res) => {
-        res.send(req.cookies)
-      }
-    )
-    app.get('/*',
-      cookieParser,
-      (req, res) => {
-        res.cookie('wat', 'man', { domain: '*.foo.bar', path: '/folder' })
-        res.cookie('ho', 'ho', { maxAge: 3600e3 })
-        res.clearCookie('foo')
-        res.send(req.cookies)
-      })
+    app.get('/cookie', cookieParser, (req, res) => {
+      res.send(req.cookies)
+    })
+    app.get('/*', cookieParser, (req, res) => {
+      res.cookie('wat', 'man', { domain: '*.foo.bar', path: '/folder' })
+      res.cookie('ho', 'ho', { maxAge: 3600e3 })
+      res.clearCookie('foo')
+      res.send(req.cookies)
+    })
   })
 
   before(function () {
@@ -50,8 +45,6 @@ describe('middleware/cookieParser', function () {
   })
 
   it('shall add req.cookies object', function () {
-    return supertest(app.handle, ST_OPTS)
-      .get('/cookie')
-      .expect(200, {})
+    return supertest(app.handle, ST_OPTS).get('/cookie').expect(200, {})
   })
 })

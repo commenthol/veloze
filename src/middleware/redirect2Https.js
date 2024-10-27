@@ -13,12 +13,8 @@ import { redirect } from '../response/redirect.js'
  * @param {string[]} [options.allowedHosts] list of allowed vhosts (Doesn't append any port info)
  * @returns {HandlerCb}
  */
-export function redirect2Https (options) {
-  const {
-    redirectUrl,
-    status = 308,
-    allowedHosts
-  } = options
+export function redirect2Https(options) {
+  const { redirectUrl, status = 308, allowedHosts } = options
 
   const parsed = new URL(redirectUrl)
   if (parsed.protocol !== 'https:') {
@@ -29,7 +25,7 @@ export function redirect2Https (options) {
   const port = parsed.port ? ':' + parsed.port : ''
   const pathname = fixPathname(parsed.pathname)
 
-  return function redirect2Https (req, res, next) {
+  return function redirect2Https(req, res, next) {
     const isHttps = isHttpsProto(req)
 
     if (isHttps) {
@@ -37,15 +33,16 @@ export function redirect2Https (options) {
     } else {
       const reqUrl = fixPathname(req.originalUrl || req.url)
       const [hostHeader] = hostPort(req.headers?.host)
-      const _host = allowedHosts?.length && hostHeader && allowedHosts.includes(hostHeader)
-        ? hostHeader + port
-        : host
+      const _host =
+        allowedHosts?.length && hostHeader && allowedHosts.includes(hostHeader)
+          ? hostHeader + port
+          : host
       const location = `https://${_host}${pathname}${reqUrl}`
       redirect(res, location, status)
     }
   }
 }
 
-const fixPathname = (pathname) => pathname === '/' ? '' : pathname
+const fixPathname = (pathname) => (pathname === '/' ? '' : pathname)
 
 const hostPort = (host = '') => ('' + host).split(':')

@@ -7,7 +7,10 @@ describe('utils/logger', function () {
 
   before(function () {
     const myLogger = (namespace) => {
-      const log = (level) => (...args) => stack.push([level.toUpperCase(), namespace, ...args])
+      const log =
+        (level) =>
+        (...args) =>
+          stack.push([level.toUpperCase(), namespace, ...args])
       return {
         debug: log('debug'),
         info: log('info'),
@@ -25,9 +28,7 @@ describe('utils/logger', function () {
   it('shall log to custom logger', async function () {
     const app = new Router()
 
-    await supertest(app.handle)
-      .get('/')
-      .expect(404)
+    await supertest(app.handle).get('/').expect(404)
 
     stack[0][2].id = null
 

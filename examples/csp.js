@@ -5,7 +5,13 @@
  * requires a certificate; run `./scripts/certs.sh` before.
  */
 
-import { Server, contentSec, cspReport, send, redirect2Https } from '../src/index.js'
+import {
+  Server,
+  contentSec,
+  cspReport,
+  send,
+  redirect2Https
+} from '../src/index.js'
 
 const page = `<!DOCTYPE html>
 <html lang="en-US">
@@ -50,8 +56,12 @@ app.use(
   })
 )
 app.get('/', (req, res) => res.send(page))
-app.get('/favicon.ico', (req, res) => res.send('', 200, { 'content-type': 'image/x-icon' }))
-app.get('/css/style.css', (req, res) => res.send(css, 200, { 'content-type': 'text/css' }))
+app.get('/favicon.ico', (req, res) =>
+  res.send('', 200, { 'content-type': 'image/x-icon' })
+)
+app.get('/css/style.css', (req, res) =>
+  res.send(css, 200, { 'content-type': 'text/css' })
+)
 app.post('/csp-report', cspReport())
 
 app.listen(3443)

@@ -64,7 +64,10 @@ describe('FindRoute', function () {
   })
 
   it('find wildcard route', function () {
-    const found = tree.find({ method: 'GET', url: '/wildcard/test/ids/1234?foo=bar' })
+    const found = tree.find({
+      method: 'GET',
+      url: '/wildcard/test/ids/1234?foo=bar'
+    })
     assert.deepEqual(found, {
       handler: 'ALL /wildcard/*',
       params: {},

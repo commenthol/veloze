@@ -22,7 +22,7 @@ import { setHeaders } from './setHeaders.js'
  * @param {number} [status]
  * @param {Record<string, string|number|boolean>|{}} [headers]
  */
-export function send (res, body, status, headers) {
+export function send(res, body, status, headers) {
   let chunk = body
   /** @type {BufferEncoding} */
   let encoding = 'utf-8'

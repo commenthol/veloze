@@ -24,7 +24,8 @@ describe('Router', function () {
     app = new Router()
     app.use(handleResBodyInit, send)
     app.postHook(handleSend)
-    app.get('/', handler)
+    app
+      .get('/', handler)
       .get('/ignore')
       .get('/async', asyncHandler)
       .post('/', handler)
@@ -41,9 +42,7 @@ describe('Router', function () {
 
   describe('with paths', function () {
     it('shall call callback handler', function () {
-      return supertest(app.handle, ST_OPTS)
-        .get('/')
-        .expect(200, ['cb: GET /'])
+      return supertest(app.handle, ST_OPTS).get('/').expect(200, ['cb: GET /'])
     })
 
     it('shall call async handler', function () {
@@ -74,9 +73,7 @@ describe('Router', function () {
 
   describe('obtain params', function () {
     it('/users', function () {
-      return supertest(app.handle, ST_OPTS)
-        .get('/users')
-        .expect(200, {})
+      return supertest(app.handle, ST_OPTS).get('/users').expect(200, {})
     })
 
     it('/users/andi', function () {
@@ -98,9 +95,7 @@ describe('Router', function () {
     })
 
     it('/users/404/ shall not find route', function () {
-      return supertest(app.handle, ST_OPTS)
-        .get('/users/404/')
-        .expect(404)
+      return supertest(app.handle, ST_OPTS).get('/users/404/').expect(404)
     })
 
     it('/topics/programming/books/easy%20javascript', function () {
@@ -138,12 +133,14 @@ describe('Router', function () {
 
   describe('.head()', function () {
     it('GET returns a body', function () {
-      return supertest(app.handle, ST_OPTS)
-        .get('/')
-        .expect(200, '["cb: GET /"]')
-        // .expect('content-length', '13')
-        .expect('content-type', 'application/json; charset=utf-8')
-        // .then(({ body, headers }) => console.log({ headers, body }))
+      return (
+        supertest(app.handle, ST_OPTS)
+          .get('/')
+          .expect(200, '["cb: GET /"]')
+          // .expect('content-length', '13')
+          .expect('content-type', 'application/json; charset=utf-8')
+      )
+      // .then(({ body, headers }) => console.log({ headers, body }))
     })
 
     it('where HEAD does not', function () {
@@ -177,7 +174,7 @@ describe('Router', function () {
       return supertest(router.handle)
         .get('/path')
         .expect(200, ['first', 'second', 'third', 'cb: GET /path'])
-        // .then(({ body, headers }) => console.log({ headers, body }))
+      // .then(({ body, headers }) => console.log({ headers, body }))
     })
   })
 
@@ -206,15 +203,11 @@ describe('Router', function () {
     })
 
     it('/ is from main router', function () {
-      return supertest(router.handle)
-        .get('/')
-        .expect(200, ['#1st GET /'])
+      return supertest(router.handle).get('/').expect(200, ['#1st GET /'])
     })
 
     it('/one is from main router', function () {
-      return supertest(router.handle)
-        .get('/one')
-        .expect(200, ['#1st GET /one'])
+      return supertest(router.handle).get('/one').expect(200, ['#1st GET /one'])
     })
 
     it('/one/main is from main router', function () {
@@ -242,9 +235,7 @@ describe('Router', function () {
     })
 
     it('PUT /one/any gives a 404', function () {
-      return supertest(router.handle)
-        .put('/one/any')
-        .expect(404, [])
+      return supertest(router.handle).put('/one/any').expect(404, [])
     })
   })
 
@@ -265,27 +256,19 @@ describe('Router', function () {
     })
 
     it('GET /', function () {
-      return supertest(app.handle, ST_OPTS)
-        .get('/')
-        .expect(['#0 GET /'])
+      return supertest(app.handle, ST_OPTS).get('/').expect(['#0 GET /'])
     })
 
     it('GET /one', function () {
-      return supertest(app.handle, ST_OPTS)
-        .get('/one')
-        .expect(['#1 GET /one'])
+      return supertest(app.handle, ST_OPTS).get('/one').expect(['#1 GET /one'])
     })
 
     it('PUT /two', function () {
-      return supertest(app.handle, ST_OPTS)
-        .put('/two')
-        .expect(['#2 PUT /two'])
+      return supertest(app.handle, ST_OPTS).put('/two').expect(['#2 PUT /two'])
     })
 
     it('POST /', function () {
-      return supertest(app.handle, ST_OPTS)
-        .post('/')
-        .expect(['#3 POST /'])
+      return supertest(app.handle, ST_OPTS).post('/').expect(['#3 POST /'])
     })
 
     it('POST /many', function () {

@@ -27,11 +27,12 @@ export class FindRoute {
   /**
    * @param {number} [size=1000]
    */
-  constructor (size = 1000) {
-    this._cache = size > 0
-      // @ts-expect-error
-      ? new LruCache(size)
-      : null
+  constructor(size = 1000) {
+    this._cache =
+      size > 0
+        ? // @ts-expect-error
+          new LruCache(size)
+        : null
   }
 
   /**
@@ -40,9 +41,9 @@ export class FindRoute {
    * @param {string|string[]} pathname
    * @param {Function} handler
    */
-  add (method, pathname, handler) {
+  add(method, pathname, handler) {
     if (Array.isArray(pathname)) {
-      pathname.forEach(path => this.add(method, path, handler))
+      pathname.forEach((path) => this.add(method, path, handler))
       return
     }
     const parts = pathname.replace(/[/]+$/, '/').split('/')
@@ -64,7 +65,7 @@ export class FindRoute {
   /**
    * print routing tree on console
    */
-  print () {
+  print() {
     console.dir(this.#tree, { depth: null })
   }
 
@@ -79,7 +80,7 @@ export class FindRoute {
    *  path: string
    * }|undefined}
    */
-  find ({ method, url }) {
+  find({ method, url }) {
     const [path] = url.split('?')
     const cached = this._cache?.get(method + path)
     if (cached) {
@@ -116,4 +117,5 @@ export class FindRoute {
   }
 }
 
-const getHandler = (tmp, method) => tmp && tmp[METHODS] && (tmp[METHODS][method] || tmp[METHODS].ALL)
+const getHandler = (tmp, method) =>
+  tmp && tmp[METHODS] && (tmp[METHODS][method] || tmp[METHODS].ALL)

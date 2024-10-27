@@ -14,7 +14,7 @@ import { RES_ETAG } from '../constants.js'
  * @param {Response} res
  * @param {Function} next
  */
-export function send (req, res, next) {
+export function send(req, res, next) {
   res.send = resSend.bind(null, res)
   res.redirect = resRedirect.bind(null, res)
   next()
@@ -26,12 +26,11 @@ export function send (req, res, next) {
  * @param {string} [options.algorithm='sha1']
  * @returns {HandlerCb}
  */
-export function sendEtag (options) {
-  const {
-    algorithm = 'sha1'
-  } = options || {}
+export function sendEtag(options) {
+  const { algorithm = 'sha1' } = options || {}
 
-  const hash = (chunk = '') => '"' + createHash(algorithm).update(chunk).digest('base64') + '"'
+  const hash = (chunk = '') =>
+    '"' + createHash(algorithm).update(chunk).digest('base64') + '"'
 
   const calcEtag = (req, res, chunk) => {
     if (res.statusCode !== 200) {
@@ -46,7 +45,7 @@ export function sendEtag (options) {
     }
   }
 
-  return function sendEtagMw (req, res, next) {
+  return function sendEtagMw(req, res, next) {
     res.send = resSend.bind(null, res)
     res.redirect = resRedirect.bind(null, res)
     if (['GET', 'HEAD'].includes(req.method || '')) {

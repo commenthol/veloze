@@ -29,11 +29,9 @@ const EXIT_EVENTS = [
  * @param {number} [options.gracefulTimeout=1000] (ms) graceful timeout for existing connections
  * @param {Log} [options.log] logger
  */
-export function safeServerShutdown (server, options) {
-  const {
-    gracefulTimeout = 1000,
-    log = logger(':safeShutdown')
-  } = options || {}
+export function safeServerShutdown(server, options) {
+  const { gracefulTimeout = 1000, log = logger(':safeShutdown') } =
+    options || {}
 
   let isShutdown = false
 
@@ -41,7 +39,7 @@ export function safeServerShutdown (server, options) {
 
   const sockets = new Set()
 
-  function connect (socket) {
+  function connect(socket) {
     if (isShutdown) {
       destroy([socket])
       return
@@ -52,7 +50,7 @@ export function safeServerShutdown (server, options) {
     })
   }
 
-  function setHeaderConnectionClose (res) {
+  function setHeaderConnectionClose(res) {
     if (!res.headersSent) {
       res.setHeader('connection', 'close')
     }
@@ -63,7 +61,7 @@ export function safeServerShutdown (server, options) {
   server.on('secureConnection', connect)
 
   // @ts-expect-error
-  server.close = function close (callback) {
+  server.close = function close(callback) {
     isShutdown = true
     log.info('server is shutting down')
 
@@ -91,7 +89,7 @@ export function safeServerShutdown (server, options) {
         destroy(sockets)
       }
 
-      serverClose(err => {
+      serverClose((err) => {
         err
           ? log.error(`server shutdown with failures ${err.message}`)
           : log.info('server shutdown successful')
@@ -104,22 +102,30 @@ export function safeServerShutdown (server, options) {
     return server
   }
 
-  server.closeAsync = () => new Promise((resolve, reject) => {
-    server.close((err) => {
-      err ? reject(err) : resolve()
+  server.closeAsync = () =>
+    new Promise((resolve, reject) => {
+      server.close((err) => {
+        err ? reject(err) : resolve()
+      })
     })
-  })
 
-  EXIT_EVENTS.forEach(ev => process.on(ev, () => {
-    if (isShutdown) return
-    /* c8 ignore next */
-    server.close()
-  }))
+  EXIT_EVENTS.forEach((ev) =>
+    process.on(ev, () => {
+      if (isShutdown) return
+      /* c8 ignore next */
+      server.close()
+    })
+  )
 }
 
-const sleep = (ms) => new Promise(resolve => setTimeout(() => { resolve(ms) }, ms))
+const sleep = (ms) =>
+  new Promise((resolve) =>
+    setTimeout(() => {
+      resolve(ms)
+    }, ms)
+  )
 
-function destroy (sockets) {
+function destroy(sockets) {
   for (const socket of sockets) {
     socket.end()
   }

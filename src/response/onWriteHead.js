@@ -7,7 +7,7 @@
  * @param {Response} res
  * @param {(res: Response) => void} listener
  */
-export function onWriteHead (res, listener) {
+export function onWriteHead(res, listener) {
   if (!res) {
     throw new TypeError('need request')
   }
@@ -45,8 +45,8 @@ const getHeaders = (statusMessage, headers) => {
 
   return Array.isArray(rawHeaders)
     ? rawHeaders.reduce((curr, [k, v]) => {
-      curr[k] = v
-      return curr
-    }, {})
+        curr[k] = v
+        return curr
+      }, {})
     : rawHeaders
 }

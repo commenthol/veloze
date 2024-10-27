@@ -31,7 +31,7 @@ export const finalHandler = (options) => {
   const _finalLogger = finalLogger(options)
 
   // eslint-disable-next-line no-unused-vars
-  return function finalHandlerMw (err, req, res, next) {
+  return function finalHandlerMw(err, req, res, next) {
     // our message to the outside world
     /** @type {HttpError} */
     // @ts-expect-error

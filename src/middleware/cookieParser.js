@@ -33,11 +33,9 @@ export const COOKIE_OPTS_SECURE = Symbol('kCookieOptsSecure')
  * })
  * ```
  */
-export function cookieParser (req, res, next) {
+export function cookieParser(req, res, next) {
   const cookie = req.headers?.cookie
-  req.cookies = typeof cookie === 'string'
-    ? cookieParse(cookie)
-    : {}
+  req.cookies = typeof cookie === 'string' ? cookieParse(cookie) : {}
   res[COOKIE_OPTS_SECURE] = isHttpsProto(req)
   res.cookie = setCookie.bind(null, res)
   res.clearCookie = clearCookie.bind(null, res)

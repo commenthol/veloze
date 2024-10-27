@@ -145,7 +145,7 @@ const accessControlMaxAgeHeader = (req, res, maxAge) => {
  * @param {CorsOptions} options
  * @returns {HandlerCb}
  */
-export function cors (options = {}) {
+export function cors(options = {}) {
   const {
     preflightContinue,
     origin,
@@ -159,7 +159,7 @@ export function cors (options = {}) {
     ...options
   }
 
-  return function corsMw (req, res, next) {
+  return function corsMw(req, res, next) {
     if (req.method === 'OPTIONS') {
       accessControlAllowOriginHeader(req, res, origin)
       accessControlAllowMethodsHeader(req, res, methods)

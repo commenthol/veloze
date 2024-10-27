@@ -2,7 +2,7 @@ import assert from 'node:assert'
 import { acceptLanguage } from '../../src/request/index.js'
 
 class Request {
-  constructor (acceptLanguage) {
+  constructor(acceptLanguage) {
     this.headers = {}
     this.headers['accept-language'] = acceptLanguage
   }
@@ -41,10 +41,7 @@ describe('request/acceptLanguage', function () {
 
   it('this-is-not-a-language', function () {
     const req = new Request('this-is-not-a-language')
-    assert.deepEqual(acceptLanguage(req), [
-      'this-is-not-a-language',
-      'this'
-    ])
+    assert.deepEqual(acceptLanguage(req), ['this-is-not-a-language', 'this'])
   })
 
   it('11-22-33 should be filtered out', function () {

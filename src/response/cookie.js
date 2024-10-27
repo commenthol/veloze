@@ -14,7 +14,7 @@ import { cookieSerialize } from '../utils/cookie.js'
  * @param {CookieOpts} [opts]
  * @returns {Response}
  */
-export function setCookie (res, name, value, opts = {}) {
+export function setCookie(res, name, value, opts = {}) {
   const _opts = {
     path: '/',
     sameSite: 'Lax',
@@ -42,7 +42,7 @@ export function setCookie (res, name, value, opts = {}) {
  * @param {CookieOpts} [opts]
  * @returns {Response}
  */
-export function clearCookie (res, name, opts) {
+export function clearCookie(res, name, opts) {
   // eslint-disable-next-line no-unused-vars
   const { maxAge, ..._opts } = opts || {}
   return setCookie(res, name, '', {

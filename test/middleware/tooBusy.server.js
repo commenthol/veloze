@@ -21,26 +21,25 @@ const start = ({ port }) => {
   }
 
   const router = new Router()
-  router.all('/*',
-    tooBusy(),
-    end
-  )
+  router.all('/*', tooBusy(), end)
 
   const server = http.createServer(router.handle).listen(Number(port))
   // console.log(server.address())
 
-  ;['exit', 'SIGINT'].forEach(ev => process.on(ev, () => {
-    tooBusyCheck.reset()
-    server.close()
-  }))
+  ;['exit', 'SIGINT'].forEach((ev) =>
+    process.on(ev, () => {
+      tooBusyCheck.reset()
+      server.close()
+    })
+  )
 
-  function createLoad () {
+  function createLoad() {
     makeLoad(100)
     setTimeout(createLoad, 10)
   }
 }
 
-function argv (args) {
+function argv(args) {
   const argv = args || process.argv.slice(2)
   const cmd = { port: 56789 }
 

@@ -41,17 +41,14 @@ describe('middleware/bodyParser', function () {
         body: { error: 'upload limit of 100 bytes' },
         type: 'application/x-www-form-urlencoded'
       })
-      // .then(res => console.log(res))
+    // .then(res => console.log(res))
   })
 
   // HTTP2 mode throws NGHTTP2_PROTOCOL_ERROR as not being a valid request node@20.5.0
   it('should limit upload with 400 if content-length is wrong HTTP/1', function () {
     const text = new Array(2000).fill('x').join('')
     const app = connect(bodyParser({ limit: '1kB' }), echo, final)
-    const req = supertest(app)
-      .post('/')
-      .send(text)
-      .set('content-length', 10)
+    const req = supertest(app).post('/').send(text).set('content-length', 10)
     if (nodeVersion < 22) {
       return req.expect(200, {
         body: { xxxxxxxxxx: '' },

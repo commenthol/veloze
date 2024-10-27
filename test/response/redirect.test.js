@@ -6,15 +6,12 @@ const { redirect } = response
 
 describe('response/redirect', function () {
   const app = new Router()
-  app.all('/*',
-    queryParser,
-    (req, res) => {
-      if (req.headers['content-type']) {
-        res.setHeader('content-type', req.headers['content-type'])
-      }
-      redirect(res, req.query.location, req.query.status)
+  app.all('/*', queryParser, (req, res) => {
+    if (req.headers['content-type']) {
+      res.setHeader('content-type', req.headers['content-type'])
     }
-  )
+    redirect(res, req.query.location, req.query.status)
+  })
   const handle = app.handle
 
   it('shall redirect', function () {
@@ -25,10 +22,12 @@ describe('response/redirect', function () {
         location: 'https://foo.bar'
       })
       .expect(307, '')
-      .expect(shouldHaveHeaders({
-        'content-length': '0',
-        location
-      }))
+      .expect(
+        shouldHaveHeaders({
+          'content-length': '0',
+          location
+        })
+      )
   })
 
   it('shall redirect with html response', function () {
@@ -40,12 +39,14 @@ describe('response/redirect', function () {
         location: 'https://foo.bar'
       })
       .expect(307, /^<!DOCTYPE html>/)
-      .expect(shouldHaveHeaders({
-        'content-length': '234',
-        'content-security-policy': "default-src 'self'",
-        'content-type': 'text/html; charset=utf-8',
-        location
-      }))
+      .expect(
+        shouldHaveHeaders({
+          'content-length': '234',
+          'content-security-policy': "default-src 'self'",
+          'content-type': 'text/html; charset=utf-8',
+          location
+        })
+      )
   })
 
   it('shall permanently redirect with 308', function () {
@@ -57,10 +58,12 @@ describe('response/redirect', function () {
         status: 308
       })
       .expect(308, '')
-      .expect(shouldHaveHeaders({
-        'content-length': '0',
-        location
-      }))
+      .expect(
+        shouldHaveHeaders({
+          'content-length': '0',
+          location
+        })
+      )
   })
 
   it('shall redirect a head request', function () {
@@ -73,10 +76,12 @@ describe('response/redirect', function () {
         status: 307
       })
       .expect(307, undefined)
-      .expect(shouldHaveHeaders({
-        'content-type': 'text/html; charset=utf-8',
-        location
-      }))
+      .expect(
+        shouldHaveHeaders({
+          'content-type': 'text/html; charset=utf-8',
+          location
+        })
+      )
   })
 
   it('shall fallback to redirect with 307 if status is wrong', function () {
@@ -88,10 +93,12 @@ describe('response/redirect', function () {
         status: 500
       })
       .expect(307)
-      .expect(shouldHaveHeaders({
-        'content-length': '0',
-        location
-      }))
+      .expect(
+        shouldHaveHeaders({
+          'content-length': '0',
+          location
+        })
+      )
   })
 
   it('shall remove header', function () {
@@ -110,10 +117,12 @@ describe('response/redirect', function () {
         status: 500
       })
       .expect(301)
-      .expect(shouldHaveHeaders({
-        'content-length': '0',
-        location
-      }))
+      .expect(
+        shouldHaveHeaders({
+          'content-length': '0',
+          location
+        })
+      )
   })
 
   it('shall remove cache-control header', function () {
@@ -132,10 +141,12 @@ describe('response/redirect', function () {
         status: 500
       })
       .expect(301)
-      .expect(shouldHaveHeaders({
-        'content-length': '0',
-        location
-      }))
+      .expect(
+        shouldHaveHeaders({
+          'content-length': '0',
+          location
+        })
+      )
   })
 
   it('shall explicitly set cache-control header', function () {
@@ -154,10 +165,12 @@ describe('response/redirect', function () {
         status: 500
       })
       .expect(301)
-      .expect(shouldHaveHeaders({
-        'content-length': '0',
-        'cache-control': 'no-store',
-        location
-      }))
+      .expect(
+        shouldHaveHeaders({
+          'content-length': '0',
+          'cache-control': 'no-store',
+          location
+        })
+      )
   })
 })

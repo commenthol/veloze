@@ -9,12 +9,10 @@ describe('middleware/redirect2Https', function () {
     app.use(redirect2Https({ redirectUrl: 'https://localhost' }))
     app.all('/*', (req, res) => res.end())
 
-    return new Http2Client(app.handle)
-      .get('/test')
-      .then((res) => {
-        assert.equal(res.headers.location, 'https://localhost/test')
-        assert.equal(res.status, 308)
-      })
+    return new Http2Client(app.handle).get('/test').then((res) => {
+      assert.equal(res.headers.location, 'https://localhost/test')
+      assert.equal(res.status, 308)
+    })
   })
 
   it('shall pass https traffic', function (done) {
@@ -27,7 +25,10 @@ describe('middleware/redirect2Https', function () {
   })
 
   it('shall pass https traffic if x-forwarded-proto is set', function (done) {
-    const req = new Request('GET', '/', { host: 'localhost', 'x-forwarded-proto': 'https' })
+    const req = new Request('GET', '/', {
+      host: 'localhost',
+      'x-forwarded-proto': 'https'
+    })
     const res = new Response()
     redirect2Https({ redirectUrl: 'https://localhost:8443' })(req, res, () => {
       done()
@@ -61,7 +62,10 @@ describe('middleware/redirect2Https', function () {
   it('shall allow to redirect to a known vhost', function () {
     const req = new Request('POST', '/test', { host: 'example.com' })
     const res = new Response()
-    redirect2Https({ redirectUrl: 'https://foo.bar/other', allowedHosts: ['example.com'] })(req, res)
+    redirect2Https({
+      redirectUrl: 'https://foo.bar/other',
+      allowedHosts: ['example.com']
+    })(req, res)
     assert.strictEqual(res.headers.location, 'https://example.com/other/test')
     assert.strictEqual(res.statusCode, 308)
   })

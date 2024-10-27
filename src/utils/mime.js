@@ -16,7 +16,8 @@ export const mimeTypes = {
   '.css': 'text/css' + CHARSET_UTF8,
   '.csv': 'text/csv' + CHARSET_UTF8,
   '.doc': 'application/msword',
-  '.docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  '.docx':
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
   '.eot': 'application/vnd.ms-fontobject',
   '.epub': 'application/epub+zip',
   '.gz': 'application/gzip',
@@ -50,7 +51,8 @@ export const mimeTypes = {
   '.pdf': 'application/pdf',
   '.php': 'application/x-httpd-php',
   '.ppt': 'application/vnd.ms-powerpoint',
-  '.pptx': 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+  '.pptx':
+    'application/vnd.openxmlformats-officedocument.presentationml.presentation',
   '.rar': 'application/vnd.rar',
   '.rtf': 'application/rtf',
   '.sh': 'application/x-sh',

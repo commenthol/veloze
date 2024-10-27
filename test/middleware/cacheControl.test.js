@@ -2,7 +2,7 @@ import assert from 'node:assert'
 import { cacheControl, cacheControlByMethod } from '../../src/index.js'
 import { Request, Response } from '../support/index.js'
 
-const next = () => { }
+const next = () => {}
 
 describe('middleware/cacheControl', function () {
   const req = {}

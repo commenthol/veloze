@@ -19,10 +19,13 @@ const page = `<!DOCTYPE html>
 
 /// defining the http1 server for redirecting to https
 const sHttp = new Server({ onlyHTTP1: true })
-sHttp.all('/*', redirect2Https({
-  redirectUrl: 'https://localhost:3443/path', /// redirect to different port and path!
-  allowedHosts: ['foo.bar'] /// enables "foo.bar" or "localhost" as host name; set `127.0.0.1 foo.bar` in `/etc/hosts` first
-}))
+sHttp.all(
+  '/*',
+  redirect2Https({
+    redirectUrl: 'https://localhost:3443/path', /// redirect to different port and path!
+    allowedHosts: ['foo.bar'] /// enables "foo.bar" or "localhost" as host name; set `127.0.0.1 foo.bar` in `/etc/hosts` first
+  })
+)
 sHttp.listen(3000)
 
 /// defining the secure http2 server for the application
@@ -34,6 +37,8 @@ app.use(
   send /// enables `res.send()`
 )
 app.get('/path', csp(), (req, res) => res.send(page))
-app.get('/favicon.ico', (req, res) => res.send('', 200, { 'content-type': 'image/x-icon' }))
+app.get('/favicon.ico', (req, res) =>
+  res.send('', 200, { 'content-type': 'image/x-icon' })
+)
 
 app.listen(3443)

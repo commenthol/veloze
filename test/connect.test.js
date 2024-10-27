@@ -2,14 +2,12 @@
 
 import assert from 'assert'
 import { connect } from '../src/index.js'
-import {
-  Request,
-  Response,
-  handler,
-  asyncHandler
-} from './support/index.js'
+import { Request, Response, handler, asyncHandler } from './support/index.js'
 
-const handlerPush = (str) => (req, res, next) => { res.body.push(str); next() }
+const handlerPush = (str) => (req, res, next) => {
+  res.body.push(str)
+  next()
+}
 
 describe('connect', function () {
   it('no handlers shall not throw', function (done) {
@@ -40,7 +38,9 @@ describe('connect', function () {
   it('async handlers with next shall not throw', function (done) {
     const req = new Request()
     const res = new Response()
-    const handler = async (req, res, next) => { next() }
+    const handler = async (req, res, next) => {
+      next()
+    }
     connect(handler)(req, res, (err) => {
       try {
         assert.deepEqual(res, { body: [] })
@@ -64,17 +64,15 @@ describe('connect', function () {
       handlerPush(0),
       errorHandler(1),
       handlerPush(1),
-      (req, res, next) => { next(new Error()) },
+      (req, res, next) => {
+        next(new Error())
+      },
       errorHandler(2),
       handlerPush(2)
     )(req, res, () => {
       try {
         assert.deepEqual(res, {
-          body: [
-            0,
-            1,
-            'err#1'
-          ]
+          body: [0, 1, 'err#1']
         })
         done()
       } catch (e) {
@@ -223,7 +221,9 @@ describe('connect', function () {
     connect(
       handlerPush(0),
       handlerPush(1),
-      async (req, res) => { res.end() },
+      async (req, res) => {
+        res.end()
+      },
       handlerPush(2)
     )(req, res, () => {
       throw new Error('assertion')
@@ -238,14 +238,14 @@ describe('connect', function () {
     const req = new Request()
     const res = new Response()
 
-    connect(
-      handlerPush(0),
-      false && handlerPush(1),
-      handlerPush(2)
-    )(req, res, () => {
-      assert.deepEqual(res.body, [0, 2])
-      done()
-    })
+    connect(handlerPush(0), false && handlerPush(1), handlerPush(2))(
+      req,
+      res,
+      () => {
+        assert.deepEqual(res.body, [0, 2])
+        done()
+      }
+    )
   })
 
   it('shall break a synchronous chain after 100 handlers', function (done) {

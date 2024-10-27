@@ -18,7 +18,7 @@ describe('middleware/send', function () {
         .get('/')
         .expect(200, '<h1>works</h1>')
         .expect('content-type', 'text/html; charset=utf-8')
-        // .expect('content-length', '14') // HTTP2 does not send content-length
+      // .expect('content-length', '14') // HTTP2 does not send content-length
     })
   })
 
@@ -40,21 +40,25 @@ describe('middleware/send', function () {
       return supertest(handle, ST_OPTS)
         .get('/')
         .expect(200, '<h1>works</h1>')
-        .expect(shouldHaveSomeHeaders({
-          // 'content-length': '14',
-          'content-type': 'text/html; charset=utf-8',
-          etag: '"KbHPF47xLpMM9by5ECjxj4W2xpg="'
-        }))
+        .expect(
+          shouldHaveSomeHeaders({
+            // 'content-length': '14',
+            'content-type': 'text/html; charset=utf-8',
+            etag: '"KbHPF47xLpMM9by5ECjxj4W2xpg="'
+          })
+        )
     })
 
     it('shall not set etag on status != 200', function () {
       return supertest(handle, ST_OPTS)
         .get('/404')
         .expect(404, '<h1>ouch</h1>')
-        .expect(shouldHaveSomeHeaders({
-          // 'content-length': '13',
-          'content-type': 'text/html; charset=utf-8'
-        }))
+        .expect(
+          shouldHaveSomeHeaders({
+            // 'content-length': '13',
+            'content-type': 'text/html; charset=utf-8'
+          })
+        )
     })
 
     it('shall return 304', function () {
@@ -64,9 +68,11 @@ describe('middleware/send', function () {
           'If-None-Match': '"KbHPF47xLpMM9by5ECjxj4W2xpg="'
         })
         .expect(304, '')
-        .expect(shouldHaveSomeHeaders({
-          etag: '"KbHPF47xLpMM9by5ECjxj4W2xpg="'
-        }))
+        .expect(
+          shouldHaveSomeHeaders({
+            etag: '"KbHPF47xLpMM9by5ECjxj4W2xpg="'
+          })
+        )
     })
   })
 })

@@ -61,9 +61,21 @@ const REFERRER_POLICY = [
 ]
 
 const X_DNS_PREFETCH_CONTROL = ['off', 'on']
-const CROSS_ORIGIN_EMBEDDER_POLICY = ['require-corp', 'unsafe-none', 'credentialless']
-const CROSS_ORIGIN_OPENER_POLICY = ['same-origin', 'same-origin-allow-popups', 'unsafe-none']
-const CROSS_ORIGIN_RESOURCE_POLICY = ['same-origin', 'same-site', 'cross-origin']
+const CROSS_ORIGIN_EMBEDDER_POLICY = [
+  'require-corp',
+  'unsafe-none',
+  'credentialless'
+]
+const CROSS_ORIGIN_OPENER_POLICY = [
+  'same-origin',
+  'same-origin-allow-popups',
+  'unsafe-none'
+]
+const CROSS_ORIGIN_RESOURCE_POLICY = [
+  'same-origin',
+  'same-site',
+  'cross-origin'
+]
 
 const includes = (allowed, value) => value && allowed.includes(value)
 
@@ -145,7 +157,8 @@ const CSP_DIRECTIVES = {
   'upgrade-insecure-requests': true
 }
 
-const quoteKeyword = value => CSP_KEYWORDS.includes(value) ? `'${value}'` : value
+const quoteKeyword = (value) =>
+  CSP_KEYWORDS.includes(value) ? `'${value}'` : value
 
 /**
  * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
@@ -157,8 +170,9 @@ export const buildCsp = (options = {}) => {
   const builder = []
   for (const [directive, defaults] of Object.entries(CSP_DIRECTIVES)) {
     const parts = []
-    // @ts-expect-error
-    let values = options[directive] ?? (options?.omitDefaults ? undefined : defaults)
+    let values =
+      // @ts-expect-error
+      options[directive] ?? (options?.omitDefaults ? undefined : defaults)
     // default-src must be present
     if (directive === 'default-src' && !values) {
       values = "'self'"
@@ -219,7 +233,7 @@ export const buildCsp = (options = {}) => {
  * @param {CspMiddlewareOptions} [options]
  * @returns {HandlerCb}
  */
-export function contentSec (options) {
+export function contentSec(options) {
   const {
     extensions = ['', '.html', '.htm'],
     csp = { reportOnly: false },
@@ -275,8 +289,8 @@ export function contentSec (options) {
 
   const strictTransportSecurity = buildHsts(hsts)
 
-  return function cspMw (req, res, next) {
-    setPath(req, req.path || (new URL(req.url, 'local://')).pathname)
+  return function cspMw(req, res, next) {
+    setPath(req, req.path || new URL(req.url, 'local://').pathname)
     const ext = extname(req.path || '')
 
     if (extensions.includes(ext)) {
@@ -299,7 +313,7 @@ export function contentSec (options) {
  * @param {CspMiddlewareOptions} [options]
  * @returns {HandlerCb}
  */
-export function contentSecJson (options) {
+export function contentSecJson(options) {
   const _options = {
     extensions: ['', '.json'],
     csp: {
@@ -323,10 +337,8 @@ export function contentSecJson (options) {
  * @param {{log: Log}} options
  * @returns {HandlerCb}
  */
-export function cspReport (options) {
-  const {
-    log = logger(':csp-violation')
-  } = options || {}
+export function cspReport(options) {
+  const { log = logger(':csp-violation') } = options || {}
 
   return connect(
     bodyParser.json({ typeJson: 'application/csp-report' }),

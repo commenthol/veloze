@@ -18,6 +18,6 @@ const HTTPS_PROTO = 'https'
 export const isHttpsProto = (req) =>
   // @ts-expect-error
   req.socket?.encrypted || req.headers?.[X_FORWARDED_PROTO] === HTTPS_PROTO
-  // HTTP/2 req.httpVersion[0] === '2' uses
-  // req.headers[':scheme'] === HTTPS_PROTO
-  // but req.socket.encrypted is true
+// HTTP/2 req.httpVersion[0] === '2' uses
+// req.headers[':scheme'] === HTTPS_PROTO
+// but req.socket.encrypted is true

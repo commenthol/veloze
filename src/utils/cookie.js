@@ -16,7 +16,7 @@ import { safeDecodeUriComponent } from './safeDecode.js'
  * @param {string} cookieStr
  * @returns {Record<string, string>|{}}
  */
-export function cookieParse (cookieStr = '') {
+export function cookieParse(cookieStr = '') {
   const parts = cookieStr.split(';')
   const cookies = {}
   for (const part of parts) {
@@ -39,10 +39,10 @@ export function cookieParse (cookieStr = '') {
  * field-vchar   = VCHAR / obs-text
  * obs-text      = %x80-FF
  */
-// eslint-disable-next-line no-control-regex
+
 const fieldContentRegExp = /^[\u0009\u0020-\u007e\u0080-\u00ff]+$/
 
-const isDate = d => !isNaN(new Date(d).getTime())
+const isDate = (d) => !isNaN(new Date(d).getTime())
 
 /**
  * serializes a cookie
@@ -51,7 +51,7 @@ const isDate = d => !isNaN(new Date(d).getTime())
  * @param {CookieOpts} [options]
  * @returns {string}
  */
-export function cookieSerialize (name, value, options) {
+export function cookieSerialize(name, value, options) {
   const {
     maxAge,
     domain,

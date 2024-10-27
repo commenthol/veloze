@@ -32,13 +32,15 @@ describe('middleware/compress', function () {
       .get('/')
       .set('accept-encoding', 'gzip')
       .expect(200, 'hi, there')
-      .expect(shouldHaveSomeHeaders({
-        'content-type': 'text/plain',
-        'content-encoding': 'gzip',
-        'content-length': false,
-        'transfer-encoding': 'chunked',
-        vary: 'accept-encoding'
-      }))
+      .expect(
+        shouldHaveSomeHeaders({
+          'content-type': 'text/plain',
+          'content-encoding': 'gzip',
+          'content-length': false,
+          'transfer-encoding': 'chunked',
+          vary: 'accept-encoding'
+        })
+      )
   })
 
   it('shall gzip compress HTTP/2', async function () {
@@ -47,13 +49,15 @@ describe('middleware/compress', function () {
       .set('accept-encoding', 'gzip')
       .expect(200, 'hi, there')
       // .expect(printHeaders)
-      .expect(shouldHaveSomeHeaders({
-        'content-type': 'text/plain',
-        'content-encoding': 'gzip',
-        'content-length': false,
-        'transfer-encoding': false,
-        vary: 'accept-encoding'
-      }))
+      .expect(
+        shouldHaveSomeHeaders({
+          'content-type': 'text/plain',
+          'content-encoding': 'gzip',
+          'content-length': false,
+          'transfer-encoding': false,
+          vary: 'accept-encoding'
+        })
+      )
   })
 
   it('shall deflate compress', async function () {
@@ -61,18 +65,24 @@ describe('middleware/compress', function () {
       .get('/')
       .set('accept-encoding', 'deflate')
       .expect(200, 'hi, there')
-      .expect(shouldHaveSomeHeaders({
-        'content-type': 'text/plain',
-        'content-encoding': 'deflate',
-        'content-length': false,
-        vary: 'accept-encoding'
-      }))
+      .expect(
+        shouldHaveSomeHeaders({
+          'content-type': 'text/plain',
+          'content-encoding': 'deflate',
+          'content-length': false,
+          vary: 'accept-encoding'
+        })
+      )
   })
 
   it('shall compress using write()', async function () {
-    const large = (fill = 'a', len = 100) => Array(len).fill(fill).join('') + '\n'
+    const large = (fill = 'a', len = 100) =>
+      Array(len).fill(fill).join('') + '\n'
 
-    const exp = '012345678abcdefghi'.split('').map(c => large(c)).join('')
+    const exp = '012345678abcdefghi'
+      .split('')
+      .map((c) => large(c))
+      .join('')
 
     const app = createApp(undefined, (req, res) => {
       res.setHeader('content-type', 'text/plain')
@@ -85,12 +95,14 @@ describe('middleware/compress', function () {
       .get('/')
       .set('accept-encoding', 'gzip, deflate')
       .expect(200, exp)
-      .expect(shouldHaveSomeHeaders({
-        'content-type': 'text/plain',
-        'content-encoding': 'gzip',
-        'content-length': false,
-        vary: 'accept-encoding'
-      }))
+      .expect(
+        shouldHaveSomeHeaders({
+          'content-type': 'text/plain',
+          'content-encoding': 'gzip',
+          'content-length': false,
+          vary: 'accept-encoding'
+        })
+      )
   })
 
   it('shall compress large response', async function () {
@@ -106,10 +118,12 @@ describe('middleware/compress', function () {
       .set('accept-encoding', 'gzip')
       .expect(200, buf.toString())
       // .expect(printHeaders)
-      .expect(shouldHaveSomeHeaders({
-        'content-type': 'text/plain',
-        'content-encoding': 'gzip'
-      }))
+      .expect(
+        shouldHaveSomeHeaders({
+          'content-type': 'text/plain',
+          'content-encoding': 'gzip'
+        })
+      )
   })
 
   it('shall compress large response in multiple writes', async function () {
@@ -130,10 +144,12 @@ describe('middleware/compress', function () {
       .expect(({ text }) => {
         assert.equal(text.length, buf.length * 10)
       })
-      .expect(shouldHaveSomeHeaders({
-        'content-type': 'text/plain',
-        'content-encoding': 'gzip'
-      }))
+      .expect(
+        shouldHaveSomeHeaders({
+          'content-type': 'text/plain',
+          'content-encoding': 'gzip'
+        })
+      )
   })
 
   it('shall not compress HEAD requests', async function () {
@@ -141,12 +157,14 @@ describe('middleware/compress', function () {
       .head('/')
       .set('accept-encoding', 'gzip, deflate')
       .expect(200)
-      .expect(shouldHaveSomeHeaders({
-        'content-type': 'text/plain',
-        'content-encoding': false,
-        'transfer-encoding': false,
-        vary: 'accept-encoding'
-      }))
+      .expect(
+        shouldHaveSomeHeaders({
+          'content-type': 'text/plain',
+          'content-encoding': false,
+          'transfer-encoding': false,
+          vary: 'accept-encoding'
+        })
+      )
   })
 
   it('shall not compress below threshold', async function () {
@@ -160,12 +178,14 @@ describe('middleware/compress', function () {
       .set('accept-encoding', 'gzip, deflate')
       .expect(200)
       // .expect(printHeaders)
-      .expect(shouldHaveSomeHeaders({
-        // 'content-length': '9',
-        'content-type': 'text/plain',
-        'content-encoding': false,
-        vary: 'accept-encoding'
-      }))
+      .expect(
+        shouldHaveSomeHeaders({
+          // 'content-length': '9',
+          'content-type': 'text/plain',
+          'content-encoding': false,
+          vary: 'accept-encoding'
+        })
+      )
   })
 
   it('shall not compress for zero length response', async function () {
@@ -178,13 +198,15 @@ describe('middleware/compress', function () {
       .get('/')
       .set('accept-encoding', 'gzip, deflate')
       .expect(200)
-      .expect(shouldHaveSomeHeaders({
-        'content-type': 'text/plain',
-        'content-length': '0',
-        'content-encoding': false,
-        'transfer-encoding': false,
-        vary: 'accept-encoding'
-      }))
+      .expect(
+        shouldHaveSomeHeaders({
+          'content-type': 'text/plain',
+          'content-length': '0',
+          'content-encoding': false,
+          'transfer-encoding': false,
+          vary: 'accept-encoding'
+        })
+      )
   })
 
   it('shall not compress on cache-control no-transform', async function () {
@@ -198,13 +220,15 @@ describe('middleware/compress', function () {
       .get('/')
       .set('accept-encoding', 'gzip, deflate')
       .expect(200)
-      .expect(shouldHaveSomeHeaders({
-        'content-type': 'text/plain',
-        'content-length': '9',
-        'cache-control': 'no-transform',
-        'content-encoding': false,
-        vary: false
-      }))
+      .expect(
+        shouldHaveSomeHeaders({
+          'content-type': 'text/plain',
+          'content-length': '9',
+          'cache-control': 'no-transform',
+          'content-encoding': false,
+          vary: false
+        })
+      )
   })
 
   it('shall not compress with variable length to prevent the BREACH attack', async function () {
@@ -221,15 +245,20 @@ describe('middleware/compress', function () {
       .expect(200)
       .expect(({ text }) => {
         // console.log('%j', text)
-        assert.ok(text.length > page.length, 'shall have random spaces appended')
+        assert.ok(
+          text.length > page.length,
+          'shall have random spaces appended'
+        )
         assert.ok(/^\s+$/.test(text.slice(page.length)))
       })
-      .expect(shouldHaveSomeHeaders({
-        'content-type': 'text/html',
-        'content-length': false,
-        'content-encoding': 'gzip',
-        vary: 'accept-encoding'
-      }))
+      .expect(
+        shouldHaveSomeHeaders({
+          'content-type': 'text/html',
+          'content-length': false,
+          'content-encoding': 'gzip',
+          vary: 'accept-encoding'
+        })
+      )
   })
 
   it('shall flush partially written data HTTP/1', function (done) {
@@ -313,12 +342,14 @@ describe('middleware/compress', function () {
       .get('/')
       .set('accept-encoding', '') // supertest sets gzip, deflate by default
       .expect(200, 'hi, there')
-      .expect(shouldHaveSomeHeaders({
-        'content-type': 'text/plain',
-        'content-encoding': false,
-        'content-length': '9',
-        vary: 'accept-encoding'
-      }))
+      .expect(
+        shouldHaveSomeHeaders({
+          'content-type': 'text/plain',
+          'content-encoding': false,
+          'content-length': '9',
+          vary: 'accept-encoding'
+        })
+      )
   })
 
   it('shall ignore unknown accept encoding HTTP/1', async function () {
@@ -326,11 +357,13 @@ describe('middleware/compress', function () {
       .get('/')
       .set('accept-encoding', 'fictitious')
       .expect(200, 'hi, there')
-      .expect(shouldHaveSomeHeaders({
-        'content-type': 'text/plain',
-        'content-encoding': false,
-        vary: 'accept-encoding'
-      }))
+      .expect(
+        shouldHaveSomeHeaders({
+          'content-type': 'text/plain',
+          'content-encoding': false,
+          vary: 'accept-encoding'
+        })
+      )
   })
 
   it('shall not compress if content encoding is already set', async function () {
@@ -344,11 +377,13 @@ describe('middleware/compress', function () {
       .get('/')
       .set('accept-encoding', 'gzip')
       .expect(200, 'hi, there')
-      .expect(shouldHaveSomeHeaders({
-        'content-type': 'text/plain',
-        'content-encoding': 'x-foo',
-        vary: false
-      }))
+      .expect(
+        shouldHaveSomeHeaders({
+          'content-type': 'text/plain',
+          'content-encoding': 'x-foo',
+          vary: false
+        })
+      )
   })
 
   it('should not set vary if content-type does not pass filter', async function () {
@@ -361,10 +396,12 @@ describe('middleware/compress', function () {
       .get('/')
       .set('accept-encoding', 'gzip')
       .expect(200)
-      .expect(shouldHaveSomeHeaders({
-        'content-type': 'image/png',
-        vary: false
-      }))
+      .expect(
+        shouldHaveSomeHeaders({
+          'content-type': 'image/png',
+          vary: false
+        })
+      )
   })
 
   it('should back-pressure HTTP/1', function (done) {
@@ -377,7 +414,7 @@ describe('middleware/compress', function () {
       return buf
     }
 
-    function pressure () {
+    function pressure() {
       if (!clientRes || !serverRes) {
         return
       }
@@ -407,10 +444,7 @@ describe('middleware/compress', function () {
       pressure()
     }
 
-    new HttpClient(app.handle)
-      .get('/')
-      .response(onResponse)
-      .end()
+    new HttpClient(app.handle).get('/').response(onResponse).end()
   })
 
   it('should back-pressure with gzip HTTP/1', function (done) {
@@ -423,7 +457,7 @@ describe('middleware/compress', function () {
       return buf
     }
 
-    function pressure () {
+    function pressure() {
       if (!clientRes || !serverRes) {
         return
       }
@@ -469,7 +503,7 @@ describe('middleware/compress', function () {
       return buf
     }
 
-    function pressure () {
+    function pressure() {
       if (!clientRes || !serverRes) {
         return
       }
@@ -508,7 +542,7 @@ describe('middleware/compress', function () {
   })
 })
 
-function createApp (options, fn) {
+function createApp(options, fn) {
   const app = new Router()
   app.use(compress(options))
   app.postHook((err, req, res, _next) => {
@@ -516,11 +550,15 @@ function createApp (options, fn) {
     res.statusCode = 500
     res.end()
   })
-  app.all('/', fn || ((req, res) => {
-    // console.log(req.headers)
-    res.setHeader('content-type', 'text/plain')
-    res.end('hi, there')
-  }))
+  app.all(
+    '/',
+    fn ||
+      ((req, res) => {
+        // console.log(req.headers)
+        res.setHeader('content-type', 'text/plain')
+        res.end('hi, there')
+      })
+  )
   return app
 }
 

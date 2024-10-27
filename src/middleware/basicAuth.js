@@ -13,7 +13,7 @@ import { timingSafeEqual } from '../utils/index.js'
  * @param {string} [options.realm='Secure']
  * @returns {Handler}
  */
-export function basicAuth (options) {
+export function basicAuth(options) {
   const { users, realm: _realm = 'Secure' } = options || {}
 
   if (!users || !Object.keys(users).length) {
@@ -22,13 +22,10 @@ export function basicAuth (options) {
 
   const realm = _realm.replaceAll('"', '\\"')
   const setRealmHeader = (res) => {
-    res.setHeader(
-      'www-authenticate',
-      `Basic realm="${realm}", charset="UTF-8"`
-    )
+    res.setHeader('www-authenticate', `Basic realm="${realm}", charset="UTF-8"`)
   }
 
-  return function _basicAuth (req, res, next) {
+  return function _basicAuth(req, res, next) {
     const authorization = getHeader(req, 'authorization') || ''
 
     if (!compareLc(authorization)) {
@@ -37,8 +34,9 @@ export function basicAuth (options) {
       return
     }
 
-    const decoded = Buffer.from(authorization.slice(6), 'base64')
-      .toString('utf-8')
+    const decoded = Buffer.from(authorization.slice(6), 'base64').toString(
+      'utf-8'
+    )
     const [username] = decoded.split(':', 1)
     const password = decoded.slice(username.length + 1)
 

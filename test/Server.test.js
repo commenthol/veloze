@@ -74,7 +74,7 @@ describe('Server', function () {
     const res = await new Http2Client(`http://localhost:${port}`)
       .get('/')
       .disableTLSCerts()
-      .then(res => res)
+      .then((res) => res)
     assert.deepEqual(res.body, { httpVersion: '2.0', isHttps: false })
 
     server.close()
@@ -89,7 +89,7 @@ describe('Server', function () {
     const res = await new Http2Client(`https://localhost:${port}`)
       .get('/')
       .disableTLSCerts()
-      .then(res => res)
+      .then((res) => res)
     assert.deepEqual(res.body, { httpVersion: '2.0', isHttps: true })
 
     server.close()

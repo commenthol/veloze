@@ -20,16 +20,14 @@ import { getHeader } from '../request/getHeader.js'
  * @param {RequestIdOptions} [options]
  * @returns {HandlerCb}
  */
-export function requestId (options) {
-  const {
-    force = false,
-    setResponseHeader: setResponse = false
-  } = options || {}
+export function requestId(options) {
+  const { force = false, setResponseHeader: setResponse = false } =
+    options || {}
 
-  return function requestIdMw (req, res, next) {
+  return function requestIdMw(req, res, next) {
     req.id = force
       ? crypto.randomUUID()
-      : (getHeader(req, X_REQUEST_ID) || crypto.randomUUID())
+      : getHeader(req, X_REQUEST_ID) || crypto.randomUUID()
     req.headers[X_REQUEST_ID] = req.id
     if (setResponse) {
       res.setHeader(X_REQUEST_ID, req.id)

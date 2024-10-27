@@ -14,7 +14,7 @@ export class Http2Client {
    * @param {string|import('#types.js').Handler} baseUrl
    * @param {http2.SecureServerOptions} httpsOptions
    */
-  constructor (baseUrl, httpsOptions) {
+  constructor(baseUrl, httpsOptions) {
     if (typeof baseUrl === 'function') {
       const handle = baseUrl
       const httpsOptionsExt = { allowHTTP1: true, ...httpsOptions }
@@ -29,42 +29,42 @@ export class Http2Client {
     }
   }
 
-  method (method, path) {
+  method(method, path) {
     this._connect[METHOD] = method.toUpperCase()
     this._connect[PATH] = path
     return this
   }
 
-  get (path) {
+  get(path) {
     return this.method('GET', path)
   }
 
-  post (path) {
+  post(path) {
     return this.method('POST', path)
   }
 
-  put (path) {
+  put(path) {
     return this.method('PUT', path)
   }
 
-  patch (path) {
+  patch(path) {
     return this.method('PATCH', path)
   }
 
-  delete (path) {
+  delete(path) {
     return this.method('DELETE', path)
   }
 
-  search (path) {
+  search(path) {
     return this.method('SEARCH', path)
   }
 
-  set (headers) {
+  set(headers) {
     Object.assign(this._connect, headers)
     return this
   }
 
-  send (body) {
+  send(body) {
     this._body = body
     if (typeof body !== 'string') {
       this._body = JSON.stringify()
@@ -74,12 +74,12 @@ export class Http2Client {
     return this
   }
 
-  disableTLSCerts () {
+  disableTLSCerts() {
     this._options.rejectUnauthorized = false
     return this
   }
 
-  request () {
+  request() {
     const client = http2.connect(this._baseUrl, this._options)
     client.on('error', (_err) => {
       client.close()
@@ -93,7 +93,7 @@ export class Http2Client {
     return req
   }
 
-  then (resolveF) {
+  then(resolveF) {
     return new Promise((resolve, reject) => {
       const client = http2.connect(this._baseUrl, this._options)
       client.on('error', (err) => {
@@ -136,8 +136,8 @@ export class Http2Client {
     })
   }
 
-  catch (errorF) {
-    return this.then(() => { })
+  catch(errorF) {
+    return this.then(() => {})
       .catch(errorF)
       .finally(() => {
         this._server && this._server.close()

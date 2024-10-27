@@ -2,7 +2,7 @@ import assert from 'node:assert'
 import { accept } from '../../src/request/index.js'
 
 class Request {
-  constructor (accept) {
+  constructor(accept) {
     this.headers = {}
     this.headers.accept = accept
   }
@@ -30,7 +30,9 @@ describe('request/accept', function () {
   })
 
   it('multiple values', function () {
-    const req = new Request('text/html, application/xhtml+xml, application/xml;q=0.9, image/webp, */*;q=0.8')
+    const req = new Request(
+      'text/html, application/xhtml+xml, application/xml;q=0.9, image/webp, */*;q=0.8'
+    )
     assert.deepEqual(accept(req), [
       'text/html',
       'application/xhtml+xml',
@@ -46,7 +48,9 @@ describe('request/accept', function () {
   })
 
   it('multiple values', function () {
-    const req = new Request('text/html, application/xhtml+xml, application/xml;q=0.9, image/webp, */*;q=0.8')
+    const req = new Request(
+      'text/html, application/xhtml+xml, application/xml;q=0.9, image/webp, */*;q=0.8'
+    )
     assert.deepEqual(accept(req, true), [
       ['text/html', 1],
       ['application/xhtml+xml', 1],

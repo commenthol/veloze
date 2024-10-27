@@ -3,7 +3,10 @@ import { rangeParser } from '../../src/utils/rangeParser.js'
 
 describe('utils/rangeParser', function () {
   it('header does not start with bytes=', function () {
-    assert.deepStrictEqual(rangeParser('Content-Range: bytes=0-100/1000', 1000), [])
+    assert.deepStrictEqual(
+      rangeParser('Content-Range: bytes=0-100/1000', 1000),
+      []
+    )
   })
 
   it('multi ranges are not supported', function () {

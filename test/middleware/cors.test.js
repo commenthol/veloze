@@ -16,12 +16,14 @@ describe('middleware/cors', function () {
         .options('/')
         .set({ origin: 'http://localhost:3000' })
         .expect(204)
-        .expect(shouldHaveSomeHeaders({
-          'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
-          'access-control-allow-origin': 'http://localhost:3000',
-          // 'content-length': '0',
-          vary: 'origin'
-        }))
+        .expect(
+          shouldHaveSomeHeaders({
+            'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+            'access-control-allow-origin': 'http://localhost:3000',
+            // 'content-length': '0',
+            vary: 'origin'
+          })
+        )
     })
 
     it('request', function () {
@@ -29,11 +31,13 @@ describe('middleware/cors', function () {
         .get('/')
         .set({ origin: 'http://localhost:3000' })
         .expect(200)
-        .expect(shouldHaveSomeHeaders({
-          // 'content-length': '11',
-          'access-control-allow-origin': 'http://localhost:3000',
-          vary: 'origin'
-        }))
+        .expect(
+          shouldHaveSomeHeaders({
+            // 'content-length': '11',
+            'access-control-allow-origin': 'http://localhost:3000',
+            vary: 'origin'
+          })
+        )
     })
   })
 
@@ -45,40 +49,43 @@ describe('middleware/cors', function () {
       return supertest(handler, ST_OPTS)
         .options('/')
         .expect(204)
-        .expect(shouldHaveSomeHeaders({
-          // 'content-length': '0',
-          'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
-          'access-control-allow-origin': '*'
-        }))
+        .expect(
+          shouldHaveSomeHeaders({
+            // 'content-length': '0',
+            'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+            'access-control-allow-origin': '*'
+          })
+        )
     })
 
     it('request', function () {
       return supertest(handler, ST_OPTS)
         .get('/')
         .expect(200)
-        .expect(shouldHaveSomeHeaders({
-          // 'content-length': '11',
-          'access-control-allow-origin': '*'
-        }))
+        .expect(
+          shouldHaveSomeHeaders({
+            // 'content-length': '11',
+            'access-control-allow-origin': '*'
+          })
+        )
     })
   })
 
   describe('origin=https://foo.bar', function () {
-    const handler = connect(
-      cors({ origin: 'https://foo.bar' }),
-      handleEnd
-    )
+    const handler = connect(cors({ origin: 'https://foo.bar' }), handleEnd)
     it('preflight', function () {
       return supertest(handler, ST_OPTS)
         .options('/')
         .set({ origin: 'https://foo.bar' })
         .expect(204)
-        .expect(shouldHaveSomeHeaders({
-          // 'content-length': '0',
-          'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
-          'access-control-allow-origin': 'https://foo.bar',
-          vary: 'origin'
-        }))
+        .expect(
+          shouldHaveSomeHeaders({
+            // 'content-length': '0',
+            'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+            'access-control-allow-origin': 'https://foo.bar',
+            vary: 'origin'
+          })
+        )
     })
 
     it('preflight fails', function () {
@@ -86,10 +93,12 @@ describe('middleware/cors', function () {
         .options('/')
         .set({ origin: 'http://foo.bar' })
         .expect(204)
-        .expect(shouldHaveSomeHeaders({
-          // 'content-length': '0',
-          'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE'
-        }))
+        .expect(
+          shouldHaveSomeHeaders({
+            // 'content-length': '0',
+            'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE'
+          })
+        )
     })
 
     it('request', function () {
@@ -97,11 +106,13 @@ describe('middleware/cors', function () {
         .get('/')
         .set({ origin: 'https://foo.bar' })
         .expect(200)
-        .expect(shouldHaveSomeHeaders({
-          // 'content-length': '11',
-          'access-control-allow-origin': 'https://foo.bar',
-          vary: 'origin'
-        }))
+        .expect(
+          shouldHaveSomeHeaders({
+            // 'content-length': '11',
+            'access-control-allow-origin': 'https://foo.bar',
+            vary: 'origin'
+          })
+        )
     })
 
     it('request with wrong origin fails', function () {
@@ -109,18 +120,19 @@ describe('middleware/cors', function () {
         .get('/')
         .set({ origin: 'http://foo.bar' })
         .expect(200)
-        .expect(shouldHaveSomeHeaders({
-          // 'content-length': '11'
-        }))
+        .expect(
+          shouldHaveSomeHeaders({
+            // 'content-length': '11'
+          })
+        )
     })
 
     it('request without origin fails', function () {
-      return supertest(handler, ST_OPTS)
-        .get('/')
-        .expect(200)
-        .expect(shouldHaveSomeHeaders({
+      return supertest(handler, ST_OPTS).get('/').expect(200).expect(
+        shouldHaveSomeHeaders({
           // 'content-length': '11'
-        }))
+        })
+      )
     })
   })
 
@@ -135,12 +147,14 @@ describe('middleware/cors', function () {
         .options('/')
         .set({ origin: 'http://localhost' })
         .expect(204)
-        .expect(shouldHaveSomeHeaders({
-          // 'content-length': '0',
-          'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
-          'access-control-allow-origin': 'http://localhost',
-          vary: 'origin'
-        }))
+        .expect(
+          shouldHaveSomeHeaders({
+            // 'content-length': '0',
+            'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+            'access-control-allow-origin': 'http://localhost',
+            vary: 'origin'
+          })
+        )
     })
 
     it('preflight https://foo.bar', function () {
@@ -148,12 +162,14 @@ describe('middleware/cors', function () {
         .options('/')
         .set({ origin: 'https://foo.bar' })
         .expect(204)
-        .expect(shouldHaveSomeHeaders({
-          // 'content-length': '0',
-          'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
-          'access-control-allow-origin': 'https://foo.bar',
-          vary: 'origin'
-        }))
+        .expect(
+          shouldHaveSomeHeaders({
+            // 'content-length': '0',
+            'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+            'access-control-allow-origin': 'https://foo.bar',
+            vary: 'origin'
+          })
+        )
     })
 
     it('preflight fails http://foo.bar', function () {
@@ -161,10 +177,12 @@ describe('middleware/cors', function () {
         .options('/')
         .set({ origin: 'http://foo.bar' })
         .expect(204)
-        .expect(shouldHaveSomeHeaders({
-          // 'content-length': '0',
-          'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE'
-        }))
+        .expect(
+          shouldHaveSomeHeaders({
+            // 'content-length': '0',
+            'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE'
+          })
+        )
     })
 
     it('request https://foo.bar ok', function () {
@@ -172,11 +190,13 @@ describe('middleware/cors', function () {
         .get('/')
         .set({ origin: 'https://foo.bar' })
         .expect(200)
-        .expect(shouldHaveSomeHeaders({
-          // 'content-length': '11',
-          'access-control-allow-origin': 'https://foo.bar',
-          vary: 'origin'
-        }))
+        .expect(
+          shouldHaveSomeHeaders({
+            // 'content-length': '11',
+            'access-control-allow-origin': 'https://foo.bar',
+            vary: 'origin'
+          })
+        )
     })
 
     it('request http://foo.bar fails', function () {
@@ -184,9 +204,11 @@ describe('middleware/cors', function () {
         .get('/')
         .set({ origin: 'http://foo.bar' })
         .expect(200)
-        .expect(shouldHaveSomeHeaders({
-          // 'content-length': '11'
-        }))
+        .expect(
+          shouldHaveSomeHeaders({
+            // 'content-length': '11'
+          })
+        )
     })
   })
 
@@ -201,12 +223,14 @@ describe('middleware/cors', function () {
         .options('/')
         .set({ origin: 'http://localhost' })
         .expect(204)
-        .expect(shouldHaveSomeHeaders({
-          // 'content-length': '0',
-          'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
-          'access-control-allow-origin': 'http://localhost',
-          vary: 'origin'
-        }))
+        .expect(
+          shouldHaveSomeHeaders({
+            // 'content-length': '0',
+            'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+            'access-control-allow-origin': 'http://localhost',
+            vary: 'origin'
+          })
+        )
     })
 
     it('preflight https://localhost', function () {
@@ -214,12 +238,14 @@ describe('middleware/cors', function () {
         .options('/')
         .set({ origin: 'https://localhost' })
         .expect(204)
-        .expect(shouldHaveSomeHeaders({
-          // 'content-length': '0',
-          'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
-          'access-control-allow-origin': 'https://localhost',
-          vary: 'origin'
-        }))
+        .expect(
+          shouldHaveSomeHeaders({
+            // 'content-length': '0',
+            'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+            'access-control-allow-origin': 'https://localhost',
+            vary: 'origin'
+          })
+        )
     })
 
     it('preflight http://localhost:3000 fails', function () {
@@ -227,10 +253,12 @@ describe('middleware/cors', function () {
         .options('/')
         .set({ origin: 'http://localhost:3000' })
         .expect(204)
-        .expect(shouldHaveSomeHeaders({
-          // 'content-length': '0',
-          'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE'
-        }))
+        .expect(
+          shouldHaveSomeHeaders({
+            // 'content-length': '0',
+            'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE'
+          })
+        )
     })
 
     it('request http://localhost', function () {
@@ -238,11 +266,13 @@ describe('middleware/cors', function () {
         .get('/')
         .set({ origin: 'http://localhost' })
         .expect(200)
-        .expect(shouldHaveSomeHeaders({
-          // 'content-length': '11',
-          'access-control-allow-origin': 'http://localhost',
-          vary: 'origin'
-        }))
+        .expect(
+          shouldHaveSomeHeaders({
+            // 'content-length': '11',
+            'access-control-allow-origin': 'http://localhost',
+            vary: 'origin'
+          })
+        )
     })
   })
 
@@ -257,12 +287,14 @@ describe('middleware/cors', function () {
         .options('/')
         .set({ origin: 'https://localhost' })
         .expect(204)
-        .expect(shouldHaveSomeHeaders({
-          // 'content-length': '0',
-          'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
-          'access-control-allow-origin': 'https://localhost',
-          vary: 'origin'
-        }))
+        .expect(
+          shouldHaveSomeHeaders({
+            // 'content-length': '0',
+            'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+            'access-control-allow-origin': 'https://localhost',
+            vary: 'origin'
+          })
+        )
     })
 
     it('preflight fails', function () {
@@ -270,73 +302,69 @@ describe('middleware/cors', function () {
         .options('/')
         .set({ origin: 'http://localhost' })
         .expect(204)
-        .expect(shouldHaveSomeHeaders({
-          // 'content-length': '0',
-          'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE'
-        }))
+        .expect(
+          shouldHaveSomeHeaders({
+            // 'content-length': '0',
+            'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE'
+          })
+        )
     })
   })
 
   describe('origin=number', function () {
-    const handler = connect(
-      cors({ origin: 100 }),
-      handleEnd
-    )
+    const handler = connect(cors({ origin: 100 }), handleEnd)
 
     it('preflight fails', function () {
       return supertest(handler, ST_OPTS)
         .options('/')
         .set({ origin: 'https://localhost' })
         .expect(204)
-        .expect(shouldHaveSomeHeaders({
-          // 'content-length': '0',
-          'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE'
-        }))
+        .expect(
+          shouldHaveSomeHeaders({
+            // 'content-length': '0',
+            'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE'
+          })
+        )
     })
   })
   describe('preflightContinue=true', function () {
-    const handler = connect(
-      cors({ preflightContinue: true }),
-      handleEnd
-    )
+    const handler = connect(cors({ preflightContinue: true }), handleEnd)
     it('preflight', function () {
       return supertest(handler, ST_OPTS)
         .options('/')
         .set({ origin: 'http://localhost' })
         .expect(200)
-        .expect(shouldHaveSomeHeaders({
-          // 'content-length': '11',
-          'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
-          'access-control-allow-origin': 'http://localhost',
-          vary: 'origin'
-        }))
+        .expect(
+          shouldHaveSomeHeaders({
+            // 'content-length': '11',
+            'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+            'access-control-allow-origin': 'http://localhost',
+            vary: 'origin'
+          })
+        )
     })
   })
 
   describe('methods=GET,POST', function () {
-    const handler = connect(
-      cors({ methods: 'GET,POST' }),
-      handleEnd
-    )
+    const handler = connect(cors({ methods: 'GET,POST' }), handleEnd)
     it('preflight', function () {
       return supertest(handler, ST_OPTS)
         .options('/')
         .set({ origin: 'http://localhost' })
         .expect(204)
-        .expect(shouldHaveSomeHeaders({
-          // 'content-length': '0',
-          'access-control-allow-methods': 'GET,POST',
-          'access-control-allow-origin': 'http://localhost',
-          vary: 'origin'
-        }))
+        .expect(
+          shouldHaveSomeHeaders({
+            // 'content-length': '0',
+            'access-control-allow-methods': 'GET,POST',
+            'access-control-allow-origin': 'http://localhost',
+            vary: 'origin'
+          })
+        )
     })
   })
 
   describe('access-control-request-headers without allowedHeaders', function () {
-    const handler = connect(
-      cors(),
-      handleEnd
-    )
+    const handler = connect(cors(), handleEnd)
     it('preflight', function () {
       return supertest(handler, ST_OPTS)
         .options('/')
@@ -345,21 +373,20 @@ describe('middleware/cors', function () {
           'access-control-request-headers': 'x-custom'
         })
         .expect(204)
-        .expect(shouldHaveSomeHeaders({
-          // 'content-length': '0',
-          'access-control-allow-headers': 'x-custom',
-          'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
-          'access-control-allow-origin': 'http://localhost',
-          vary: 'origin, access-control-request-headers'
-        }))
+        .expect(
+          shouldHaveSomeHeaders({
+            // 'content-length': '0',
+            'access-control-allow-headers': 'x-custom',
+            'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+            'access-control-allow-origin': 'http://localhost',
+            vary: 'origin, access-control-request-headers'
+          })
+        )
     })
   })
 
   describe('access-control-request-headers with allowedHeaders', function () {
-    const handler = connect(
-      cors({ headers: 'x-custom' }),
-      handleEnd
-    )
+    const handler = connect(cors({ headers: 'x-custom' }), handleEnd)
     it('preflight', function () {
       return supertest(handler, ST_OPTS)
         .options('/')
@@ -367,21 +394,20 @@ describe('middleware/cors', function () {
           origin: 'http://localhost'
         })
         .expect(204)
-        .expect(shouldHaveSomeHeaders({
-          // 'content-length': '0',
-          'access-control-allow-headers': 'x-custom',
-          'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
-          'access-control-allow-origin': 'http://localhost',
-          vary: 'origin'
-        }))
+        .expect(
+          shouldHaveSomeHeaders({
+            // 'content-length': '0',
+            'access-control-allow-headers': 'x-custom',
+            'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+            'access-control-allow-origin': 'http://localhost',
+            vary: 'origin'
+          })
+        )
     })
   })
 
   describe('maxAge=86400 in seconds', function () {
-    const handler = connect(
-      cors({ maxAge: 86400 }),
-      handleEnd
-    )
+    const handler = connect(cors({ maxAge: 86400 }), handleEnd)
     it('preflight', function () {
       return supertest(handler, ST_OPTS)
         .options('/')
@@ -389,21 +415,20 @@ describe('middleware/cors', function () {
           origin: 'http://localhost'
         })
         .expect(204)
-        .expect(shouldHaveSomeHeaders({
-          // 'content-length': '0',
-          'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
-          'access-control-allow-origin': 'http://localhost',
-          'access-control-max-age': '86400',
-          vary: 'origin'
-        }))
+        .expect(
+          shouldHaveSomeHeaders({
+            // 'content-length': '0',
+            'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+            'access-control-allow-origin': 'http://localhost',
+            'access-control-max-age': '86400',
+            vary: 'origin'
+          })
+        )
     })
   })
 
   describe('credentials=true', function () {
-    const handler = connect(
-      cors({ credentials: true }),
-      handleEnd
-    )
+    const handler = connect(cors({ credentials: true }), handleEnd)
     it('preflight', function () {
       return supertest(handler, ST_OPTS)
         .options('/')
@@ -411,13 +436,15 @@ describe('middleware/cors', function () {
           origin: 'http://localhost'
         })
         .expect(204)
-        .expect(shouldHaveSomeHeaders({
-          // 'content-length': '0',
-          'access-control-allow-credentials': 'true',
-          'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
-          'access-control-allow-origin': 'http://localhost',
-          vary: 'origin'
-        }))
+        .expect(
+          shouldHaveSomeHeaders({
+            // 'content-length': '0',
+            'access-control-allow-credentials': 'true',
+            'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+            'access-control-allow-origin': 'http://localhost',
+            vary: 'origin'
+          })
+        )
     })
   })
 
@@ -433,13 +460,15 @@ describe('middleware/cors', function () {
           origin: 'http://localhost'
         })
         .expect(204)
-        .expect(shouldHaveSomeHeaders({
-          // 'content-length': '0',
-          'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
-          'access-control-allow-origin': 'http://localhost',
-          'access-control-expose-headers': 'content-encoding,accept',
-          vary: 'origin'
-        }))
+        .expect(
+          shouldHaveSomeHeaders({
+            // 'content-length': '0',
+            'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+            'access-control-allow-origin': 'http://localhost',
+            'access-control-expose-headers': 'content-encoding,accept',
+            vary: 'origin'
+          })
+        )
     })
   })
 })

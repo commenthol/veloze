@@ -7,7 +7,7 @@
  * @param {string} urlEncoded search parameters
  * @returns {Record<string,string>|{}}
  */
-export function qs (urlEncoded) {
+export function qs(urlEncoded) {
   const searchParams = new URLSearchParams(urlEncoded)
   const query = {}
   for (const [name, value] of searchParams.entries()) {

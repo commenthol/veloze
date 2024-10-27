@@ -39,12 +39,14 @@ describe('middleware/serve', () => {
     await supertest(app.handle, ST_OPTS)
       .get('/a.txt')
       .expect(200, 'a text\n')
-      .expect(shouldHaveSomeHeaders({
-        'content-type': 'text/plain; charset=utf-8',
-        etag: /^W\/"/,
-        'content-length': '7',
-        vary: 'accept-encoding'
-      }))
+      .expect(
+        shouldHaveSomeHeaders({
+          'content-type': 'text/plain; charset=utf-8',
+          etag: /^W\/"/,
+          'content-length': '7',
+          vary: 'accept-encoding'
+        })
+      )
   })
 
   it('should serve a json file gzip compressed', async () => {
@@ -56,12 +58,14 @@ describe('middleware/serve', () => {
       .expect(({ text }) => {
         assert.equal(text.slice(0, 30), '{\n  "name": "veloze",\n  "versi')
       })
-      .expect(shouldHaveSomeHeaders({
-        etag: /^W\/"/,
-        'content-type': 'application/json; charset=utf-8',
-        'content-encoding': 'gzip',
-        vary: 'accept-encoding'
-      }))
+      .expect(
+        shouldHaveSomeHeaders({
+          etag: /^W\/"/,
+          'content-type': 'application/json; charset=utf-8',
+          'content-encoding': 'gzip',
+          vary: 'accept-encoding'
+        })
+      )
   })
 
   it('should serve a json file deflate compressed', async () => {
@@ -72,18 +76,18 @@ describe('middleware/serve', () => {
       .expect(({ text }) => {
         assert.equal(text.slice(0, 30), '{\n  "name": "veloze",\n  "versi')
       })
-      .expect(shouldHaveSomeHeaders({
-        etag: /^W\/"/,
-        'content-type': 'application/json; charset=utf-8',
-        'content-encoding': 'deflate',
-        vary: 'accept-encoding'
-      }))
+      .expect(
+        shouldHaveSomeHeaders({
+          etag: /^W\/"/,
+          'content-type': 'application/json; charset=utf-8',
+          'content-encoding': 'deflate',
+          vary: 'accept-encoding'
+        })
+      )
   })
 
   it('should not serve hidden files', async () => {
-    await supertest(app.handle, ST_OPTS)
-      .get('/.hidden')
-      .expect(404)
+    await supertest(app.handle, ST_OPTS).get('/.hidden').expect(404)
   })
 
   it('should not serve unknown files', async () => {
@@ -96,9 +100,11 @@ describe('middleware/serve', () => {
     const { headers } = await supertest(app.handle, ST_OPTS)
       .get('/a.txt')
       .expect(200, 'a text\n')
-      .expect(shouldHaveSomeHeaders({
-        etag: /^W\/"/
-      }))
+      .expect(
+        shouldHaveSomeHeaders({
+          etag: /^W\/"/
+        })
+      )
     await supertest(app.handle, ST_OPTS)
       .get('/a.txt')
       .set('if-none-match', headers.etag)
@@ -109,9 +115,11 @@ describe('middleware/serve', () => {
     await supertest(app.handle, ST_OPTS)
       .head('/a.txt')
       .expect(200)
-      .expect(shouldHaveSomeHeaders({
-        etag: /^W\/"/
-      }))
+      .expect(
+        shouldHaveSomeHeaders({
+          etag: /^W\/"/
+        })
+      )
   })
 
   it('should serve a file by range "bytes=4-"', async () => {
@@ -119,12 +127,14 @@ describe('middleware/serve', () => {
       .get('/a.txt')
       .set({ range: 'bytes=4-' })
       .expect(206, 'xt\n')
-      .expect(shouldHaveSomeHeaders({
-        'content-type': 'text/plain; charset=utf-8',
-        'content-length': '3',
-        'content-range': 'bytes 4-7/7',
-        etag: /^W\/"/
-      }))
+      .expect(
+        shouldHaveSomeHeaders({
+          'content-type': 'text/plain; charset=utf-8',
+          'content-length': '3',
+          'content-range': 'bytes 4-7/7',
+          etag: /^W\/"/
+        })
+      )
   })
 
   it('should serve a file by range "bytes=-3"', async () => {
@@ -132,12 +142,14 @@ describe('middleware/serve', () => {
       .get('/a.txt')
       .set({ range: 'bytes=-3' })
       .expect(206, 'xt\n')
-      .expect(shouldHaveSomeHeaders({
-        'content-type': 'text/plain; charset=utf-8',
-        'content-length': '3',
-        'content-range': 'bytes 4-7/7',
-        etag: /^W\/"/
-      }))
+      .expect(
+        shouldHaveSomeHeaders({
+          'content-type': 'text/plain; charset=utf-8',
+          'content-length': '3',
+          'content-range': 'bytes 4-7/7',
+          etag: /^W\/"/
+        })
+      )
   })
 
   it('should fail to serve a file by range "bytes=-10"', async () => {
@@ -145,24 +157,26 @@ describe('middleware/serve', () => {
       .get('/a.txt')
       .set({ range: 'bytes=-10' })
       .expect(416)
-      .expect(shouldHaveSomeHeaders({
-        'content-range': 'bytes */7'
-      }))
+      .expect(
+        shouldHaveSomeHeaders({
+          'content-range': 'bytes */7'
+        })
+      )
   })
 
   it('should send 405 status if method is not GET or HEAD and fallthrough is false', async () => {
     await supertest(app.handle, ST_OPTS)
       .post('/a.txt')
       .expect(405)
-      .expect(shouldHaveSomeHeaders({
-        allow: 'GET, HEAD'
-      }))
+      .expect(
+        shouldHaveSomeHeaders({
+          allow: 'GET, HEAD'
+        })
+      )
   })
 
   it('should disallow path traversal relative to root', async () => {
-    await supertest(app.handle, ST_OPTS)
-      .get('/../../a.txt')
-      .expect(200)
+    await supertest(app.handle, ST_OPTS).get('/../../a.txt').expect(200)
   })
 
   it('should redirect to index.html', async () => {
@@ -170,10 +184,12 @@ describe('middleware/serve', () => {
       .get('/a')
       .redirects(2)
       .expect(200)
-      .expect(shouldHaveSomeHeaders({
-        'content-length': '47',
-        'content-type': 'text/html; charset=utf-8'
-      }))
+      .expect(
+        shouldHaveSomeHeaders({
+          'content-length': '47',
+          'content-type': 'text/html; charset=utf-8'
+        })
+      )
   })
 
   it('should use an URL as root', async () => {
@@ -182,54 +198,70 @@ describe('middleware/serve', () => {
     await supertest(app.handle, ST_OPTS)
       .get('/a.txt')
       .expect(200, 'a text\n')
-      .expect(shouldHaveSomeHeaders({
-        'content-type': 'text/plain; charset=utf-8',
-        etag: /^W\/"/,
-        'content-length': '7'
-      }))
+      .expect(
+        shouldHaveSomeHeaders({
+          'content-type': 'text/plain; charset=utf-8',
+          etag: /^W\/"/,
+          'content-length': '7'
+        })
+      )
   })
 
   it('should different index', async () => {
     const app = new Router()
-    app.use('/*', serve(new URL('./fixtures', import.meta.url), { index: 'a.txt' }))
+    app.use(
+      '/*',
+      serve(new URL('./fixtures', import.meta.url), { index: 'a.txt' })
+    )
     await supertest(app.handle, ST_OPTS)
       .get('/')
       .expect(200, 'a text\n')
-      .expect(shouldHaveSomeHeaders({
-        'content-type': 'text/plain; charset=utf-8',
-        etag: /^W\/"/,
-        'content-length': '7'
-      }))
+      .expect(
+        shouldHaveSomeHeaders({
+          'content-type': 'text/plain; charset=utf-8',
+          etag: /^W\/"/,
+          'content-length': '7'
+        })
+      )
   })
 
   it('should strip path', async () => {
     const app = new Router()
-    app.use('/static/*', serve(new URL('./fixtures', import.meta.url), { strip: '/static' }))
+    app.use(
+      '/static/*',
+      serve(new URL('./fixtures', import.meta.url), { strip: '/static' })
+    )
     await supertest(app.handle, ST_OPTS)
       .get('/static/a.txt')
       .expect(200, 'a text\n')
-      .expect(shouldHaveSomeHeaders({
-        'content-type': 'text/plain; charset=utf-8',
-        etag: /^W\/"/,
-        'content-length': '7'
-      }))
+      .expect(
+        shouldHaveSomeHeaders({
+          'content-type': 'text/plain; charset=utf-8',
+          etag: /^W\/"/,
+          'content-length': '7'
+        })
+      )
   })
 
   it('should serve unknown MIME type', async () => {
     const app = new Router()
-    app.use('/*', serve(
-      new URL('./fixtures', import.meta.url),
-      { mimeTypes: { '.html': 'text/html' } }
-    ))
+    app.use(
+      '/*',
+      serve(new URL('./fixtures', import.meta.url), {
+        mimeTypes: { '.html': 'text/html' }
+      })
+    )
 
     await supertest(app.handle, ST_OPTS)
       .get('/a.txt')
       .expect(200)
       .expect(({ _body }) => assert.equal(_body.toString(), 'a text\n'))
-      .expect(shouldHaveSomeHeaders({
-        'content-type': 'application/octet-stream',
-        etag: /^W\/"/,
-        'content-length': '7'
-      }))
+      .expect(
+        shouldHaveSomeHeaders({
+          'content-type': 'application/octet-stream',
+          etag: /^W\/"/,
+          'content-length': '7'
+        })
+      )
   })
 })

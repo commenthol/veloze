@@ -37,13 +37,8 @@ export class Router {
   /**
    * @param {RouterOptions} [options]
    */
-  constructor (options) {
-    const {
-      cacheSize,
-      connect,
-      finalHandler,
-      findRoute
-    } = options || {}
+  constructor(options) {
+    const { cacheSize, connect, finalHandler, findRoute } = options || {}
     this.#tree = findRoute || new FindRoute(cacheSize)
     this.#finalHandler = finalHandler || finalHandlerDef()
     this.#connect = connect || connectDef
@@ -58,7 +53,7 @@ export class Router {
    * print the routing-tree from FindRoute
    */
   /* c8 ignore next 3 */
-  print () {
+  print() {
     return this.#tree.print()
   }
 
@@ -67,7 +62,7 @@ export class Router {
    * @param {...(Handler|Handler[]|undefined)} handlers
    * @returns {this}
    */
-  preHook (...handlers) {
+  preHook(...handlers) {
     this.#preHooks = [...this.#preHooks, ...handlers]
     return this
   }
@@ -77,7 +72,7 @@ export class Router {
    * @param {...(Handler|Handler[]|undefined)} handlers
    * @returns {this}
    */
-  postHook (...handlers) {
+  postHook(...handlers) {
     this.#postHooks = [...this.#postHooks, ...handlers]
     return this
   }
@@ -89,11 +84,15 @@ export class Router {
    * @param {...(Handler|Handler[]|undefined)} handlers
    * @returns {this}
    */
-  method (methods, paths, ...handlers) {
+  method(methods, paths, ...handlers) {
     if (!handlers.length) {
       return this
     }
-    const connect = this.#connect(...this.#preHooks, ...handlers, ...this.#postHooks)
+    const connect = this.#connect(
+      ...this.#preHooks,
+      ...handlers,
+      ...this.#postHooks
+    )
 
     // @ts-expect-error
     for (const method of [].concat(methods)) {
@@ -111,7 +110,7 @@ export class Router {
    * @param {...(Handler|Handler[]|undefined)} handlers
    * @returns {this}
    */
-  all (path, ...handlers) {
+  all(path, ...handlers) {
     return this.method('ALL', path, ...handlers)
   }
 
@@ -125,9 +124,12 @@ export class Router {
    * @param {string|string[]|Handler} path
    * @param  {...(Handler|Handler[]|undefined)} handlers
    */
-  use (path, ...handlers) {
+  use(path, ...handlers) {
     // apply as pre-hook handler
-    if (typeof path === 'function' || (Array.isArray(path) && typeof path[0] === 'function')) {
+    if (
+      typeof path === 'function' ||
+      (Array.isArray(path) && typeof path[0] === 'function')
+    ) {
       // @ts-expect-error
       return this.preHook(path, ...handlers)
     }
@@ -139,13 +141,18 @@ export class Router {
       const path = p.replace(/([/]+)$/, '')
 
       const { length } = path
-      function rewrite (req, res, next) {
+      function rewrite(req, res, next) {
         req.url = req.url.slice(length) || '/'
         next()
       }
 
       const pathnames = [path || '/', `${path}/*`]
-      const connected = this.#connect(...this.#preHooks, rewrite, ...handlers, ...this.#postHooks)
+      const connected = this.#connect(
+        ...this.#preHooks,
+        rewrite,
+        ...handlers,
+        ...this.#postHooks
+      )
       this.#tree.add('ALL', pathnames, connected)
     }
 
@@ -158,9 +165,11 @@ export class Router {
    * @param {Response} res
    * @param {Function} [next]
    */
-  handle (req, res, next) {
-    const final = next ||
-      ((err) => this.#finalHandler(err || new HttpError(404), req, res, () => {}))
+  handle(req, res, next) {
+    const final =
+      next ||
+      ((err) =>
+        this.#finalHandler(err || new HttpError(404), req, res, () => {}))
 
     if (!req.originalUrl) {
       // originalUrl is set as url gets shortened on every router mount
@@ -192,60 +201,62 @@ export class Router {
    * @param {string} path
    * @param {...(Handler|Handler[]|undefined)} handlers
    */
-  connect (path, ...handlers) { } // eslint-disable-line no-unused-vars
+  connect(path, ...handlers) {} // eslint-disable-line no-unused-vars
   /**
    * @param {string} path
    * @param {...(Handler|Handler[]|undefined)} handlers
    */
-  delete (path, ...handlers) { }// eslint-disable-line no-unused-vars
+  delete(path, ...handlers) {} // eslint-disable-line no-unused-vars
   /**
    * @param {string} path
    * @param {...(Handler|Handler[]|undefined)} handlers
    */
-  get (path, ...handlers) {} // eslint-disable-line no-unused-vars
+  get(path, ...handlers) {} // eslint-disable-line no-unused-vars
   /**
    * @param {string} path
    * @param {...(Handler|Handler[]|undefined)} handlers
    */
-  options (path, ...handlers) { } // eslint-disable-line no-unused-vars
+  options(path, ...handlers) {} // eslint-disable-line no-unused-vars
   /**
    * @param {string} path
    * @param {...(Handler|Handler[]|undefined)} handlers
    */
-  post (path, ...handlers) {} // eslint-disable-line no-unused-vars
+  post(path, ...handlers) {} // eslint-disable-line no-unused-vars
   /**
    * @param {string} path
    * @param {...(Handler|Handler[]|undefined)} handlers
    */
-  put (path, ...handlers) { } // eslint-disable-line no-unused-vars
+  put(path, ...handlers) {} // eslint-disable-line no-unused-vars
   /**
    * @param {string} path
    * @param {...(Handler|Handler[]|undefined)} handlers
    */
-  patch (path, ...handlers) { }// eslint-disable-line no-unused-vars
+  patch(path, ...handlers) {} // eslint-disable-line no-unused-vars
   /**
    * @param {string} path
    * @param {...(Handler|Handler[]|undefined)} handlers
    */
-  search (path, ...handlers) { }// eslint-disable-line no-unused-vars
+  search(path, ...handlers) {} // eslint-disable-line no-unused-vars
   /**
    * @param {string} path
    * @param {...(Handler|Handler[]|undefined)} handlers
    */
-  trace (path, ...handlers) { }// eslint-disable-line no-unused-vars
+  trace(path, ...handlers) {} // eslint-disable-line no-unused-vars
 }
 
-httpMethods.filter(method => method !== 'HEAD').forEach(method => {
-  const methodLc = method.toLowerCase()
-  /**
-   * @param {string} path
-   * @param {...(Handler|Handler[]|undefined)} handlers
-   */
-  const { [methodLc]: fn } = {
-    [methodLc]: function (path, ...handlers) {
-      // @ts-expect-error
-      return this.method(method, path, ...handlers)
+httpMethods
+  .filter((method) => method !== 'HEAD')
+  .forEach((method) => {
+    const methodLc = method.toLowerCase()
+    /**
+     * @param {string} path
+     * @param {...(Handler|Handler[]|undefined)} handlers
+     */
+    const { [methodLc]: fn } = {
+      [methodLc]: function (path, ...handlers) {
+        // @ts-expect-error
+        return this.method(method, path, ...handlers)
+      }
     }
-  }
-  Router.prototype[methodLc] = fn
-})
+    Router.prototype[methodLc] = fn
+  })

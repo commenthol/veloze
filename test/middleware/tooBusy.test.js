@@ -5,13 +5,15 @@ import supertest from 'supertest'
 import { describeBool } from '../support/describeBool.js'
 import { nap } from '../support/index.js'
 
-const randomPort = () => Math.floor(10000 + (Math.random() * 50000))
+const randomPort = () => Math.floor(10000 + Math.random() * 50000)
 
 describeBool(!process.env.CI)('middleware/tooBusy', function () {
   it('shall return true with load', async function () {
     const port = randomPort()
 
-    const filename = fileURLToPath(new URL('./tooBusy.server.js', import.meta.url))
+    const filename = fileURLToPath(
+      new URL('./tooBusy.server.js', import.meta.url)
+    )
     const child = fork(filename, ['--run-too-busy-server', '--port', port])
     child.on('error', (err) => {
       console.error(err)

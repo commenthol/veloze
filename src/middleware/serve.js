@@ -46,7 +46,7 @@ const RE_TRAVERSE = /(?:^|[\\/])\.\.(?:[\\/]|$)/
  * @param {ServeOptions} [options]
  * @returns
  */
-export function serve (root, options) {
+export function serve(root, options) {
   const {
     etag = true,
     fallthrough = false,
@@ -72,7 +72,7 @@ export function serve (root, options) {
     throw new TypeError('index must be a string')
   }
 
-  return async function serveMw (req, res, next) {
+  return async function serveMw(req, res, next) {
     let err
     try {
       const { method, url, originalUrl } = req

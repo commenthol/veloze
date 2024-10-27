@@ -54,9 +54,7 @@ export const connect = (...handlers) => {
      */
     const run = (err) => {
       if (err) {
-        errorHandler
-          ? errorHandler(err, req, res, done)
-          : done(err)
+        errorHandler ? errorHandler(err, req, res, done) : done(err)
         return
       }
       const [handler, isAsync] = stack[i++] || []
@@ -81,6 +79,6 @@ export const connect = (...handlers) => {
   }
 }
 
-function breakSync (req, res, next) {
+function breakSync(req, res, next) {
   setImmediate(next)
 }

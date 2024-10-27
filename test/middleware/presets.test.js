@@ -89,9 +89,7 @@ describe('middleware/presets', function () {
     let app
     before(function () {
       app = new Router()
-      app.use(
-        presetJson({ cacheControlOpts: { private: true, maxAge: '5m' } })
-      )
+      app.use(presetJson({ cacheControlOpts: { private: true, maxAge: '5m' } }))
       app.all('/', (req, res) => {
         const { method, url, cookies, query, body } = req
         res.send({ method, url, cookies, query, body })

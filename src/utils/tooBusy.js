@@ -15,7 +15,7 @@ let intervalMs = INTERVAL_MS
 let maxLagMs = MAX_LAG_MS
 let smoothingFactor = SMOOTHING_FACTOR
 
-const isNumber = num => isNaN(Number(num)) ? undefined : Number(num)
+const isNumber = (num) => (isNaN(Number(num)) ? undefined : Number(num))
 
 /**
  * @typedef {object} TooBusyOptions
@@ -27,7 +27,7 @@ const isNumber = num => isNaN(Number(num)) ? undefined : Number(num)
 /**
  * @returns {boolean}
  */
-export function tooBusy () {
+export function tooBusy() {
   const blockPercent = Math.max(0, (lag - maxLagMs) / maxLagMs)
   return Math.random() < blockPercent
 }
@@ -52,7 +52,12 @@ tooBusy.set = (options) => {
     maxLagMs = _maxLagMs
     doRestart = true
   }
-  if (_smoothingFactor && isNumber(_smoothingFactor) && _smoothingFactor > 0 && _smoothingFactor < 1) {
+  if (
+    _smoothingFactor &&
+    isNumber(_smoothingFactor) &&
+    _smoothingFactor > 0 &&
+    _smoothingFactor < 1
+  ) {
     smoothingFactor = _smoothingFactor
     doRestart = true
   }
@@ -87,7 +92,7 @@ tooBusy.reset = () => {
 /**
  * start periodically checking the event-loop lag
  */
-function checkLag () {
+function checkLag() {
   lastTime = Date.now()
 
   clearInterval(intervalId)

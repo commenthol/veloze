@@ -3,6 +3,6 @@
  * @param {any} trueish
  * @param {string} [message]
  */
-export function assert (trueish, message = 'assertion failed') {
+export function assert(trueish, message = 'assertion failed') {
   if (!trueish) throw new Error(message)
 }

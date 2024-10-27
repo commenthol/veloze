@@ -46,7 +46,7 @@ export const bodyParser = (options) => {
   const limit = bytes(_limit || '100kB') || 102400
   log.debug(`limit is set to ${limit} bytes`)
 
-  return function bodyParserMw (req, res, next) {
+  return function bodyParserMw(req, res, next) {
     // @ts-expect-error
     if (!methods.includes(req.method) || req.body) {
       next()
@@ -55,9 +55,10 @@ export const bodyParser = (options) => {
 
     let body = Buffer.alloc(0)
 
-    const contentLength = req.headers[CONTENT_LENGTH] === undefined
-      ? NaN
-      : parseInt(req.headers[CONTENT_LENGTH], 10)
+    const contentLength =
+      req.headers[CONTENT_LENGTH] === undefined
+        ? NaN
+        : parseInt(req.headers[CONTENT_LENGTH], 10)
 
     if (contentLength > limit) {
       next(new HttpError(413, `upload limit of ${limit} bytes`))
@@ -68,21 +69,21 @@ export const bodyParser = (options) => {
     req.on('end', onEnd)
     req.on('error', onEnd)
 
-    function removeListeners () {
+    function removeListeners() {
       req.removeListener('data', onData)
       req.removeListener('end', onEnd)
       req.removeListener('error', onEnd)
     }
-    function onData (chunk) {
+    function onData(chunk) {
       if ((body.length || chunk.length) < limit) {
         body = Buffer.concat([body, chunk])
       } else {
-      /* c8 ignore next 3 */
+        /* c8 ignore next 3 */
         removeListeners()
         next(new HttpError(413, 'upload limit'))
       }
     }
-    function onEnd (err) {
+    function onEnd(err) {
       removeListeners()
       /* c8 ignore next 4 */
       if (err) {
@@ -95,14 +96,14 @@ export const bodyParser = (options) => {
       if (typeJson && contentType === typeJson) {
         try {
           req.body = JSON.parse(body.toString())
-        } catch (/** @type {Error|any} */e) {
+        } catch (/** @type {Error|any} */ e) {
           err = new HttpError(400, 'json parse error', e)
         }
       } else if (typeUrlEncoded && contentType === typeUrlEncoded) {
         try {
           req.body = qs(body.toString())
-        } catch (/** @type {Error|any} */e) {
-        /* c8 ignore next 2 */
+        } catch (/** @type {Error|any} */ e) {
+          /* c8 ignore next 2 */
           err = new HttpError(400, 'urlencoded parse error', e)
         }
       } else if (typeRaw && contentType === typeRaw) {
@@ -120,7 +121,8 @@ export const bodyParser = (options) => {
  * @param {BodyParserOptions} options
  * @returns {HandlerCb}
  */
-bodyParser.json = (options = {}) => bodyParser({ ...options, typeUrlEncoded: false, typeRaw: false })
+bodyParser.json = (options = {}) =>
+  bodyParser({ ...options, typeUrlEncoded: false, typeRaw: false })
 
 /**
  * UrlEncoded Form parser
@@ -128,7 +130,8 @@ bodyParser.json = (options = {}) => bodyParser({ ...options, typeUrlEncoded: fal
  * @param {BodyParserOptions} options
  * @returns {HandlerCb}
  */
-bodyParser.urlEncoded = (options = {}) => bodyParser({ ...options, typeJson: false, typeRaw: false })
+bodyParser.urlEncoded = (options = {}) =>
+  bodyParser({ ...options, typeJson: false, typeRaw: false })
 
 /**
  * Raw Parser
@@ -136,4 +139,5 @@ bodyParser.urlEncoded = (options = {}) => bodyParser({ ...options, typeJson: fal
  * @param {BodyParserOptions} options
  * @returns {HandlerCb}
  */
-bodyParser.raw = (options = {}) => bodyParser({ ...options, typeJson: false, typeUrlEncoded: false })
+bodyParser.raw = (options = {}) =>
+  bodyParser({ ...options, typeJson: false, typeUrlEncoded: false })

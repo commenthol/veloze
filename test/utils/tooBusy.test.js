@@ -63,7 +63,7 @@ describe('utils/tooBusy', function () {
     })
 
     it('shall return true with load', function (done) {
-      function repeat () {
+      function repeat() {
         if (tooBusy()) {
           const lag = tooBusy.lag()
           assert.ok(lag < 50, `lag ${lag} shall be less than 50ms`)
@@ -91,7 +91,7 @@ describe('utils/tooBusy', function () {
     it('low smoothing factor', function (done) {
       tooBusy.set({ smoothingFactor: 0.2 })
       let cycle = 0
-      function repeat () {
+      function repeat() {
         cycle++
         if (tooBusy()) {
           assert.ok(cycle >= 2, `cycle ${cycle} is less then 2`)
@@ -107,7 +107,7 @@ describe('utils/tooBusy', function () {
     it('high smoothing factor', function (done) {
       tooBusy.set({ smoothingFactor: 0.9 })
       let cycle = 0
-      function repeat () {
+      function repeat() {
         cycle++
         if (tooBusy()) {
           assert.ok(cycle < 3, cycle)

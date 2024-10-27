@@ -29,7 +29,7 @@ import { CONTENT_LENGTH, CONTENT_TYPE } from '../constants.js'
  * @param {(req: Request, res: Response) => boolean} [options.filter]
  * @returns {import('#types.js').Handler}
  */
-export function compress (options) {
+export function compress(options) {
   const {
     healTheBreach = true,
     compressOptions,
@@ -38,7 +38,7 @@ export function compress (options) {
 
   const threshold = bytes(options?.threshold ?? 1024)
 
-  return function compressMw (req, res, next) {
+  return function compressMw(req, res, next) {
     let stream
     let writableEnded = false
     let length = 0
@@ -49,7 +49,7 @@ export function compress (options) {
     const _write = res.write
     const _end = res.end
 
-    res.write = function write (chunk, encoding) {
+    res.write = function write(chunk, encoding) {
       if (writableEnded) {
         return false
       }
@@ -64,11 +64,11 @@ export function compress (options) {
       return stream ? stream.write(bChunk) : _write.call(res, chunk, encoding)
     }
 
-    res.flush = function flush () {
+    res.flush = function flush() {
       stream?.flush && stream.flush()
     }
 
-    res.end = function end (chunk, encoding) {
+    res.end = function end(chunk, encoding) {
       if (writableEnded) {
         return false
       }
@@ -80,7 +80,9 @@ export function compress (options) {
 
       let bChunk = toBuffer(chunk, encoding)
 
-      if (healTheBreach && bChunk &&
+      if (
+        healTheBreach &&
+        bChunk &&
         filter(req, res) &&
         isCompressibleMimeTypeHTB('' + res.getHeader(CONTENT_TYPE))
       ) {
@@ -103,7 +105,7 @@ export function compress (options) {
       return bChunk ? stream.end(bChunk) : stream.end()
     }
 
-    res.on = function on (type, listener) {
+    res.on = function on(type, listener) {
       if (type !== 'drain') {
         _on.call(res, type, listener)
         return this

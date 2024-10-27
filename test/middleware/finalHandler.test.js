@@ -3,21 +3,22 @@ import { finalHandler, HttpError } from '../../src/index.js'
 import { escapeHtmlLit } from '../../src/utils/escapeHtml.js'
 import { Request, Response } from '../support/index.js'
 
-const removeFields = (args) => args.map(item => {
-  // eslint-disable-next-line no-unused-vars
-  const { id, ...other } = item
-  return other
-})
+const removeFields = (args) =>
+  args.map((item) => {
+    // eslint-disable-next-line no-unused-vars
+    const { id, ...other } = item
+    return other
+  })
 class Log {
-  info (...args) {
+  info(...args) {
     this._info = removeFields(args)
   }
 
-  warn (...args) {
+  warn(...args) {
     this._warn = removeFields(args)
   }
 
-  error (...args) {
+  error(...args) {
     this._error = removeFields(args)
   }
 }
@@ -68,7 +69,7 @@ describe('middleware/finalHandler', function () {
     const err = new HttpError(500, '', new Error('boom'))
     finalHandler({ log })(err, req, res)
 
-    const fixStack = stack => stack ? stack.substring(0, 40) : undefined
+    const fixStack = (stack) => (stack ? stack.substring(0, 40) : undefined)
     const strip = (item) => ({
       ...item,
       stack: fixStack(item.stack)
@@ -97,24 +98,26 @@ describe('middleware/finalHandler', function () {
 
     finalHandler({ log })(err, req, res)
 
-    assert.equal(res.end[0].replace(/<head>[^]*<\/head>/mg, ''),
+    assert.equal(
+      res.end[0].replace(/<head>[^]*<\/head>/gm, ''),
       '<!DOCTYPE html>\n' +
-      '<html lang="en">\n' +
-      '\n' +
-      '<body>\n' +
-      '  <section>\n' +
-      '    <h1>404</h1>\n' +
-      '    <h2>Not Found</h2>\n' +
-      '    <p><a href="/">Homepage</a></p>\n' +
-      '  </section>\n' +
-      '</body>\n' +
-      '</html>\n'
+        '<html lang="en">\n' +
+        '\n' +
+        '<body>\n' +
+        '  <section>\n' +
+        '    <h1>404</h1>\n' +
+        '    <h2>Not Found</h2>\n' +
+        '    <p><a href="/">Homepage</a></p>\n' +
+        '  </section>\n' +
+        '</body>\n' +
+        '</html>\n'
     )
 
     /// shall set content-security-headers here
     assert.deepEqual(res.headers, {
       'content-type': 'text/html; charset=utf-8',
-      'content-security-policy': "default-src 'self'; font-src 'self' https: data:; img-src 'self' data:; object-src 'none'; script-src 'self'; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https:; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests"
+      'content-security-policy':
+        "default-src 'self'; font-src 'self' https: data:; img-src 'self' data:; object-src 'none'; script-src 'self'; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https:; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests"
     })
   })
 
@@ -127,7 +130,10 @@ describe('middleware/finalHandler', function () {
     res.body = undefined
 
     finalHandler({ log })(err, req, res)
-    assert.ok(/<h2>Oops! That should not have happened!<\/h2>/.test(res.end[0]), res.end[0])
+    assert.ok(
+      /<h2>Oops! That should not have happened!<\/h2>/.test(res.end[0]),
+      res.end[0]
+    )
   })
 
   it('not an error at all...', function () {
@@ -139,7 +145,10 @@ describe('middleware/finalHandler', function () {
     res.body = undefined
 
     finalHandler({ log })(err, req, res)
-    assert.ok(/<h2>Oops! That should not have happened!<\/h2>/.test(res.end[0]), res.end[0])
+    assert.ok(
+      /<h2>Oops! That should not have happened!<\/h2>/.test(res.end[0]),
+      res.end[0]
+    )
   })
 
   it('with custom html template', function () {
@@ -150,7 +159,8 @@ describe('middleware/finalHandler', function () {
     res.setHeader('content-type', 'text/html; charset=utf-8')
     res.body = undefined
 
-    const htmlTemplate = ({ status, message }) => escapeHtmlLit`<h1>${status}</h1><h2>${message}</h2>`
+    const htmlTemplate = ({ status, message }) =>
+      escapeHtmlLit`<h1>${status}</h1><h2>${message}</h2>`
 
     finalHandler({ log, htmlTemplate })(err, req, res)
 
@@ -160,7 +170,7 @@ describe('middleware/finalHandler', function () {
   it('shall call res.end() if headers are sent', function () {
     class ResponseHeadersSent {
       headersSent = true
-      end () {
+      end() {
         this._end = true
       }
     }

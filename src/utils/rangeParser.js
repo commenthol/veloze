@@ -10,7 +10,7 @@
  * @param {number} size
  * @returns {[start: number, end: number]|[-1]|[]}
  */
-export function rangeParser (rangeHeader = '', size) {
+export function rangeParser(rangeHeader = '', size) {
   if (!rangeHeader.startsWith('bytes=') || !size) {
     return []
   }

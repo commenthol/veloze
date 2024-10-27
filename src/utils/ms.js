@@ -13,30 +13,29 @@ const RE = /^(-?[\d.]+)\s?(y|mo|w|d|h|m|s)?/
  * @param {boolean} [inSeconds] if `true` convert `value` to seconds; Only valid if value is string
  * @returns {number|undefined}
  */
-export function ms (value, inSeconds = false) {
+export function ms(value, inSeconds = false) {
   if (typeof value === 'string') {
     const m = RE.exec(value.toLowerCase())
     if (!m) return
     const count = Number(m[1])
     const unit = m[2]
-    const num = unit === 'y'
-      ? YEAR
-      : unit === 'mo'
-        ? MONTH
-        : unit === 'w'
-          ? WEEK
-          : unit === 'd'
-            ? DAY
-            : unit === 'h'
-              ? HOUR
-              : unit === 'm'
-                ? MINUTE
-                : unit === 's'
-                  ? SECOND
-                  : 1
-    return inSeconds
-      ? Math.floor(count * num / SECOND)
-      : count * num
+    const num =
+      unit === 'y'
+        ? YEAR
+        : unit === 'mo'
+          ? MONTH
+          : unit === 'w'
+            ? WEEK
+            : unit === 'd'
+              ? DAY
+              : unit === 'h'
+                ? HOUR
+                : unit === 'm'
+                  ? MINUTE
+                  : unit === 's'
+                    ? SECOND
+                    : 1
+    return inSeconds ? Math.floor((count * num) / SECOND) : count * num
   }
   return value
 }

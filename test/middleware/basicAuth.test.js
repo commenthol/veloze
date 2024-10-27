@@ -36,10 +36,7 @@ describe('middleware/basicAuth', function () {
   })
 
   it('shall fail for un-authenticated unknown user', async function () {
-    await supertest(app, ST_OPTS)
-      .get('/')
-      .auth('john', '123')
-      .expect(401)
+    await supertest(app, ST_OPTS).get('/').auth('john', '123').expect(401)
   })
 
   it('shall authenticate user foo', async function () {

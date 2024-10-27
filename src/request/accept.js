@@ -17,10 +17,12 @@ import { getHeader } from './getHeader.js'
  * @param {(value: string) => string|string[]|undefined} [fn]
  * @returns {(req: Request, weight?: boolean) => HeaderParserResult[]}
  */
-const _accept = (header, fn) => (req, weight = false) => {
-  const value = getHeader(req, header)
-  return headerParser(value, { fn, weight })
-}
+const _accept =
+  (header, fn) =>
+  (req, weight = false) => {
+    const value = getHeader(req, header)
+    return headerParser(value, { fn, weight })
+  }
 
 /**
  * Parses the request header 'accept'

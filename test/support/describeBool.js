@@ -4,10 +4,10 @@
 
 const noop = () => {}
 
-export const describeBool = (trueish) => trueish ? describe : describe.skip
-describeBool.only = (trueish) => trueish ? describe.only : noop
+export const describeBool = (trueish) => (trueish ? describe : describe.skip)
+describeBool.only = (trueish) => (trueish ? describe.only : noop)
 describeBool.skip = (trueish) => describe.skip // eslint-disable-line no-unused-vars
 
-export const itBool = (trueish) => trueish ? it : it.skip
-itBool.only = (trueish) => trueish ? it.only : noop
+export const itBool = (trueish) => (trueish ? it : it.skip)
+itBool.only = (trueish) => (trueish ? it.only : noop)
 itBool.skip = (trueish) => it.skip // eslint-disable-line no-unused-vars

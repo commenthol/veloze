@@ -73,7 +73,8 @@ describeBool(!process.env.CI)('utils/safeServerShutdown', function () {
 
       for (let i = 0; i < max; i++) {
         const method = METHODS[i % METHODS.length].toLowerCase()
-        supertest('http://localhost:' + port)[method]('/')
+        supertest('http://localhost:' + port)
+          [method]('/')
           .disableTLSCerts()
           .then((res) => res.text)
           .then(pushIt)
@@ -81,12 +82,15 @@ describeBool(!process.env.CI)('utils/safeServerShutdown', function () {
         await sleep(3)
         // console.log(i, diffTime())
         if (i === 25) {
-          server.closeAsync().then(() => {
-            // console.log(diffTime())
-            hasClosed = true
-          }).catch((err) => {
-            assert.ok(!err)
-          })
+          server
+            .closeAsync()
+            .then(() => {
+              // console.log(diffTime())
+              hasClosed = true
+            })
+            .catch((err) => {
+              assert.ok(!err)
+            })
         }
       }
 
@@ -148,7 +152,8 @@ describeBool(!process.env.CI)('utils/safeServerShutdown', function () {
 
       for (let i = 0; i < max; i++) {
         const method = METHODS[i % METHODS.length].toLowerCase()
-        supertest('https://localhost:' + port)[method]('/')
+        supertest('https://localhost:' + port)
+          [method]('/')
           .disableTLSCerts()
           .then((res) => res.text)
           .then(pushIt)

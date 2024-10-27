@@ -12,7 +12,7 @@ export class HttpClient {
    * @param {string|import('#types.js').Handler} baseUrl
    * @param {http.ServerOptions} httpsOptions
    */
-  constructor (baseUrl, httpsOptions) {
+  constructor(baseUrl, httpsOptions) {
     if (typeof baseUrl === 'function') {
       const handle = baseUrl
       const proto = httpsOptions ? 'https' : 'http'
@@ -25,7 +25,7 @@ export class HttpClient {
     }
   }
 
-  method (method, path) {
+  method(method, path) {
     this._options.method = method.toUpperCase()
     const { protocol, hostname, port, password, username, search, pathname } =
       new URL(this._baseUrl + path)
@@ -40,36 +40,36 @@ export class HttpClient {
     return this
   }
 
-  get (path) {
+  get(path) {
     return this.method('GET', path)
   }
 
-  post (path) {
+  post(path) {
     return this.method('POST', path)
   }
 
-  put (path) {
+  put(path) {
     return this.method('PUT', path)
   }
 
-  patch (path) {
+  patch(path) {
     return this.method('PATCH', path)
   }
 
-  delete (path) {
+  delete(path) {
     return this.method('DELETE', path)
   }
 
-  search (path) {
+  search(path) {
     return this.method('SEARCH', path)
   }
 
-  set (headers) {
+  set(headers) {
     Object.assign(this._options.headers, headers)
     return this
   }
 
-  send (body) {
+  send(body) {
     this._body = body
     if (typeof body !== 'string') {
       this._body = JSON.stringify()
@@ -79,12 +79,12 @@ export class HttpClient {
     return this
   }
 
-  disableTLSCerts () {
+  disableTLSCerts() {
     this._options.rejectUnauthorized = false
     return this
   }
 
-  response (onResponseFn) {
+  response(onResponseFn) {
     const req = this._transport.request(this._options, (res) => {
       res.on('end', () => {
         this._server.close()
@@ -97,7 +97,7 @@ export class HttpClient {
     return req
   }
 
-  then (resolveF) {
+  then(resolveF) {
     return new Promise((resolve, reject) => {
       const req = this._transport.request(this._options, (res) => {
         res.raw = Buffer.alloc(0)
@@ -125,7 +125,7 @@ export class HttpClient {
     })
   }
 
-  catch (errorF) {
+  catch(errorF) {
     return this.then(() => {})
       .catch(errorF)
       .finally(() => {

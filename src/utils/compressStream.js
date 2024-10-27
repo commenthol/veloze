@@ -25,7 +25,7 @@ const SUPPORTED = ['br', 'gzip', 'deflate']
  * @param {(req: Request, res: Response) => boolean} [options.filter]
  * @returns {import('node:stream').Transform|undefined}
  */
-export function compressStream (req, res, options) {
+export function compressStream(req, res, options) {
   const {
     compressOptions,
     threshold = 1024,

@@ -25,15 +25,12 @@ import { ms } from '../utils/ms.js'
  * @param { CacheControlDirectives } [options]
  * @returns {string} cache-control header value
  */
-export function buildCacheControl (options = {}) {
+export function buildCacheControl(options = {}) {
   const isEmpty = Object.keys(options).length === 0
 
   let maxAge = max(ms(options.maxAge, true))
   const sMaxAge = max(ms(options.sMaxAge, true))
-  let {
-    noCache,
-    noStore
-  } = options
+  let { noCache, noStore } = options
 
   if (isEmpty) {
     noCache = noCache ?? true
@@ -92,7 +89,7 @@ export function buildCacheControl (options = {}) {
  * @param {number} [lower=0]
  * @returns {number|undefined}
  */
-function max (value, lower = 0) {
+function max(value, lower = 0) {
   if (typeof value !== 'number') {
     return
   }
@@ -106,10 +103,10 @@ function max (value, lower = 0) {
  * @param {CacheControlDirectives} [options]
  * @returns {HandlerCb}
  */
-export function cacheControl (options) {
+export function cacheControl(options) {
   const value = buildCacheControl(options)
 
-  return function cacheControlMw (req, res, next) {
+  return function cacheControlMw(req, res, next) {
     res.setHeader('cache-control', value)
     next()
   }
@@ -131,16 +128,14 @@ export function cacheControl (options) {
  * @param {CacheControlDirectivesByMethod} [options]
  * @returns {HandlerCb}
  */
-export function cacheControlByMethod (options) {
-  const {
-    noCacheMethods = ['POST', 'PUT', 'PATCH', 'DELETE'],
-    ...opts
-  } = options || {}
+export function cacheControlByMethod(options) {
+  const { noCacheMethods = ['POST', 'PUT', 'PATCH', 'DELETE'], ...opts } =
+    options || {}
 
   const cacheVal = buildCacheControl(opts)
   const noCacheVal = buildCacheControl()
 
-  return function cacheControlMw (req, res, next) {
+  return function cacheControlMw(req, res, next) {
     const value = noCacheMethods.includes(req.method || '')
       ? noCacheVal
       : cacheVal

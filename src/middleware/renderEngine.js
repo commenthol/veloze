@@ -64,9 +64,9 @@ let log
  *   res.render('home', { title: 'home' })
  * })
  */
-export function renderEngine (options) {
+export function renderEngine(options) {
   const view = new View(options)
-  return function _renderEngine (req, res, next) {
+  return function _renderEngine(req, res, next) {
     res.locals = {}
     res.render = view.render.bind(view, res)
     res[RES_NEXT] = next
@@ -80,7 +80,7 @@ export class View {
   /**
    * @param {ViewOptions} options
    */
-  constructor (options) {
+  constructor(options) {
     let {
       ext,
       engine,
@@ -92,8 +92,11 @@ export class View {
 
     log = log || logger(':renderEngine')
 
-    // @ts-expect-error
-    const views = [].concat(_views).map(view => view instanceof URL ? fileURLToPath(view) : view)
+    const views = []
+      // @ts-expect-error
+      .concat(_views)
+      // @ts-expect-error
+      .map((view) => (view instanceof URL ? fileURLToPath(view) : view))
 
     if (ext[0] === '.') {
       ext = ext.slice(1)
@@ -104,7 +107,7 @@ export class View {
     this.#options = { ext, engine, views, cache, pathCache, locals }
   }
 
-  async lookup (name) {
+  async lookup(name) {
     const { views: viewDirs, ext } = this.#options
 
     log.debug('lookup "%s"', name)
@@ -130,7 +133,7 @@ export class View {
    * @param {string} name view name
    * @param {object} [options] render options
    */
-  async render (res, name, options) {
+  async render(res, name, options) {
     try {
       const { pathCache, cache, locals, engine } = this.#options
 
@@ -146,17 +149,14 @@ export class View {
         filename = await this.lookup(name)
       }
 
-      const opts = Object.assign(
-        {},
-        locals,
-        res.locals,
-        options,
-        { cache, filename }
-      )
+      const opts = Object.assign({}, locals, res.locals, options, {
+        cache,
+        filename
+      })
 
       const body = await asyncEngineRender(engine, filename, opts)
       send(res, body)
-    } catch (/** @type {Error|any} */e) {
+    } catch (/** @type {Error|any} */ e) {
       const err = new HttpError(500, 'Template Error', e)
       res.setHeader(CONTENT_TYPE, MIME_HTML_UTF8)
       res.emit('error', err)
@@ -164,7 +164,7 @@ export class View {
   }
 }
 
-function asyncEngineRender (engine, filename, options) {
+function asyncEngineRender(engine, filename, options) {
   return new Promise((resolve, reject) => {
     engine(filename, options, (err, rendered) =>
       err ? reject(err) : resolve(rendered)
@@ -178,7 +178,7 @@ function asyncEngineRender (engine, filename, options) {
  * @param {string} ext
  * @returns {Promise<string|undefined>}
  */
-async function resolveFilename (dir, file, ext) {
+async function resolveFilename(dir, file, ext) {
   // <pathname>.<ext>
   let filename = path.join(dir, `${file}.${ext}`)
   let stat = await fsp.stat(filename).catch(() => {})
@@ -189,7 +189,7 @@ async function resolveFilename (dir, file, ext) {
 
   // <path>/index.<ext>
   filename = path.join(dir, path.basename(file, ext), `index.${ext}`)
-  stat = await fsp.stat(filename).catch(() => { })
+  stat = await fsp.stat(filename).catch(() => {})
 
   if (stat && stat.isFile()) {
     return filename

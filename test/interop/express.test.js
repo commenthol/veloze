@@ -9,8 +9,6 @@ describe('interop/express', function () {
     const app = express()
     app.use(router.handle)
 
-    await supertest(app)
-      .get('/')
-      .expect(200, 'hi')
+    await supertest(app).get('/').expect(200, 'hi')
   })
 })

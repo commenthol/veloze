@@ -19,13 +19,16 @@ const RE_FIELD_NAME = /^[!#$%&'*+\-.^_`|~0-9A-Za-z]+$/
  * @param {import('#types.js').Response} res
  * @param {string} reqHeader request header name
  */
-export function vary (res, reqHeader) {
+export function vary(res, reqHeader) {
   if (!RE_FIELD_NAME.test(reqHeader)) {
     throw new TypeError('vary value contains invalid characters')
   }
-  // @ts-expect-error
-  const header = [].concat(res.getHeader(VARY) || '', reqHeader)
-    .filter(Boolean).join(', ').toLowerCase()
+  const header = []
+    // @ts-expect-error
+    .concat(res.getHeader(VARY) || '', reqHeader)
+    .filter(Boolean)
+    .join(', ')
+    .toLowerCase()
   const values = [...new Set(header.split(/\s*,\s*/))]
   const newValue = values.includes('*') ? '*' : values.join(', ')
   res.setHeader(VARY, newValue)

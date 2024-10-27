@@ -16,7 +16,7 @@ export { RES_ETAG }
  * @param {Response} res
  * @param {Function} next
  */
-export function json (req, res, next) {
+export function json(req, res, next) {
   res.json = resJson.bind(null, res)
   next()
 }
@@ -31,10 +31,8 @@ export const etagHash = (chunk = '', algorithm = 'sha1') =>
  * @param {string} [options.algorithm='sha1']
  * @returns {HandlerCb}
  */
-export function jsonEtag (options) {
-  const {
-    algorithm = 'sha1'
-  } = options || {}
+export function jsonEtag(options) {
+  const { algorithm = 'sha1' } = options || {}
 
   const calcEtag = (req, res, chunk) => {
     if (res.statusCode > 201 || ['DELETE'].includes(req.method || '')) {
@@ -49,7 +47,7 @@ export function jsonEtag (options) {
     }
   }
 
-  return function jsonEtagMw (req, res, next) {
+  return function jsonEtagMw(req, res, next) {
     res.json = resJson.bind(null, res)
     res[RES_ETAG] = calcEtag.bind(null, req, res)
     next()

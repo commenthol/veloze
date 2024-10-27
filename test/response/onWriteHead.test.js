@@ -17,10 +17,12 @@ describe('response/onWriteHead', function () {
     await supertest(handle)
       .get('/')
       .expect(200)
-      .expect(shouldHaveSomeHeaders({
-        'x-foo': 'bar',
-        'x-test': '1'
-      }))
+      .expect(
+        shouldHaveSomeHeaders({
+          'x-foo': 'bar',
+          'x-test': '1'
+        })
+      )
   })
 
   it('should set statuscode on write', async function () {
@@ -31,9 +33,7 @@ describe('response/onWriteHead', function () {
       res.end()
     }
 
-    await supertest(handle)
-      .get('/')
-      .expect(401)
+    await supertest(handle).get('/').expect(401)
   })
 
   it('shall give res.writeHead headers precedence', async function () {
@@ -48,10 +48,12 @@ describe('response/onWriteHead', function () {
     await supertest(handle)
       .get('/')
       .expect(201)
-      .expect(shouldHaveSomeHeaders({
-        'x-foo': 'bar',
-        'x-test': '1'
-      }))
+      .expect(
+        shouldHaveSomeHeaders({
+          'x-foo': 'bar',
+          'x-test': '1'
+        })
+      )
       .then((res) => {
         assert.equal(res.res.statusMessage, 'Created')
       })
@@ -63,18 +65,23 @@ describe('response/onWriteHead', function () {
         res.setHeader('x-test', '0')
         res.setHeader('x-wat', 'man')
       })
-      res.writeHead(201, [['x-test', '1'], ['x-foo', 'bar']])
+      res.writeHead(201, [
+        ['x-test', '1'],
+        ['x-foo', 'bar']
+      ])
       res.end()
     }
 
     await supertest(handle)
       .get('/')
       .expect(201)
-      .expect(shouldHaveSomeHeaders({
-        'x-foo': 'bar',
-        'x-wat': 'man',
-        'x-test': '1'
-      }))
+      .expect(
+        shouldHaveSomeHeaders({
+          'x-foo': 'bar',
+          'x-wat': 'man',
+          'x-test': '1'
+        })
+      )
       .then((res) => {
         assert.equal(res.res.statusMessage, 'Created')
       })
@@ -93,11 +100,13 @@ describe('response/onWriteHead', function () {
     await supertest(handle)
       .get('/')
       .expect(201)
-      .expect(shouldHaveSomeHeaders({
-        'x-foo': 'bar',
-        'x-wat': 'man',
-        'x-test': '1'
-      }))
+      .expect(
+        shouldHaveSomeHeaders({
+          'x-foo': 'bar',
+          'x-wat': 'man',
+          'x-test': '1'
+        })
+      )
       .then((res) => {
         assert.equal(res.res.statusMessage, 'Yes created')
       })
@@ -114,9 +123,7 @@ describe('response/onWriteHead', function () {
       }
     }
 
-    await supertest(handle)
-      .get('/')
-      .expect(500, 'need request')
+    await supertest(handle).get('/').expect(500, 'need request')
   })
 
   it('should throw if onWriteHead has no listener', async function () {
@@ -130,8 +137,6 @@ describe('response/onWriteHead', function () {
       }
     }
 
-    await supertest(handle)
-      .get('/')
-      .expect(500, 'listener must be a function')
+    await supertest(handle).get('/').expect(500, 'listener must be a function')
   })
 })

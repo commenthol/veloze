@@ -35,7 +35,7 @@ export class Server extends Router {
   /**
    * @param {ServerOptions} options
    */
-  constructor (options) {
+  constructor(options) {
     const {
       onlyHTTP1 = false,
       connect,
@@ -74,15 +74,20 @@ export class Server extends Router {
    * @param {{(): void}} [listeningListener]
    * @returns {Http2Server}
    */
-  listen (port, hostname, backlog, listeningListener) {
+  listen(port, hostname, backlog, listeningListener) {
     const { key, cert, pfx } = this.#serverOptions
-    const refCreateSecureServer = this.#onlyHTTP1 ? https.createServer : http2.createSecureServer
-    const refCreateServer = this.#onlyHTTP1 ? http.createServer : http2.createServer
-    const createServer = ((key && cert) || pfx)
-      // @ts-expect-error
-      ? (handle, options) => refCreateSecureServer(options, handle)
-      // @ts-expect-error
-      : (handle) => refCreateServer(handle)
+    const refCreateSecureServer = this.#onlyHTTP1
+      ? https.createServer
+      : http2.createSecureServer
+    const refCreateServer = this.#onlyHTTP1
+      ? http.createServer
+      : http2.createServer
+    const createServer =
+      (key && cert) || pfx
+        ? // @ts-expect-error
+          (handle, options) => refCreateSecureServer(options, handle)
+        : // @ts-expect-error
+          (handle) => refCreateServer(handle)
     this.#server = createServer(this.handle, this.#serverOptions)
     safeServerShutdown(this.#server, this.#shutdownOptions)
     this.#server.listen(port, hostname, backlog, listeningListener)
@@ -93,7 +98,7 @@ export class Server extends Router {
   /**
    * @returns {string | AddressInfo | null}
    */
-  address () {
+  address() {
     return this.#server?.address()
   }
 
@@ -103,7 +108,7 @@ export class Server extends Router {
    * @param {{(err?: Error): void}} callback
    * @returns {Http2Server}
    */
-  close (callback) {
+  close(callback) {
     return this.#server.close(callback)
   }
 }
