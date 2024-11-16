@@ -1,8 +1,13 @@
-# 0.8.3 (2024-10-27)
+# 1.0.0 (2024-11-16)
+
+### fix:
+
+- request/remoteAddress: validate ip address (#511b580)
+- static code check; sanitize regexes (#0e7a894)
 
 ### chore:
 
-- change to eslint-prettier (#5b2c408)
+- change to eslint-prettier (#f8e7ab7)
 
 # 0.8.2 (2024-10-26)
 
