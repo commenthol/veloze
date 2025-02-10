@@ -5,11 +5,9 @@
  * @param {Server} server the server instance
  * @param {object} [options]
  * @param {number} [options.gracefulTimeout=1000] (ms) graceful timeout for existing connections
- * @param {Log} [options.log] logger
  */
 export function safeServerShutdown(server: Server, options?: {
     gracefulTimeout?: number | undefined;
-    log?: import("#types.js").Log | undefined;
 }): void;
 export type Log = import("#types.js").Log;
 export type HttpServer = import("http").Server;

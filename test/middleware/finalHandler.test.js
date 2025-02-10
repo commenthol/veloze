@@ -2,101 +2,111 @@ import assert from 'assert'
 import { finalHandler, HttpError } from '../../src/index.js'
 import { escapeHtmlLit } from '../../src/utils/escapeHtml.js'
 import { Request, Response } from '../support/index.js'
+import { EVENT_PROC_LOG } from 'debug-level'
 
 const removeFields = (args) =>
   args.map((item) => {
     // eslint-disable-next-line no-unused-vars
-    const { id, ...other } = item
+    const { id, stack, ...other } = item
+    if (stack) {
+      const [line] = stack.split(/\n/)
+      other.stack = line
+    }
     return other
   })
-class Log {
-  info(...args) {
-    this._info = removeFields(args)
-  }
 
-  warn(...args) {
-    this._warn = removeFields(args)
+const initProcLog = () => {
+  const logs = []
+  const logger = (level, namespace, fmt, args) =>
+    logs.push([level, namespace, removeFields([fmt, ...args])])
+  const off = () => {
+    process.off(EVENT_PROC_LOG, logger)
   }
-
-  error(...args) {
-    this._error = removeFields(args)
-  }
+  process.on(EVENT_PROC_LOG, logger)
+  return { logs, off }
 }
 
 describe('middleware/finalHandler', function () {
+  let log
+  beforeEach(function () {
+    log = initProcLog()
+  })
+  afterEach(function () {
+    log.off()
+  })
+
   it('HttpError 400', function () {
-    const log = new Log()
     const req = new Request()
     const res = new Response()
     const err = new HttpError(400)
-    finalHandler({ log })(err, req, res)
-    assert.deepEqual(log, {
-      _warn: [
-        {
-          method: 'GET',
-          msg: 'Bad Request',
-          stack: undefined,
-          status: 400,
-          url: '/'
-        }
+    finalHandler()(err, req, res)
+    assert.deepEqual(log.logs, [
+      [
+        'WARN',
+        'veloze:final',
+        [
+          {
+            method: 'GET',
+            msg: 'Bad Request',
+            status: 400,
+            url: '/'
+          }
+        ]
       ]
-    })
+    ])
   })
 
   it('HttpError 200', function () {
-    const log = new Log()
     const req = new Request()
     const res = new Response()
     const err = new HttpError(200, 'Strange Code')
-    finalHandler({ log })(err, req, res)
-    assert.deepEqual(log, {
-      _info: [
-        {
-          method: 'GET',
-          msg: 'Strange Code',
-          stack: undefined,
-          status: 200,
-          url: '/'
-        }
+    finalHandler()(err, req, res)
+    assert.deepEqual(log.logs, [
+      [
+        'INFO',
+        'veloze:final',
+        [
+          {
+            method: 'GET',
+            msg: 'Strange Code',
+            status: 200,
+            url: '/'
+          }
+        ]
       ]
-    })
+    ])
   })
 
   it('HttpError 500 with cause', function () {
-    const log = new Log()
     const req = new Request('DELETE', '/error')
     const res = new Response()
     const err = new HttpError(500, '', new Error('boom'))
-    finalHandler({ log })(err, req, res)
-
-    const fixStack = (stack) => (stack ? stack.substring(0, 40) : undefined)
-    const strip = (item) => ({
-      ...item,
-      stack: fixStack(item.stack)
-    })
-    log._error[0] = strip(log._error[0])
-    assert.deepEqual(log, {
-      _error: [
-        {
-          method: 'DELETE',
-          msg: 'Internal Server Error',
-          stack: 'Error: boom\n    at Context.<anonymous> (',
-          status: 500,
-          url: '/error'
-        }
+    finalHandler()(err, req, res)
+    assert.deepEqual(log.logs, [
+      [
+        'ERROR',
+        'veloze:final',
+        [
+          {
+            method: 'DELETE',
+            msg: 'Internal Server Error',
+            stack: 'Error: boom',
+            status: 500,
+            url: '/error'
+          }
+        ]
       ]
-    })
+    ])
   })
 
   it('HttpError 404 as html', function () {
-    const log = new Log()
     const req = new Request('GET', '/something')
     const res = new Response()
     const err = new HttpError(404)
     res.setHeader('content-type', 'text/html; charset=utf-8')
     res.body = undefined
 
-    finalHandler({ log })(err, req, res)
+    finalHandler()(err, req, res)
 
     assert.equal(
       res.end[0].replace(/<head>[^]*<\/head>/gm, ''),
@@ -122,14 +132,13 @@ describe('middleware/finalHandler', function () {
   })
 
   it('Error', function () {
-    const log = new Log()
     const req = new Request('GET', '/something', { 'accept-language': '*' })
     const res = new Response()
     const err = new Error()
     res.setHeader('content-type', 'text/html; charset=utf-8')
     res.body = undefined
 
-    finalHandler({ log })(err, req, res)
+    finalHandler()(err, req, res)
     assert.ok(
       /<h2>Oops! That should not have happened!<\/h2>/.test(res.end[0]),
       res.end[0]
@@ -137,14 +146,13 @@ describe('middleware/finalHandler', function () {
   })
 
   it('not an error at all...', function () {
-    const log = new Log()
     const req = new Request('GET', '/something', { 'accept-language': '*' })
     const res = new Response()
     const err = null
     res.setHeader('content-type', 'text/html; charset=utf-8')
     res.body = undefined
 
-    finalHandler({ log })(err, req, res)
+    finalHandler()(err, req, res)
     assert.ok(
       /<h2>Oops! That should not have happened!<\/h2>/.test(res.end[0]),
       res.end[0]
@@ -152,7 +160,6 @@ describe('middleware/finalHandler', function () {
   })
 
   it('with custom html template', function () {
-    const log = new Log()
     const req = new Request('GET', '/something')
     const res = new Response()
     const err = new HttpError(401)
@@ -162,7 +169,7 @@ describe('middleware/finalHandler', function () {
     const htmlTemplate = ({ status, message }) =>
       escapeHtmlLit`<h1>${status}</h1><h2>${message}</h2>`
 
-    finalHandler({ log, htmlTemplate })(err, req, res)
+    finalHandler({ htmlTemplate })(err, req, res)
 
     assert.equal(res.end[0], '<h1>401</h1><h2>Unauthorized</h2>')
   })
@@ -174,11 +181,10 @@ describe('middleware/finalHandler', function () {
         this._end = true
       }
     }
-    const log = new Log()
     const req = new Request()
     const res = new ResponseHeadersSent()
     const err = new HttpError(401)
-    finalHandler({ log })(err, req, res)
+    finalHandler()(err, req, res)
     assert.equal(res._end, true)
   })
 })

@@ -332,14 +332,13 @@ export function contentSecJson(options) {
   return contentSec(_options)
 }
 
+const log = logger(':csp-violation')
+
 /**
  * Parse and log csp violation
- * @param {{log: Log}} options
  * @returns {HandlerCb}
  */
-export function cspReport(options) {
-  const { log = logger(':csp-violation') } = options || {}
-
+export function cspReport() {
   return connect(
     bodyParser.json({ typeJson: 'application/csp-report' }),
     (req, res) => {

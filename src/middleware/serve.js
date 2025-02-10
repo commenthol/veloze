@@ -22,7 +22,7 @@ import {
 /** @typedef {import('#types.js').Response} Response */
 /** @typedef {import('../utils/compressStream.js').CompressOptions} CompressOptions */
 
-let log
+const log = logger(':serve')
 
 const ALLOWED_METHODS = ['GET', 'HEAD']
 const ALLOW = ALLOWED_METHODS.join(', ')
@@ -65,7 +65,6 @@ export function serve(root, options) {
     throw new TypeError('need root path')
   }
 
-  log = log || logger(':serve')
   log.debug('root path is %s', _root)
 
   if (typeof index !== 'string') {

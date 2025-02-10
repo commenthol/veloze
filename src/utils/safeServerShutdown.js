@@ -11,6 +11,8 @@ import { logger } from './logger.js'
  * @typedef {(HttpServer|HttpSecureServer|Http2Server|Http2SecureServer) & CloseAsync} Server
  */
 
+const log = logger(':safeShutdown')
+
 const EXIT_EVENTS = [
   'uncaughtException',
   'beforeExit',
@@ -27,11 +29,9 @@ const EXIT_EVENTS = [
  * @param {Server} server the server instance
  * @param {object} [options]
  * @param {number} [options.gracefulTimeout=1000] (ms) graceful timeout for existing connections
- * @param {Log} [options.log] logger
  */
 export function safeServerShutdown(server, options) {
-  const { gracefulTimeout = 1000, log = logger(':safeShutdown') } =
-    options || {}
+  const { gracefulTimeout = 1000 } = options || {}
 
   let isShutdown = false
 

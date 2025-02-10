@@ -42,8 +42,4 @@ export type BodyParserOptions = {
      * parse raw content
      */
     typeRaw?: string | false | undefined;
-    /**
-     * custom logger
-     */
-    log?: import("#types.js").Log | undefined;
 };

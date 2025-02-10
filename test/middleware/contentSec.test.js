@@ -9,6 +9,7 @@ import {
   response
 } from '../../src/index.js'
 import { shouldHaveHeaders } from '../support/index.js'
+import { EVENT_PROC_LOG } from 'debug-level'
 
 const { send } = response
 
@@ -370,15 +371,27 @@ describe('middleware/csp', function () {
   })
 
   describe('cspReport', function () {
-    it('shall report a csp violation', function (done) {
-      class Log {
-        warn(arg) {
-          this._log = arg
-        }
+    const initProcLog = () => {
+      const logs = []
+      const logger = (level, namespace, fmt, args) =>
+        logs.push([level, namespace, fmt, ...args])
+      const off = () => {
+        process.off(EVENT_PROC_LOG, logger)
       }
-      const log = new Log()
+      process.on(EVENT_PROC_LOG, logger)
+      return { logs, off }
+    }
+    let log
+    beforeEach(function () {
+      log = initProcLog()
+    })
+    afterEach(function () {
+      log.off()
+    })
+
+    it('shall report a csp violation', async function () {
       const app = new Router()
-      app.post('/csp-report', cspReport({ log }))
+      app.post('/csp-report', cspReport())
 
       const cspViolation = {
         'csp-report': {
@@ -394,15 +407,18 @@ describe('middleware/csp', function () {
         }
       }
 
-      supertest(app.handle)
+      const res = await supertest(app.handle)
         .post('/csp-report')
         .set('content-type', 'application/csp-report')
         .send(JSON.stringify(cspViolation))
         .expect(204, '')
-        .then(() => {
-          assert.deepEqual(log._log, cspViolation)
-          done()
-        })
+
+      assert.deepEqual(res.body, {})
+      assert.deepEqual(log.logs[0], [
+        'WARN',
+        'veloze:csp-violation',
+        cspViolation
+      ])
     })
   })
 })

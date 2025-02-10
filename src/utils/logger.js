@@ -1,27 +1,33 @@
-import { logger as loggerFn } from 'debug-level'
+import { ProcLog, initProcLog, EVENT_PROC_LOG } from 'debug-level'
+
+/** @typedef {import('debug-level').Log} LogBase */
+/** @typedef {import('debug-level').ProcLogOptions} ProcLogOptions */
 
 /**
- * @typedef {import('debug-level').Log} LogBase
- * @typedef {import('debug-level').LogOptions} LogOptions
- * @typedef {(namespace: string, opts?: LogOptions | undefined) => LogBase} LoggerFn
+ * @param {string} [namespace]
+ * @param {ProcLogOptions} [opts]
+ * @returns {ProcLog}
  */
+export const logger = (namespace, opts) =>
+  new ProcLog(`veloze${namespace || ''}`, opts)
 
-let loggerF = loggerFn
+initProcLog()
 
 /**
  * overwrite logger function;
  * Must be called before any middleware or utility
- * @param {LoggerFn} loggerFn
+ * @param {(namespace: string, ...other: any) => LogBase} loggerFactory
  */
-/* c8 ignore next 3 */
-export const setLogger = (loggerFn) => {
-  loggerF = loggerFn
-}
+export const setLogger = (loggerFactory) => {
+  const logger = {}
+  const getLogger = (namespace) =>
+    logger[namespace] || (logger[namespace] = loggerFactory(namespace))
 
-/**
- * @param {string} [namespace]
- * @param {import('debug-level').LogOptions} [opts]
- * @returns {LogBase}
- */
-export const logger = (namespace, opts) =>
-  loggerF(`veloze${namespace || ''}`, opts)
+  // prevent multiple log-lines from adding more than one listener
+  process.removeAllListeners(EVENT_PROC_LOG)
+  // listen on event
+  process.on(EVENT_PROC_LOG, (level, namespace, fmt, args) => {
+    const log = getLogger(namespace)
+    log[level.toLowerCase()]?.(fmt, ...args)
+  })
+}

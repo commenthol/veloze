@@ -19,8 +19,9 @@ import {
  * @property {string|false} [typeJson='application/json'] parse json content
  * @property {string|false} [typeUrlEncoded='application/x-www-form-urlencoded'] parse urlEncoded content
  * @property {string|false} [typeRaw='application/octet-stream'] parse raw content
- * @property {Log} [log] custom logger
  */
+
+const log = logger(':bodyParser')
 
 /**
  * body parser for json, urlEncoded form or raw
@@ -40,8 +41,7 @@ export const bodyParser = (options) => {
     methods = ['POST', 'PUT', 'PATCH', 'SEARCH'],
     typeJson = MIME_JSON,
     typeUrlEncoded = MIME_FORM,
-    typeRaw = MIME_BIN,
-    log = logger(':bodyParser')
+    typeRaw = MIME_BIN
   } = options || {}
   const limit = bytes(_limit || '100kB') || 102400
   log.debug(`limit is set to ${limit} bytes`)
