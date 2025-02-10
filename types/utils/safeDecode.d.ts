@@ -1,1 +1,1 @@
-export function safeDecodeUriComponent(str: string, def?: string | undefined): string | undefined;
+export function safeDecodeUriComponent(str: string, def?: string): string | undefined;

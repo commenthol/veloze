@@ -1,4 +1,4 @@
-import LruCache from 'mnemonist/lru-cache.js'
+import { LRUCache } from 'mnemonist'
 import { safeDecodeUriComponent } from './utils/safeDecode.js'
 
 const METHODS = Symbol('methods')
@@ -28,11 +28,7 @@ export class FindRoute {
    * @param {number} [size=1000]
    */
   constructor(size = 1000) {
-    this._cache =
-      size > 0
-        ? // @ts-expect-error
-          new LruCache(size)
-        : null
+    this._cache = size > 0 ? new LRUCache(size) : null
   }
 
   /**

@@ -13,5 +13,5 @@
 export function headerParser(value?: string, options?: {
     fn?: ((value: string) => string | string[] | undefined) | undefined;
     weight?: boolean | undefined;
-} | undefined): HeaderParserResult[];
+}): HeaderParserResult[];
 export type HeaderParserResult = [value: string, weight?: number] | string;

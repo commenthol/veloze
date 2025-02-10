@@ -1,4 +1,4 @@
-export function bodyParser(options?: BodyParserOptions | undefined): HandlerCb;
+export function bodyParser(options?: BodyParserOptions): HandlerCb;
 export namespace bodyParser {
     /**
      * JSON parser
@@ -42,8 +42,4 @@ export type BodyParserOptions = {
      * parse raw content
      */
     typeRaw?: string | false | undefined;
-    /**
-     * custom logger
-     */
-    log?: import("#types.js").Log | undefined;
 };

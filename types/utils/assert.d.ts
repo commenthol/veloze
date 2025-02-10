@@ -3,4 +3,4 @@
  * @param {any} trueish
  * @param {string} [message]
  */
-export function assert(trueish: any, message?: string | undefined): void;
+export function assert(trueish: any, message?: string): void;

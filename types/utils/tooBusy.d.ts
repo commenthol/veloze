@@ -13,7 +13,7 @@ export namespace tooBusy {
      * set settings
      * @param {TooBusyOptions} [options]
      */
-    function set(options?: TooBusyOptions | undefined): void;
+    function set(options?: TooBusyOptions): void;
     /**
      * get settings
      * @returns {TooBusyOptions}

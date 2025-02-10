@@ -22,14 +22,14 @@ export class Router {
     /**
      * @param {RouterOptions} [options]
      */
-    constructor(options?: RouterOptions | undefined);
+    constructor(options?: RouterOptions);
     /**
      * request handler
      * @param {Request} req
      * @param {Response} res
      * @param {Function} [next]
      */
-    handle(req: Request, res: Response, next?: Function | undefined): void;
+    handle(req: Request, res: Response, next?: Function): void;
     /** @type {string} */
     mountPath: string;
     /**

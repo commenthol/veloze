@@ -19,7 +19,7 @@ export function json(req: Request, res: Response, next: Function): void;
  */
 export function jsonEtag(options?: {
     algorithm?: string | undefined;
-} | undefined): HandlerCb;
+}): HandlerCb;
 export { RES_ETAG };
 export function etagHash(chunk?: string, algorithm?: string): string;
 export type HandlerCb = typeof import("#types.js").HandlerCb;

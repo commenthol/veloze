@@ -13,6 +13,6 @@ export function compress(options?: {
     healTheBreach?: boolean | undefined;
     compressOptions?: import("../utils/compressStream.js").CompressOptions | undefined;
     filter?: ((req: Request, res: Response) => boolean) | undefined;
-} | undefined): import("#types.js").Handler;
+}): import("#types.js").Handler;
 export type Request = import("#types.js").Request;
 export type Response = import("#types.js").Response;

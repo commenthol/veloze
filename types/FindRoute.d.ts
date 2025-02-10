@@ -15,8 +15,8 @@ export class FindRoute {
     /**
      * @param {number} [size=1000]
      */
-    constructor(size?: number | undefined);
-    _cache: any;
+    constructor(size?: number);
+    _cache: LRUCache<any, any> | null;
     /**
      * add handler by method and pathname to routing tree
      * @param {Method} method
@@ -50,3 +50,4 @@ export class FindRoute {
     #private;
 }
 export type Method = import("#types.js").Method;
+import { LRUCache } from 'mnemonist';

@@ -13,7 +13,7 @@
  * @param {RequestIdOptions} [options]
  * @returns {HandlerCb}
  */
-export function requestId(options?: RequestIdOptions | undefined): HandlerCb;
+export function requestId(options?: RequestIdOptions): HandlerCb;
 export type HandlerCb = typeof import("#types.js").HandlerCb;
 export type RequestIdOptions = {
     /**

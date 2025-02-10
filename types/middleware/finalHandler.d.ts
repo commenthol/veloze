@@ -1,5 +1,4 @@
 export function finalHandler(options?: {
-    log?: import("#types.js").Log | undefined;
     htmlTemplate?: ((param0: {
         status: number;
         message: string;
@@ -7,10 +6,8 @@ export function finalHandler(options?: {
         reqId: string;
         req: Request;
     }) => string) | undefined;
-} | undefined): (err: HttpErrorL | Error, req: Request, res: Response, next?: Function) => void;
-export function finalLogger(options?: {
-    log?: import("#types.js").Log | undefined;
-} | undefined): (err: HttpErrorL | Error, req: Request, res: Response) => void;
+}): (err: HttpErrorL | Error, req: Request, res: Response, next?: Function) => void;
+export function finalLogger(): (err: HttpErrorL | Error, req: Request, res: Response) => void;
 export type Request = import("#types.js").Request;
 export type Response = import("#types.js").Response;
 export type HttpErrorL = import("#types.js").HttpError;

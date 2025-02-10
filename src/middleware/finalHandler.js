@@ -13,6 +13,8 @@ import { buildCsp } from './contentSec.js'
  * @typedef {import('#types.js').Log} Log
  */
 
+const log = logger(':final')
+
 /**
  * final handler
  *
@@ -21,14 +23,13 @@ import { buildCsp } from './contentSec.js'
  * logs the error together with the requests url and method;
  *
  * @param {object} [options]
- * @param {Log} [options.log] log function
  * @param {(param0: {status: number, message: string, info?: object, reqId: string, req: Request}) => string} [options.htmlTemplate] html template for the final error page
  * @returns {(err: HttpErrorL|Error, req: Request, res: Response, next?: Function) => void}
  */
 export const finalHandler = (options) => {
   const { htmlTemplate = finalHtml } = options || {}
 
-  const _finalLogger = finalLogger(options)
+  const _finalLogger = finalLogger()
 
   // eslint-disable-next-line no-unused-vars
   return function finalHandlerMw(err, req, res, next) {
@@ -71,13 +72,9 @@ export const finalHandler = (options) => {
 /**
  * Logs the error together with the requests url and method;
  * Don't use as a middleware. Instead call from a middleware.
- * @param {object} [options]
- * @param {Log} [options.log] log function
  * @returns {(err: HttpErrorL|Error, req: Request, res: Response) => void}
  */
-export const finalLogger = (options) => {
-  const { log = logger(':final') } = options || {}
-
+export const finalLogger = () => {
   return (err, req, _res) => {
     // @ts-expect-error
     const errResp = err?.status

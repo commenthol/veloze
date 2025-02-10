@@ -1,5 +1,5 @@
-export function presetHtml(options?: PresetOptions | undefined): Handler[];
-export function presetJson(options?: PresetOptions | undefined): Handler[];
+export function presetHtml(options?: PresetOptions): Handler[];
+export function presetJson(options?: PresetOptions): Handler[];
 export type Handler = import("#types.js").Handler;
 export type PresetOptions = {
     /**

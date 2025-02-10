@@ -22,7 +22,7 @@
  * @param { CacheControlDirectives } [options]
  * @returns {string} cache-control header value
  */
-export function buildCacheControl(options?: CacheControlDirectives | undefined): string;
+export function buildCacheControl(options?: CacheControlDirectives): string;
 /**
  * Set the cache-control header, regardless of request method
  *
@@ -30,7 +30,7 @@ export function buildCacheControl(options?: CacheControlDirectives | undefined):
  * @param {CacheControlDirectives} [options]
  * @returns {HandlerCb}
  */
-export function cacheControl(options?: CacheControlDirectives | undefined): HandlerCb;
+export function cacheControl(options?: CacheControlDirectives): HandlerCb;
 /**
  * @typedef {object} NoCacheMethods
  * @property {string[]} [noCacheMethods] List of uppercase request methods where no-cache rules must apply
@@ -46,7 +46,7 @@ export function cacheControl(options?: CacheControlDirectives | undefined): Hand
  * @param {CacheControlDirectivesByMethod} [options]
  * @returns {HandlerCb}
  */
-export function cacheControlByMethod(options?: CacheControlDirectivesByMethod | undefined): HandlerCb;
+export function cacheControlByMethod(options?: CacheControlDirectivesByMethod): HandlerCb;
 export type HandlerCb = typeof import("#types.js").HandlerCb;
 export type CacheControlDirectives = {
     /**

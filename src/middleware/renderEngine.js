@@ -27,7 +27,7 @@ import { HttpError } from '../HttpError.js'
  * @property {Map|null} [pathCache] cache implementation for storing pathnames (must implement Map interface); If `null` no cache is used. Defaults to `null` for development and `Map()` for production environments
  */
 
-let log
+const log = logger(':renderEngine')
 
 /**
  * Middleware to support render engines like ejs, hbs, ...;
@@ -93,8 +93,6 @@ export class View {
       pathCache = isProdEnv ? new Map() : null,
       locals = {}
     } = options || {}
-
-    log = log || logger(':renderEngine')
 
     const views = []
       // @ts-expect-error
