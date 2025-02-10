@@ -1,3 +1,17 @@
+# 1.1.0 (2025-02-10)
+
+### feat:
+
+- replace logger with ProcLog from debug-level (#27705eb)
+
+### docs:
+
+- update setLogger (#adaeec4)
+
+### chore:
+
+- bump dependencies (#6036d4a)
+
 # 1.0.0 (2024-11-16)
 
 ### fix:
