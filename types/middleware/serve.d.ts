@@ -15,7 +15,7 @@
  * @param {ServeOptions} [options]
  * @returns
  */
-export function serve(root: string | URL, options?: ServeOptions | undefined): (req: any, res: any, next: any) => Promise<void>;
+export function serve(root: string | URL, options?: ServeOptions): (req: any, res: any, next: any) => Promise<void>;
 export type ServeOptions = {
     /**
      * generates weak ETag

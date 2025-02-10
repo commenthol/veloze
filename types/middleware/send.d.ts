@@ -18,7 +18,7 @@ export function send(req: Request, res: Response, next: Function): void;
  */
 export function sendEtag(options?: {
     algorithm?: string | undefined;
-} | undefined): HandlerCb;
+}): HandlerCb;
 export type HandlerCb = typeof import("#types.js").HandlerCb;
 export type Response = import("#types.js").Response;
 export type Request = import("#types.js").Request;

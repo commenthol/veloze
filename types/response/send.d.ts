@@ -11,6 +11,6 @@
  * @param {number} [status]
  * @param {Record<string, string|number|boolean>|{}} [headers]
  */
-export function send(res: Response, body: any, status?: number | undefined, headers?: {} | Record<string, string | number | boolean> | undefined): void;
+export function send(res: Response, body: any, status?: number, headers?: Record<string, string | number | boolean> | {}): void;
 export type Response = import("#types.js").Response;
 export type Request = import("#types.js").Request;

@@ -29,7 +29,13 @@ export class Server extends Router {
      * @param {{(): void}} [listeningListener]
      * @returns {Http2Server}
      */
-    listen(port?: number | undefined, hostname?: string | number | (() => void) | undefined, backlog?: number | (() => void) | undefined, listeningListener?: (() => void) | undefined): Http2Server;
+    listen(port?: number, hostname?: string | number | {
+        (): void;
+    }, backlog?: number | {
+        (): void;
+    }, listeningListener?: {
+        (): void;
+    }): Http2Server;
     /**
      * @returns {string | AddressInfo | null}
      */

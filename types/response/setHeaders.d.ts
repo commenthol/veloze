@@ -17,5 +17,5 @@
  *  })
  * }
  */
-export function setHeaders(res: Response, headers?: {} | Record<string, string | number | boolean> | undefined): void;
+export function setHeaders(res: Response, headers?: Record<string, string | number | boolean> | {}): void;
 export type Response = import("#types.js").Response;

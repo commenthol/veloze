@@ -14,7 +14,7 @@
  * @param {TooBusyOptions & RetryAfterOption} [options]
  * @returns {HandlerCb}
  */
-export function tooBusy(options?: (import("#types.js").TooBusyOptions & RetryAfterOption) | undefined): HandlerCb;
+export function tooBusy(options?: TooBusyOptions & RetryAfterOption): HandlerCb;
 export type HandlerCb = typeof import("#types.js").HandlerCb;
 export type TooBusyOptions = import("#types.js").TooBusyOptions;
 export type RetryAfterOption = {

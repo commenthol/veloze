@@ -34,14 +34,14 @@
  * @param {CspMiddlewareOptions} [options]
  * @returns {HandlerCb}
  */
-export function contentSec(options?: CspMiddlewareOptions | undefined): HandlerCb;
+export function contentSec(options?: CspMiddlewareOptions): HandlerCb;
 /**
  * Middleware adding various security headers to json responses.
  * @see https://cheatsheetseries.owasp.org/cheatsheets/REST_Security_Cheat_Sheet.html#security-headers
  * @param {CspMiddlewareOptions} [options]
  * @returns {HandlerCb}
  */
-export function contentSecJson(options?: CspMiddlewareOptions | undefined): HandlerCb;
+export function contentSecJson(options?: CspMiddlewareOptions): HandlerCb;
 /**
  * Parse and log csp violation
  * @param {{log: Log}} options
@@ -51,7 +51,7 @@ export function cspReport(options: {
     log: Log;
 }): HandlerCb;
 export function buildHsts(options: HstsOptions | boolean | undefined): string | undefined;
-export function buildCsp(options?: {} | CspOptions | undefined): string;
+export function buildCsp(options?: CspOptions | {}): string;
 export type CspMiddlewareOptions = {
     /**
      * extensions where CSP is applied

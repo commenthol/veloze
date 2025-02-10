@@ -1,4 +1,4 @@
-export function bodyParser(options?: BodyParserOptions | undefined): HandlerCb;
+export function bodyParser(options?: BodyParserOptions): HandlerCb;
 export namespace bodyParser {
     /**
      * JSON parser

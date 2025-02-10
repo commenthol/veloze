@@ -11,7 +11,7 @@ export function compressStream(req: Request, res: Response, options?: {
     compressOptions?: CompressOptions | undefined;
     threshold?: number | undefined;
     filter?: ((req: Request, res: Response) => boolean) | undefined;
-} | undefined): import("node:stream").Transform | undefined;
+}): import("node:stream").Transform | undefined;
 export function filterCompressibleMimeType(req: Request, res: Response): boolean;
 export function isCompressibleMimeType(mimeType: string): boolean;
 export function isCompressibleMimeTypeHTB(mimeType: string): boolean;

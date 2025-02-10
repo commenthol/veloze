@@ -21,7 +21,7 @@ export function cookieParse(cookieStr?: string): Record<string, string> | {};
  * @param {CookieOpts} [options]
  * @returns {string}
  */
-export function cookieSerialize(name: string, value: any, options?: CookieOpts | undefined): string;
+export function cookieSerialize(name: string, value: any, options?: CookieOpts): string;
 export type CookieOpts = {
     /**
      * Domain name for the cookie.
