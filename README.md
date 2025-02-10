@@ -61,5 +61,5 @@ MIT licensed
 [npm-badge]: https://badge.fury.io/js/veloze.svg
 [npm]: https://www.npmjs.com/package/veloze
 [types-badge]: https://badgen.net/npm/types/veloze
-[actions-badge]: https://github.com/commenthol/veloze/workflows/CI/badge.svg?branch=main&event=push
-[actions]: https://github.com/commenthol/veloze/actions/workflows/ci.yml?query=branch%3Amain
+[actions-badge]: https://github.com/commenthol/veloze/actions/workflows/ci.yml/badge.svg
+[actions]: https://github.com/commenthol/veloze/actions/workflows/ci.yml
