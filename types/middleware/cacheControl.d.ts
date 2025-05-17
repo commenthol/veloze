@@ -41,7 +41,7 @@ export function cacheControl(options?: CacheControlDirectives): HandlerCb;
  * Set the cache-control header dependent of the request method
  *
  * All requests matching `noCacheMethods` will have
- * `cache-control: no-store, no-cache, max-age=0` being set
+ * `cache-control: no-store, no-cache` being set
  *
  * @param {CacheControlDirectivesByMethod} [options]
  * @returns {HandlerCb}

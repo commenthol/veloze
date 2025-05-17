@@ -11,10 +11,7 @@ describe('middleware/cacheControl', function () {
     it('shall set header with defaults', function () {
       const res = new Response()
       cacheControl()(req, res, next)
-      assert.equal(
-        res.getHeader('cache-control'),
-        'no-cache, no-store, max-age=0'
-      )
+      assert.equal(res.getHeader('cache-control'), 'no-store')
     })
 
     it('shall set no-cache, private', function () {
@@ -95,20 +92,14 @@ describe('middleware/cacheControl', function () {
       const req = new Request()
       const res = new Response()
       cacheControlByMethod()(req, res, next)
-      assert.equal(
-        res.getHeader('cache-control'),
-        'no-cache, no-store, max-age=0'
-      )
+      assert.equal(res.getHeader('cache-control'), 'no-store')
     })
 
     it('shall set default cache-control for POST', function () {
       const req = new Request('POST')
       const res = new Response()
       cacheControlByMethod()(req, res, next)
-      assert.equal(
-        res.getHeader('cache-control'),
-        'no-cache, no-store, max-age=0'
-      )
+      assert.equal(res.getHeader('cache-control'), 'no-store')
     })
 
     it('with options shall set  cache-control for GET  ', function () {
@@ -122,10 +113,7 @@ describe('middleware/cacheControl', function () {
       const req = new Request('POST')
       const res = new Response()
       cacheControlByMethod({ public: true, maxAge: '1h' })(req, res, next)
-      assert.equal(
-        res.getHeader('cache-control'),
-        'no-cache, no-store, max-age=0'
-      )
+      assert.equal(res.getHeader('cache-control'), 'no-store')
     })
 
     it('with options shall disable no-cache for POST but enable for TRACE', function () {
@@ -147,10 +135,7 @@ describe('middleware/cacheControl', function () {
         maxAge: '2h',
         noCacheMethods: ['TRACE']
       })(req, res, next)
-      assert.equal(
-        res.getHeader('cache-control'),
-        'no-cache, no-store, max-age=0'
-      )
+      assert.equal(res.getHeader('cache-control'), 'no-store')
     })
   })
 })

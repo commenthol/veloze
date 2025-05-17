@@ -8,7 +8,7 @@ Middleware which sets the 'cache-control' header.
 
 If set without options defaults to:
 
-'cache-control': 'no-cache, no-store, max-age=0'
+'cache-control': 'no-store'
 
 See https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
 

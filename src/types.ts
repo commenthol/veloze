@@ -104,25 +104,25 @@ export interface Response extends http.ServerResponse {
   writablePiped?: boolean
 }
 
-export function HandlerCb (
+export declare function HandlerCb (
   req: Request,
   res: Response,
   next: Function
 ): void
 
-export function HandlerAsync (
+export declare function HandlerAsync (
   req: Request,
   res: Response
 ): Promise<void>
 
-export function ErrorHandler (
+export declare function ErrorHandler (
   err: Error,
   req: Request,
   res: Response,
   next: Function
 ): void
 
-export function FinalHandler (
+export declare function FinalHandler (
   err: Error,
   req: Request,
   res: Response

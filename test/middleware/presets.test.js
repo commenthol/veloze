@@ -70,7 +70,7 @@ describe('middleware/presets', function () {
         .expect(
           shouldHaveSomeHeaders({
             // 'content-length': '333',
-            'cache-control': 'no-cache, no-store, max-age=0',
+            'cache-control': 'no-store',
             'content-security-policy':
               "default-src 'self'; font-src 'self' https: data:; img-src 'self' data:; object-src 'none'; script-src 'self'; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https:; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests",
             'content-type': 'text/html; charset=utf-8',
@@ -134,7 +134,7 @@ describe('middleware/presets', function () {
         .expect(
           shouldHaveSomeHeaders({
             // 'content-length': '110',
-            'cache-control': 'no-cache, no-store, max-age=0',
+            'cache-control': 'no-store',
             'content-security-policy':
               "default-src 'self'; frame-ancestors 'none'; upgrade-insecure-requests",
             'content-type': 'application/json; charset=utf-8',
