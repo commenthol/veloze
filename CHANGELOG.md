@@ -1,3 +1,13 @@
+# 1.2.1 (2025-07-23)
+
+### fix:
+
+- types: #types import not working (#8a765a3)
+
+### chore:
+
+- add node@24 to action (#ea65f50)
+
 # 1.2.0 (2025-07-23)
 
 ### feat:
