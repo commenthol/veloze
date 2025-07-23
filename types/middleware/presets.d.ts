@@ -1,6 +1,6 @@
 export function presetHtml(options?: PresetOptions): Handler[];
 export function presetJson(options?: PresetOptions): Handler[];
-export type Handler = import("#types.js").Handler;
+export type Handler = import("../types.js").Handler;
 export type PresetOptions = {
     /**
      * body-parser limit

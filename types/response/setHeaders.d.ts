@@ -1,5 +1,5 @@
 /**
- * @typedef {import('#types.js').Response} Response
+ * @typedef {import('../types.js').Response} Response
  */
 /**
  * Set (multiple) headers on response
@@ -18,4 +18,4 @@
  * }
  */
 export function setHeaders(res: Response, headers?: Record<string, string | number | boolean> | {}): void;
-export type Response = import("#types.js").Response;
+export type Response = import("../types.js").Response;

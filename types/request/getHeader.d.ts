@@ -1,5 +1,5 @@
 /**
- * @typedef {import('#types.js').Request} Request
+ * @typedef {import('../types.js').Request} Request
  */
 /**
  * get (first) request header
@@ -7,4 +7,4 @@
  * @param {string} header
  */
 export function getHeader(req: Request, header?: string): string | undefined;
-export type Request = import("#types.js").Request;
+export type Request = import("../types.js").Request;

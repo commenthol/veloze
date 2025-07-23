@@ -6,9 +6,9 @@
  * @returns {HandlerCb}
  */
 export function cors(options?: CorsOptions): HandlerCb;
-export type Request = import("#types.js").Request;
-export type Response = import("#types.js").Response;
-export type HandlerCb = typeof import("#types.js").HandlerCb;
+export type Request = import("../types.js").Request;
+export type Response = import("../types.js").Response;
+export type HandlerCb = typeof import("../types.js").HandlerCb;
 export type Origin = (string | RegExp | ((req: Request) => boolean));
 export type CorsOptions = {
     /**

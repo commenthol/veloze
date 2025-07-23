@@ -1,7 +1,7 @@
 /**
- * @typedef {import('#types.js').HandlerCb} HandlerCb
- * @typedef {import('#types.js').Response} Response
- * @typedef { import('#types.js').Request } Request
+ * @typedef {import('../types.js').HandlerCb} HandlerCb
+ * @typedef {import('../types.js').Response} Response
+ * @typedef { import('../types.js').Request } Request
  */
 /**
  * connect middleware which adds `res.json` to the response.
@@ -22,7 +22,7 @@ export function jsonEtag(options?: {
 }): HandlerCb;
 export { RES_ETAG };
 export function etagHash(chunk?: string, algorithm?: string): string;
-export type HandlerCb = typeof import("#types.js").HandlerCb;
-export type Response = import("#types.js").Response;
-export type Request = import("#types.js").Request;
+export type HandlerCb = typeof import("../types.js").HandlerCb;
+export type Response = import("../types.js").Response;
+export type Request = import("../types.js").Request;
 import { RES_ETAG } from '../constants.js';

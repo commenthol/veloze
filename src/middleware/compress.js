@@ -18,8 +18,8 @@ import {
 } from '../utils/index.js'
 import { CONTENT_LENGTH, CONTENT_TYPE } from '../constants.js'
 
-/** @typedef {import('#types.js').Request} Request */
-/** @typedef {import('#types.js').Response} Response */
+/** @typedef {import('../types.js').Request} Request */
+/** @typedef {import('../types.js').Response} Response */
 
 /**
  * @param {object} [options]
@@ -27,7 +27,7 @@ import { CONTENT_LENGTH, CONTENT_TYPE } from '../constants.js'
  * @param {boolean} [options.healTheBreach=true] prevents BREACH attack for html, js and json MIME-types
  * @param {import('../utils/compressStream.js').CompressOptions} [options.compressOptions]
  * @param {(req: Request, res: Response) => boolean} [options.filter]
- * @returns {import('#types.js').Handler}
+ * @returns {import('../types.js').Handler}
  */
 export function compress(options) {
   const {

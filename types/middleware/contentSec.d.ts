@@ -87,8 +87,8 @@ export type CspMiddlewareOptions = {
      */
     crossOriginResourcePolicy?: false | "same-origin" | "same-site" | "cross-origin" | undefined;
 };
-export type HandlerCb = typeof import("#types.js").HandlerCb;
-export type Log = import("#types.js").Log;
+export type HandlerCb = typeof import("../types.js").HandlerCb;
+export type Log = import("../types.js").Log;
 export type HstsOptions = {
     /**
      * max-age in seconds (defaults to 180days) or ms string

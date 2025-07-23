@@ -17,6 +17,6 @@ export function isCompressibleMimeType(mimeType: string): boolean;
 export function isCompressibleMimeTypeHTB(mimeType: string): boolean;
 export function healTheBreachRandomSpaces(): string;
 export type CompressOptions = zlib.BrotliOptions & zlib.ZlibOptions;
-export type Request = import("#types.js").Request;
-export type Response = import("#types.js").Response;
+export type Request = import("../types.js").Request;
+export type Response = import("../types.js").Response;
 import * as zlib from 'node:zlib';

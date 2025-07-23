@@ -7,7 +7,7 @@ import { requestId } from './requestId.js'
 import { send } from './send.js'
 
 /**
- * @typedef {import('#types.js').Handler} Handler
+ * @typedef {import('../types.js').Handler} Handler
  */
 /**
  * @typedef {object} PresetOptions

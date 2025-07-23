@@ -11,8 +11,8 @@ import {
 } from '../constants.js'
 
 /** @typedef {zlib.BrotliOptions & zlib.ZlibOptions} CompressOptions */
-/** @typedef {import('#types.js').Request} Request */
-/** @typedef {import('#types.js').Response} Response */
+/** @typedef {import('../types.js').Request} Request */
+/** @typedef {import('../types.js').Response} Response */
 
 const SUPPORTED = ['br', 'gzip', 'deflate']
 

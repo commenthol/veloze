@@ -54,6 +54,6 @@ export type ServeOptions = {
      */
     mimeTypes?: Record<string, string> | undefined;
 };
-export type Request = import("#types.js").Request;
-export type Response = import("#types.js").Response;
+export type Request = import("../types.js").Request;
+export type Response = import("../types.js").Response;
 export type CompressOptions = import("../utils/compressStream.js").CompressOptions;

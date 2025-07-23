@@ -1,7 +1,7 @@
 import { getHeader } from './getHeader.js'
 import { oneOf, stringFormatT } from '@veloze/validate'
 
-/** @typedef {import('#types.js').Request} Request */
+/** @typedef {import('../types.js').Request} Request */
 
 const X_FORWARDED_FOR = 'x-forwarded-for'
 

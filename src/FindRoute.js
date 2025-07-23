@@ -7,7 +7,7 @@ const PARAM_PART = Symbol('paramPart')
 const WILDCARD = Symbol('*')
 
 /**
- * @typedef {import('#types.js').Method} Method
+ * @typedef {import('./types.js').Method} Method
  */
 
 /**

@@ -2,9 +2,9 @@ import { isAsyncFunction } from 'node:util/types'
 import { assert } from './utils/assert.js'
 
 /**
- * @typedef {import('#types.js').Request} Request
- * @typedef {import('#types.js').Response} Response
- * @typedef {import('#types.js').Handler} Handler
+ * @typedef {import('./types.js').Request} Request
+ * @typedef {import('./types.js').Response} Response
+ * @typedef {import('./types.js').Handler} Handler
  */
 /**
  * Connects middleware handlers

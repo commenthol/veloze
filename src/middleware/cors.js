@@ -2,9 +2,9 @@ import { vary } from '../response/index.js'
 import { isProdEnv } from '../utils/index.js'
 
 /**
- * @typedef { import('#types.js').Request } Request
- * @typedef { import('#types.js').Response } Response
- * @typedef { import('#types.js').HandlerCb } HandlerCb
+ * @typedef { import('../types.js').Request } Request
+ * @typedef { import('../types.js').Response } Response
+ * @typedef { import('../types.js').HandlerCb } HandlerCb
  *
  * @typedef {(string|RegExp|((req: Request) => boolean))} Origin
  *

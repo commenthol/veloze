@@ -1,5 +1,5 @@
 /**
- * @typedef {import('#types.js').HandlerCb} HandlerCb
+ * @typedef {import('../types.js').HandlerCb} HandlerCb
  */
 /**
  * A connect middleware to redirect from http to https
@@ -14,4 +14,4 @@ export function redirect2Https(options: {
     status?: number | undefined;
     allowedHosts?: string[] | undefined;
 }): HandlerCb;
-export type HandlerCb = typeof import("#types.js").HandlerCb;
+export type HandlerCb = typeof import("../types.js").HandlerCb;

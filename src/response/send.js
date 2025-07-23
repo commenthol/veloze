@@ -9,8 +9,8 @@ import {
 import { setHeaders } from './setHeaders.js'
 
 /**
- * @typedef {import('#types.js').Response} Response
- * @typedef {import('#types.js').Request } Request
+ * @typedef {import('../types.js').Response} Response
+ * @typedef {import('../types.js').Request } Request
  */
 
 /**

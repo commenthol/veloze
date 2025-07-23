@@ -5,9 +5,9 @@ import { RES_ETAG } from '../constants.js'
 export { RES_ETAG }
 
 /**
- * @typedef {import('#types.js').HandlerCb} HandlerCb
- * @typedef {import('#types.js').Response} Response
- * @typedef { import('#types.js').Request } Request
+ * @typedef {import('../types.js').HandlerCb} HandlerCb
+ * @typedef {import('../types.js').Response} Response
+ * @typedef { import('../types.js').Request } Request
  */
 
 /**

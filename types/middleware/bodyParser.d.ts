@@ -22,8 +22,8 @@ export namespace bodyParser {
      */
     function raw(options?: BodyParserOptions): HandlerCb;
 }
-export type HandlerCb = typeof import("#types.js").HandlerCb;
-export type Log = import("#types.js").Log;
+export type HandlerCb = typeof import("../types.js").HandlerCb;
+export type Log = import("../types.js").Log;
 export type BodyParserOptions = {
     limit?: string | number | undefined;
     /**

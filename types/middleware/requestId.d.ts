@@ -1,5 +1,5 @@
 /**
- * @typedef {import('#types.js').HandlerCb} HandlerCb
+ * @typedef {import('../types.js').HandlerCb} HandlerCb
  */
 /**
  * @typedef {object} RequestIdOptions
@@ -14,7 +14,7 @@
  * @returns {HandlerCb}
  */
 export function requestId(options?: RequestIdOptions): HandlerCb;
-export type HandlerCb = typeof import("#types.js").HandlerCb;
+export type HandlerCb = typeof import("../types.js").HandlerCb;
 export type RequestIdOptions = {
     /**
      * forces setting the requestId on the request

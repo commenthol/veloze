@@ -1,11 +1,11 @@
 /**
- * @typedef {import('#types.js').Method} Method
- * @typedef {import('#types.js').Handler} Handler
- * @typedef {import('#types.js').HandlerCb} HandlerCb
- * @typedef {import('#types.js').FinalHandler} FinalHandler
- * @typedef {import('#types.js').Request} Request
- * @typedef {import('#types.js').Response} Response
- * @typedef {import('#types.js').Log} Logger
+ * @typedef {import('./types.js').Method} Method
+ * @typedef {import('./types.js').Handler} Handler
+ * @typedef {import('./types.js').HandlerCb} HandlerCb
+ * @typedef {import('./types.js').FinalHandler} FinalHandler
+ * @typedef {import('./types.js').Request} Request
+ * @typedef {import('./types.js').Response} Response
+ * @typedef {import('./types.js').Log} Logger
  * @typedef {import('#connect.js').connect} Connect
  */
 /**
@@ -121,17 +121,17 @@ export class Router {
     trace(path: string, ...handlers: (Handler | Handler[] | undefined)[]): void;
     #private;
 }
-export type Method = import("#types.js").Method;
-export type Handler = import("#types.js").Handler;
-export type HandlerCb = typeof import("#types.js").HandlerCb;
-export type FinalHandler = typeof import("#types.js").FinalHandler;
-export type Request = import("#types.js").Request;
-export type Response = import("#types.js").Response;
-export type Logger = import("#types.js").Log;
+export type Method = import("./types.js").Method;
+export type Handler = import("./types.js").Handler;
+export type HandlerCb = typeof import("./types.js").HandlerCb;
+export type FinalHandler = typeof import("./types.js").FinalHandler;
+export type Request = import("./types.js").Request;
+export type Response = import("./types.js").Response;
+export type Logger = import("./types.js").Log;
 export type Connect = (...handlers: (import("./connect.js").Handler | import("./connect.js").Handler[] | undefined)[]) => (req: import("./connect.js").Request, res: import("./connect.js").Response, done: Function) => void;
 export type RouterOptions = {
     connect?: ((...handlers: (import("./connect.js").Handler | import("./connect.js").Handler[] | undefined)[]) => (req: import("./connect.js").Request, res: import("./connect.js").Response, done: Function) => void) | undefined;
-    finalHandler?: typeof import("#types.js").FinalHandler | undefined;
+    finalHandler?: typeof import("./types.js").FinalHandler | undefined;
     findRoute?: FindRoute | undefined;
     cacheSize?: number | undefined;
 };

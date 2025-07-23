@@ -3,7 +3,7 @@ import { X_REQUEST_ID } from '../constants.js'
 import { getHeader } from '../request/getHeader.js'
 
 /**
- * @typedef {import('#types.js').HandlerCb} HandlerCb
+ * @typedef {import('../types.js').HandlerCb} HandlerCb
  */
 /**
  * @typedef {object} RequestIdOptions

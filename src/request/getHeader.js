@@ -1,5 +1,5 @@
 /**
- * @typedef {import('#types.js').Request} Request
+ * @typedef {import('../types.js').Request} Request
  */
 
 /**

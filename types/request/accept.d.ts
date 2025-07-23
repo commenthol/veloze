@@ -19,5 +19,5 @@ export const acceptEncoding: (req: Request, weight?: boolean) => HeaderParserRes
  * @returns {HeaderParserResult[]} list of languages
  */
 export const acceptLanguage: (req: Request, weight?: boolean) => HeaderParserResult[];
-export type Request = import("#types.js").Request;
-export type HeaderParserResult = import("#types.js").HeaderParserResult;
+export type Request = import("../types.js").Request;
+export type HeaderParserResult = import("../types.js").HeaderParserResult;

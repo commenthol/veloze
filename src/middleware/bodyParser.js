@@ -10,8 +10,8 @@ import {
 } from '../constants.js'
 
 /**
- * @typedef {import('#types.js').HandlerCb} HandlerCb
- * @typedef {import('#types.js').Log} Log
+ * @typedef {import('../types.js').HandlerCb} HandlerCb
+ * @typedef {import('../types.js').Log} Log
  *
  * @typedef {object} BodyParserOptions
  * @property {string|number} [limit='100kB']

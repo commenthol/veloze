@@ -1,7 +1,7 @@
 import { ms } from '../utils/ms.js'
 
 /**
- * @typedef {import('#types.js').HandlerCb} HandlerCb
+ * @typedef {import('../types.js').HandlerCb} HandlerCb
  *
  * @typedef {object} CacheControlDirectives
  * @property {number|string} [maxAge] response remains fresh until N seconds

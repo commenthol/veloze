@@ -7,13 +7,13 @@ import { REQ_METHOD_HEAD } from './constants.js'
 import { setPath } from './request/setPath.js'
 
 /**
- * @typedef {import('#types.js').Method} Method
- * @typedef {import('#types.js').Handler} Handler
- * @typedef {import('#types.js').HandlerCb} HandlerCb
- * @typedef {import('#types.js').FinalHandler} FinalHandler
- * @typedef {import('#types.js').Request} Request
- * @typedef {import('#types.js').Response} Response
- * @typedef {import('#types.js').Log} Logger
+ * @typedef {import('./types.js').Method} Method
+ * @typedef {import('./types.js').Handler} Handler
+ * @typedef {import('./types.js').HandlerCb} HandlerCb
+ * @typedef {import('./types.js').FinalHandler} FinalHandler
+ * @typedef {import('./types.js').Request} Request
+ * @typedef {import('./types.js').Response} Response
+ * @typedef {import('./types.js').Log} Logger
  * @typedef {import('#connect.js').connect} Connect
  */
 /**

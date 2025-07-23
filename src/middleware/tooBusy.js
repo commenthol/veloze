@@ -2,8 +2,8 @@ import { tooBusy as tooBusyCheck, ms } from '../utils/index.js'
 import { HttpError } from '../HttpError.js'
 
 /**
- * @typedef {import('#types.js').HandlerCb} HandlerCb
- * @typedef {import('#types.js').TooBusyOptions} TooBusyOptions
+ * @typedef {import('../types.js').HandlerCb} HandlerCb
+ * @typedef {import('../types.js').TooBusyOptions} TooBusyOptions
  *
  * @typedef {object} RetryAfterOption
  * @property {number|string} [retryAfter] if server is busy set retry-after header to `retryAfter seconds`. If number, value is seconds.

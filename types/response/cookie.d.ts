@@ -1,5 +1,5 @@
 /**
- * @typedef { import('#types.js').Response } Response
+ * @typedef { import('../types.js').Response } Response
  * @typedef { import('#utils/cookie.js').CookieOpts } CookieOpts
  */
 /**
@@ -19,5 +19,5 @@ export function setCookie(res: Response, name: string, value: string | number | 
  * @returns {Response}
  */
 export function clearCookie(res: Response, name: string, opts?: CookieOpts): Response;
-export type Response = import("#types.js").Response;
+export type Response = import("../types.js").Response;
 export type CookieOpts = import("#utils/cookie.js").CookieOpts;

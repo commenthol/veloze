@@ -1,6 +1,6 @@
 /**
- * @typedef { import('#types.js').Request } Request
- * @typedef { import('#types.js').Response } Response
+ * @typedef { import('../types.js').Request } Request
+ * @typedef { import('../types.js').Response } Response
  */
 /**
  * connect middleware which adds `req.query` as object to Request
@@ -10,5 +10,5 @@
  * @param {Function} next
  */
 export function queryParser(req: Request, res: Response, next: Function): void;
-export type Request = import("#types.js").Request;
-export type Response = import("#types.js").Response;
+export type Request = import("../types.js").Request;
+export type Response = import("../types.js").Response;

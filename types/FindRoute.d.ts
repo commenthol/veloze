@@ -1,5 +1,5 @@
 /**
- * @typedef {import('#types.js').Method} Method
+ * @typedef {import('./types.js').Method} Method
  */
 /**
  * Radix Tree Router
@@ -49,5 +49,5 @@ export class FindRoute {
     } | undefined;
     #private;
 }
-export type Method = import("#types.js").Method;
+export type Method = import("./types.js").Method;
 import { LRUCache } from 'mnemonist';
