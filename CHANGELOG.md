@@ -1,3 +1,21 @@
+# 1.2.0 (2025-07-23)
+
+### feat:
+
+- allow direct mount of Router (#35ae49f)
+
+### fix:
+
+- cache-control: use no-store as default (#4ecb37b)
+
+### docs:
+
+- fix status badge (#069cfa3)
+
+### chore:
+
+- bump dependencies (#e052b07)
+
 # 1.1.0 (2025-02-10)
 
 ### feat:
