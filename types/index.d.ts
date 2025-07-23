@@ -10,6 +10,7 @@ export * as response from "./response/index.js";
 export type CookieOpts = import("#types.js").CookieOpts;
 export type TooBusyOptions = import("#types.js").TooBusyOptions;
 export type HeaderParserResult = import("#types.js").HeaderParserResult;
+export type RouterOptions = import("#types.js").RouterOptions;
 export type BodyParserOptions = import("#types.js").BodyParserOptions;
 export type CacheControlDirectives = import("#types.js").CacheControlDirectives;
 export type CspMiddlewareOptions = import("#types.js").CspMiddlewareOptions;

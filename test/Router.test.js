@@ -183,6 +183,7 @@ describe('Router', function () {
     before(function () {
       const handler1 = handleName('#1st')
       const handler2 = handleName('#2nd')
+      const handler3 = handleName('#3rd')
 
       router = new Router()
       router.preHook(handleResBodyInit, send)
@@ -196,9 +197,15 @@ describe('Router', function () {
       router2.get('/', handler2)
       router2.get('/*', handler2)
 
+      const router3 = new Router()
+      router3.mountPath = '/three'
+      router3.get('/', handler3)
+
       // mount router with `use`
       router.use('/one', router2.handle, handleName('#mnt1'))
       router.use('/two', router2.handle, handleName('#mnt2'))
+      // mount router with its routPath
+      router.use(router3, handleName('#mnt3'))
       // router.print()
     })
 
@@ -232,6 +239,16 @@ describe('Router', function () {
       return supertest(router.handle)
         .get('/two')
         .expect(200, ['#2nd GET /', '#mnt2 GET /'])
+    })
+
+    it('/three is from direct mounted router', function () {
+      return supertest(router.handle)
+        .get('/three')
+        .expect(200, ['#3rd GET /', '#mnt3 GET /'])
+    })
+
+    it('/three/any gives a 404', function () {
+      return supertest(router.handle).get('/three/any').expect(404)
     })
 
     it('PUT /one/any gives a 404', function () {

@@ -70,10 +70,10 @@ export class Router {
      *
      * `app.use('/path', handler)` mounts `handler` on `/path/*` for ALL methods
      *
-     * @param {string|string[]|Handler} path
+     * @param {string|string[]|Handler|Router} path
      * @param  {...(Handler|Handler[]|undefined)} handlers
      */
-    use(path: string | string[] | Handler, ...handlers: (Handler | Handler[] | undefined)[]): this;
+    use(path: string | string[] | Handler | Router, ...handlers: (Handler | Handler[] | undefined)[]): this;
     /**
      * @param {string} path
      * @param {...(Handler|Handler[]|undefined)} handlers

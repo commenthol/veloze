@@ -90,7 +90,10 @@ router.get("/", (req, res) => {
 const app = new Router();
 app.get("/", (req, res) => res.end("home"));
 // mount the router handle on path `/route`
+// **either** use
 app.use(router.mountPath, router.handle);
+// **or** mount directly with 
+app.use(router)
 
 // apply app.handle to serve requests
 http.createServer(app.handle).listen(3000);

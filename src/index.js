@@ -2,6 +2,7 @@
  * @typedef {import('#types.js').CookieOpts} CookieOpts
  * @typedef {import('#types.js').TooBusyOptions} TooBusyOptions
  * @typedef {import('#types.js').HeaderParserResult} HeaderParserResult
+ * @typedef {import('#types.js').RouterOptions} RouterOptions
  * @typedef {import('#types.js').BodyParserOptions} BodyParserOptions
  * @typedef {import('#types.js').CacheControlDirectives} CacheControlDirectives
  * @typedef {import('#types.js').CspMiddlewareOptions} CspMiddlewareOptions

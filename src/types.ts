@@ -4,6 +4,7 @@ import { CookieOpts } from '#utils/cookie.js'
 export { CookieOpts }
 export { TooBusyOptions } from '#utils/tooBusy.js'
 export { HeaderParserResult } from '#utils/headerParser.js'
+export { RouterOptions } from '#Router.js'
 
 export { BodyParserOptions } from '#middleware/bodyParser.js'
 export { CacheControlDirectives } from '#middleware/cacheControl.js'

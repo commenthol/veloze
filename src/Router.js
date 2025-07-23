@@ -121,12 +121,18 @@ export class Router {
    *
    * `app.use('/path', handler)` mounts `handler` on `/path/*` for ALL methods
    *
-   * @param {string|string[]|Handler} path
+   * @param {string|string[]|Handler|Router} path
    * @param  {...(Handler|Handler[]|undefined)} handlers
    */
   use(path, ...handlers) {
+    // mount a router under it's mountPath
+    if (path instanceof Router) {
+      const router = path
+      path = router.mountPath
+      handlers.unshift(router.handle)
+    }
     // apply as pre-hook handler
-    if (
+    else if (
       typeof path === 'function' ||
       (Array.isArray(path) && typeof path[0] === 'function')
     ) {
