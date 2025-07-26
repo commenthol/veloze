@@ -22,10 +22,9 @@ export function tooBusy(options) {
   tooBusyCheck.set(options)
   const retryAfter = ms(options?.retryAfter || '15s', true)
 
-  return function tooBusyMw(req, res, next) {
+  return function tooBusyMw(_req, res, next) {
     if (tooBusyCheck()) {
-      // @ts-expect-error
-      res.setHeader('retry-after', retryAfter)
+      res.setHeader('retry-after', '' + retryAfter)
       next(new HttpError(429, 'Server Too Busy'))
       return
     }

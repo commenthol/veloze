@@ -191,7 +191,7 @@ export class Router {
     }
 
     /** @type {{handler: HandlerCb, params: object, path: string}|undefined} */
-    // @ts-expect-error
+    // @ts-ignore
     const found = this.#tree.find(req)
     if (!found?.handler) {
       final(new HttpError(404))

@@ -58,7 +58,7 @@ export const bodyParser = (options) => {
     const contentLength =
       req.headers[CONTENT_LENGTH] === undefined
         ? NaN
-        : parseInt(req.headers[CONTENT_LENGTH], 10)
+        : parseInt('' + req.headers[CONTENT_LENGTH], 10)
 
     if (contentLength > limit) {
       next(new HttpError(413, `upload limit of ${limit} bytes`))
@@ -91,7 +91,7 @@ export const bodyParser = (options) => {
         return
       }
 
-      const [contentType] = (req.headers[CONTENT_TYPE] || '').split(';')
+      const [contentType] = ('' + req.headers[CONTENT_TYPE]).split(';')
 
       if (typeJson && contentType === typeJson) {
         try {
