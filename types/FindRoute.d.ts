@@ -1,6 +1,5 @@
-/**
- * @typedef {import('./types.js').Method} Method
- */
+/** @typedef {import('./types.js').Method} Method */
+/** @typedef {import('./types.js').Handler} Handler */
 /**
  * Radix Tree Router
  *
@@ -16,7 +15,10 @@ export class FindRoute {
      * @param {number} [size=1000]
      */
     constructor(size?: number);
+    _tree: {};
+    _paths: {};
     _cache: LRUCache<any, any> | null;
+    get paths(): {};
     /**
      * add handler by method and pathname to routing tree
      * @param {Method} method
@@ -24,6 +26,13 @@ export class FindRoute {
      * @param {Function} handler
      */
     add(method: Method, pathname: string | string[], handler: Function): void;
+    /**
+     * mount other router tree
+     * @param {string} pathname
+     * @param {FindRoute} tree
+     * @param {(handler: Handler) => Handler} connected
+     */
+    mount(pathname: string, tree: FindRoute, connected: (handler: Handler) => Handler): void;
     /**
      * print routing tree on console
      */
@@ -47,7 +56,7 @@ export class FindRoute {
         params: object;
         path: string;
     } | undefined;
-    #private;
 }
 export type Method = import("./types.js").Method;
+export type Handler = import("./types.js").Handler;
 import { LRUCache } from 'mnemonist';

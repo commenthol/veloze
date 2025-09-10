@@ -295,3 +295,57 @@ describe('Router', function () {
     })
   })
 })
+
+describe('mount routers on /', function () {
+  let app
+  before(function () {
+    app = new Router()
+    app.preHook(handleResBodyInit, send)
+    app.postHook(handleSend)
+    const router1 = new Router()
+    router1.get('/', handleName('#0.0'))
+    router1.get('/one', handleName('#1.0'))
+    router1.get('/one/:id', handleName('#1.1'))
+    router1.put('/one/:id', handleName('#1.2'))
+    router1.post('/one', handleName('#1.3'))
+    app.use('/', router1)
+    const router2 = new Router()
+    router2.get('/two', handleName('#2.0'))
+    router2.get('/two/:id', handleName('#2.1'))
+    router2.put('/two/:id', handleName('#2.2'))
+    router2.post('/two', handleName('#2.3'))
+    app.use('/', router2)
+    // router2.print()
+    app.print()
+  })
+
+  it('GET /', function () {
+    return supertest(app.handle, ST_OPTS).get('/').expect(['#0.0 GET /'])
+  })
+
+  it('GET /one', function () {
+    return supertest(app.handle, ST_OPTS).get('/one').expect(['#1.0 GET /one'])
+  })
+
+  it('POST /two', function () {
+    return supertest(app.handle, ST_OPTS)
+      .post('/two')
+      .expect(['#2.3 POST /two'])
+  })
+
+  it('GET /two/foo', function () {
+    return supertest(app.handle, ST_OPTS)
+      .get('/two/foo')
+      .expect(['#2.1 GET /two/foo'])
+  })
+
+  it('PUT /two/foo', function () {
+    return supertest(app.handle, ST_OPTS)
+      .put('/two/foo')
+      .expect(['#2.2 PUT /two/foo'])
+  })
+
+  it('POST / should "fail"', function () {
+    return supertest(app.handle, ST_OPTS).post('/').expect({})
+  })
+})

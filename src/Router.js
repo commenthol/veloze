@@ -50,6 +50,13 @@ export class Router {
   }
 
   /**
+   * @returns {FindRoute}
+   */
+  get tree() {
+    return this.#tree
+  }
+
+  /**
    * print the routing-tree from FindRoute
    */
   /* c8 ignore next 3 */
@@ -122,14 +129,16 @@ export class Router {
    * `app.use('/path', handler)` mounts `handler` on `/path/*` for ALL methods
    *
    * @param {string|string[]|Handler|Router} path
-   * @param  {...(Handler|Handler[]|undefined)} handlers
+   * @param {Handler|Handler[]|Router|undefined} routerOrHandler
+   * @param {...(Handler|Handler[]|undefined)} handlers
    */
-  use(path, ...handlers) {
+  use(path, routerOrHandler, ...handlers) {
     // mount a router under it's mountPath
     if (path instanceof Router) {
-      const router = path
-      path = router.mountPath
-      handlers.unshift(router.handle)
+      // @ts-expect-error
+      handlers = [routerOrHandler, ...handlers]
+      routerOrHandler = path
+      path = routerOrHandler.mountPath || '/'
     }
     // apply as pre-hook handler
     else if (
@@ -137,7 +146,7 @@ export class Router {
       (Array.isArray(path) && typeof path[0] === 'function')
     ) {
       // @ts-expect-error
-      return this.preHook(path, ...handlers)
+      return this.preHook(path, routerOrHandler, ...handlers)
     }
 
     // @ts-expect-error
@@ -145,21 +154,34 @@ export class Router {
 
     for (const p of paths) {
       const path = p.replace(/([/]{1,5})$/, '')
-
       const { length } = path
-      function rewrite(req, res, next) {
+
+      function rewrite(req, _res, next) {
         req.url = req.url.slice(length) || '/'
         next()
       }
 
       const pathnames = [path || '/', `${path}/*`]
-      const connected = this.#connect(
-        ...this.#preHooks,
-        rewrite,
-        ...handlers,
-        ...this.#postHooks
-      )
-      this.#tree.add('ALL', pathnames, connected)
+      if (routerOrHandler instanceof Router) {
+        this.#tree.mount(path || '/', routerOrHandler.tree, (handler) =>
+          this.#connect(
+            ...this.#preHooks,
+            rewrite,
+            handler,
+            ...handlers,
+            ...this.#postHooks
+          )
+        )
+      } else {
+        const connected = this.#connect(
+          ...this.#preHooks,
+          rewrite,
+          routerOrHandler,
+          ...handlers,
+          ...this.#postHooks
+        )
+        this.#tree.add('ALL', pathnames, connected)
+      }
     }
 
     return this

@@ -33,6 +33,10 @@ export class Router {
     /** @type {string} */
     mountPath: string;
     /**
+     * @returns {FindRoute}
+     */
+    get tree(): FindRoute;
+    /**
      * print the routing-tree from FindRoute
      */
     print(): void;
@@ -71,9 +75,10 @@ export class Router {
      * `app.use('/path', handler)` mounts `handler` on `/path/*` for ALL methods
      *
      * @param {string|string[]|Handler|Router} path
-     * @param  {...(Handler|Handler[]|undefined)} handlers
+     * @param {Handler|Handler[]|Router|undefined} routerOrHandler
+     * @param {...(Handler|Handler[]|undefined)} handlers
      */
-    use(path: string | string[] | Handler | Router, ...handlers: (Handler | Handler[] | undefined)[]): this;
+    use(path: string | string[] | Handler | Router, routerOrHandler: Handler | Handler[] | Router | undefined, ...handlers: (Handler | Handler[] | undefined)[]): this;
     /**
      * @param {string} path
      * @param {...(Handler|Handler[]|undefined)} handlers
