@@ -1,3 +1,9 @@
+# 1.2.3 (2025-09-11)
+
+### fix:
+
+- mount routers on same base path (#fbfa190)
+
 # 1.2.2 (2025-07-26)
 
 ### fix:
