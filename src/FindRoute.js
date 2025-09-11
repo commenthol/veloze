@@ -6,9 +6,8 @@ const PARAM = Symbol('param')
 const PARAM_PART = Symbol('paramPart')
 const WILDCARD = Symbol('*')
 
-/**
- * @typedef {import('./types.js').Method} Method
- */
+/** @typedef {import('./types.js').Method} Method */
+/** @typedef {import('./types.js').Handler} Handler */
 
 /**
  * Radix Tree Router
@@ -21,7 +20,8 @@ const WILDCARD = Symbol('*')
  * - parameters `/users/:user`, e.g. `/users/andi` resolves to `params = { user: 'andi' }`
  */
 export class FindRoute {
-  #tree = {}
+  _tree = {}
+  _paths = {}
   _cache
 
   /**
@@ -29,6 +29,10 @@ export class FindRoute {
    */
   constructor(size = 1000) {
     this._cache = size > 0 ? new LRUCache(size) : null
+  }
+
+  get paths() {
+    return this._paths
   }
 
   /**
@@ -42,8 +46,14 @@ export class FindRoute {
       pathname.forEach((path) => this.add(method, path, handler))
       return
     }
+    this._paths[pathname] = this._paths[pathname] || []
+    this._paths[pathname].push({
+      method,
+      handler
+    })
+
     const parts = pathname.replace(/[/]{1,5}$/, '/').split('/')
-    let tmp = this.#tree
+    let tmp = this._tree
     for (const part of parts) {
       if (part === '*') {
         tmp = tmp[WILDCARD] = tmp[WILDCARD] || {}
@@ -59,10 +69,30 @@ export class FindRoute {
   }
 
   /**
+   * mount other router tree
+   * @param {string} pathname
+   * @param {FindRoute} tree
+   * @param {(handler: Handler) => Handler} connected
+   */
+  mount(pathname, tree, connected) {
+    if (pathname === '/') {
+      pathname = ''
+    }
+    for (let [path, arr] of Object.entries(tree.paths)) {
+      for (let { method, handler } of arr) {
+        if (path === '/' && pathname) {
+          path = ''
+        }
+        this.add(method, pathname + path, connected(handler))
+      }
+    }
+  }
+
+  /**
    * print routing tree on console
    */
   print() {
-    console.dir(this.#tree, { depth: null })
+    console.dir(this._tree, { depth: null })
   }
 
   /**
@@ -85,7 +115,7 @@ export class FindRoute {
     const parts = (path || '/').split('/')
     const params = {}
     let wildcard
-    let tmp = this.#tree
+    let tmp = this._tree
     for (let i = 0; i < parts.length; i += 1) {
       const part = parts[i]
       let next = tmp?.[part]

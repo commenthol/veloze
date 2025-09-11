@@ -79,6 +79,6 @@ export const connect = (...handlers) => {
   }
 }
 
-function breakSync(req, res, next) {
+function breakSync(_req, _res, next) {
   setImmediate(next)
 }
