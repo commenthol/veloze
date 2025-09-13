@@ -1,3 +1,9 @@
+# 1.3.0 (2025-09-13)
+
+### feat:
+
+- consider prehook and posthook handlers when mounting router (#5be5f96)
+
 # 1.2.3 (2025-09-11)
 
 ### fix:
