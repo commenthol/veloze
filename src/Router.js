@@ -129,24 +129,35 @@ export class Router {
    * `app.use('/path', handler)` mounts `handler` on `/path/*` for ALL methods
    *
    * @param {string|string[]|Handler|Router} path
-   * @param {Handler|Handler[]|Router|undefined} routerOrHandler
-   * @param {...(Handler|Handler[]|undefined)} handlers
+   * @param {...(Handler|Handler[]|Router|undefined)} handlers
    */
-  use(path, routerOrHandler, ...handlers) {
+  use(path, ...handlers) {
+    let router
     // mount a router under it's mountPath
     if (path instanceof Router) {
-      // @ts-expect-error
-      handlers = [routerOrHandler, ...handlers]
-      routerOrHandler = path
-      path = routerOrHandler.mountPath || '/'
+      router = path
+      path = router.mountPath || '/'
     }
     // apply as pre-hook handler
     else if (
       typeof path === 'function' ||
       (Array.isArray(path) && typeof path[0] === 'function')
     ) {
-      // @ts-expect-error
-      return this.preHook(path, routerOrHandler, ...handlers)
+      // @ts-expect-error - no check for a router is performed here!
+      return this.preHook(path, ...handlers)
+    }
+
+    let preHooks = []
+    let postHooks = handlers
+    let i = 0
+    for (const h of handlers) {
+      if (h instanceof Router) {
+        if (router) throw new Error('only one Router allowed in use()')
+        router = h
+        preHooks = handlers.slice(0, i)
+        postHooks = handlers.slice(i + 1)
+      }
+      i++
     }
 
     // @ts-expect-error
@@ -156,19 +167,22 @@ export class Router {
       const path = p.replace(/([/]{1,5})$/, '')
       const { length } = path
 
+      // rewrite req.url for the mounted router/ handlers
       function rewrite(req, _res, next) {
         req.url = req.url.slice(length) || '/'
         next()
       }
 
       const pathnames = [path || '/', `${path}/*`]
-      if (routerOrHandler instanceof Router) {
-        this.#tree.mount(path || '/', routerOrHandler.tree, (handler) =>
+      if (router) {
+        this.#tree.mount(pathnames[0], router.tree, (routerHandler) =>
           this.#connect(
             ...this.#preHooks,
             rewrite,
-            handler,
-            ...handlers,
+            ...preHooks,
+            routerHandler,
+            // @ts-expect-error - handlers are checked for Router above
+            ...postHooks,
             ...this.#postHooks
           )
         )
@@ -176,7 +190,7 @@ export class Router {
         const connected = this.#connect(
           ...this.#preHooks,
           rewrite,
-          routerOrHandler,
+          // @ts-expect-error - handlers are checked for Router above
           ...handlers,
           ...this.#postHooks
         )
@@ -200,7 +214,7 @@ export class Router {
         this.#finalHandler(err || new HttpError(404), req, res, () => {}))
 
     if (!req.originalUrl) {
-      // originalUrl is set as url gets shortened on every router mount
+      // originalUrl is set as url; gets shortened on every router mount
       req.originalUrl = req.url
       // finalHandler will be invoked if response emits an error
       // @ts-expect-error

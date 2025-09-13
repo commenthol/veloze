@@ -170,6 +170,26 @@ sub.get('/', handler)
 
 const router = new Router()
 router.use('/mount', sub)
+// GET /mount calls: sub (GET /) -> handler
+```
+
+Additional preHook and postHook handlers can be added on a router mount:
+
+```js
+const preHook = async (req, res) => {
+  res.locals = { hi: 'hi' }
+}
+const postHook = (req, res) => {
+  res.end(res.body)
+}
+
+const router = new Router()
+router.get('/', async (req, res) => {
+  res.body = `${res.locals.hi} from veloze`
+})
+
+app.use('/', preHook, router, postHook)
+// GET / calls: preHook -> router (GET /) -> postHook
 ```
 
 ## handle(req, res, next)
