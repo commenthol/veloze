@@ -10,6 +10,7 @@ export { redirect2Https } from "./redirect2Https.js";
 export { renderEngine } from "./renderEngine.js";
 export { serve } from "./serve.js";
 export { tooBusy } from "./tooBusy.js";
+export { traceContext } from "./traceContext.js";
 export { cacheControl, cacheControlByMethod } from "./cacheControl.js";
 export { contentSec, contentSecJson, cspReport } from "./contentSec.js";
 export { finalHandler, finalLogger } from "./finalHandler.js";
