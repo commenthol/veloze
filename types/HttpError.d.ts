@@ -8,9 +8,9 @@ export class HttpError extends Error {
     /**
      * @param {number} [status]
      * @param {string} [message]
-     * @param {Error|ErrorCause} [options]
+     * @param {Error|ErrorCause|null} [options]
      */
-    constructor(status?: number, message?: string, options?: Error | ErrorCause);
+    constructor(status?: number, message?: string, options?: Error | ErrorCause | null);
     status: number;
     code: string | undefined;
     info: any;

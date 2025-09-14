@@ -11,7 +11,7 @@ export class HttpError extends Error {
   /**
    * @param {number} [status]
    * @param {string} [message]
-   * @param {Error|ErrorCause} [options]
+   * @param {Error|ErrorCause|null} [options]
    */
   constructor(status = 500, message, options) {
     let cause
