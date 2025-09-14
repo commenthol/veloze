@@ -1,3 +1,10 @@
+# 1.4.1 (2025-09-14)
+
+### fix:
+
+- middleware/traceContext: update traceparent header on change (#9fa03f3)
+- Router: set route if hooks are defined (#06d6a28)
+
 # 1.4.0 (2025-09-14)
 
 ### feat:
