@@ -2,6 +2,12 @@ import assert from 'assert'
 import { HttpError } from '../src/HttpError.js'
 
 describe('HttpError', function () {
+  it('name', function () {
+    const err = new HttpError(400)
+    assert.equal(err.name, 'HttpError')
+    assert.equal(err.constructor.name, 'HttpError')
+  })
+
   it('no status', function () {
     const err = new HttpError()
     assert.equal(err.message, 'Internal Server Error')

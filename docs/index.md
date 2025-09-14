@@ -32,6 +32,7 @@ Allows you to:
 - [json, jsonEtag](./middleware/json.md) res.json() utility middleware.
 - [serve](./middleware/serve.md) Serves static files.
 - [tooBusy](./middleware/tooBusy.md) Reject incoming requests if server is too busy.
+- [traceContext](./middleware/traceContext.md) .
 
 # presets
 

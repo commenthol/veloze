@@ -7,7 +7,15 @@ export { setLogger } from './logger.js'
 export { mimeTypes } from './mime.js'
 export { ms } from './ms.js'
 export { qs } from './qs.js'
-export { random64 } from './random64.js'
+export {
+  random64,
+  nanoid,
+  DIGITS,
+  HEX,
+  LOWERCASE,
+  UPPERCASE,
+  DASHES
+} from './random64.js'
 export { rangeParser } from './rangeParser.js'
 export { safeServerShutdown } from './safeServerShutdown.js'
 export { tooBusy } from './tooBusy.js'
