@@ -92,7 +92,7 @@ export class Router {
    * @returns {this}
    */
   method(methods, paths, ...handlers) {
-    if (!handlers.length) {
+    if (!(handlers.length || this.#preHooks.length || this.#postHooks.length)) {
       return this
     }
     const connect = this.#connect(
