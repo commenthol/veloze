@@ -49,6 +49,17 @@ export class TraceParent {
    */
   update(sampled) {
     this.sampled = !!sampled
+    this._res?.setHeader('traceparent', this.toString())
+    return this
+  }
+
+  /**
+   * add response object to update header on change
+   * @param {import('http').ServerResponse} res
+   */
+  addResponse(res) {
+    this._res = res
+    this.update()
     return this
   }
 

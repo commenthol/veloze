@@ -25,5 +25,11 @@ export class TraceParent {
      * @returns {this} self
      */
     update(sampled?: boolean): this;
+    /**
+     * add response object to update header on change
+     * @param {import('http').ServerResponse} res
+     */
+    addResponse(res: import("http").ServerResponse): this;
+    _res: import("http").ServerResponse<import("http").IncomingMessage> | undefined;
     toString(): string;
 }

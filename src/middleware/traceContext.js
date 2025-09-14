@@ -6,18 +6,16 @@ import { getHeader } from '#request/getHeader.js'
  */
 
 /**
- * Middleware which sets a random request id;
- * Overwrites or sets `req.headers['x-request-id']`;
- *
+ * Middleware which sets a parsed or fresh request traceparent
  * @see https://www.w3.org/TR/trace-context
  * @returns {HandlerCb}
  */
 export function traceContext() {
-  return function requestIdMw(req, _res, next) {
+  return function traceContextMw(req, res, next) {
     // @ts-expect-error
     req.traceparent = TraceParent.parse(
       getHeader(req, 'traceparent') || ''
-    ).update()
+    ).addResponse(res)
     next()
   }
 }

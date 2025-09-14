@@ -8,8 +8,14 @@ describe('middleware/traceContext', () => {
   let app
   before(function () {
     app = new Router()
-    app.use('/*', traceContext(), (req, res) => {
-      res.setHeader('traceparent', req.traceparent.update(true).toString())
+    app.preHook(traceContext())
+    app.postHook((_req, res) => {
+      res.end()
+    })
+    app.get('/')
+    app.get('/update', (req, res) => {
+      // @ts-expect-error
+      req.traceparent.update(true)
       res.end()
     })
   })
@@ -17,6 +23,15 @@ describe('middleware/traceContext', () => {
   it('should always set a traceparent header', async () => {
     await supertest(app.handle, ST_OPTS)
       .get('/')
+      .expect(200)
+      .expect(({ headers }) => {
+        assert.match(headers.traceparent, /^00-[0-9a-f]{32}-[0-9a-f]{16}-00$/)
+      })
+  })
+
+  it('should set an updated traceparent header', async () => {
+    await supertest(app.handle, ST_OPTS)
+      .get('/update')
       .expect(200)
       .expect(({ headers }) => {
         assert.match(headers.traceparent, /^00-[0-9a-f]{32}-[0-9a-f]{16}-01$/)
@@ -33,7 +48,7 @@ describe('middleware/traceContext', () => {
       .expect(({ headers }) => {
         assert.match(
           headers.traceparent,
-          /^00-4bf92f3577b34da6a3ce929d0e0e4736-[0-9a-f]{16}-01$/
+          /^00-4bf92f3577b34da6a3ce929d0e0e4736-[0-9a-f]{16}-00$/
         )
       })
   })
