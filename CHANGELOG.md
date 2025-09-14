@@ -1,3 +1,13 @@
+# 1.4.0 (2025-09-14)
+
+### feat:
+
+- traceContext middleware (#a63be89)
+
+### fix:
+
+- HttpError allow error cause be null (#7e47c88)
+
 # 1.3.0 (2025-09-13)
 
 ### feat:
