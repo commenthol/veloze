@@ -6,13 +6,9 @@ import { Router } from './Router.js'
 import { safeServerShutdown } from './utils/safeServerShutdown.js'
 import { logger } from './utils/logger.js'
 
-/**
- * @typedef {import('http2').SecureServerOptions} Http2SecureServerOptions
- * @typedef {import('#Router.js').RouterOptions} RouterOptions
- * @typedef {http2.Http2Server|http2.Http2SecureServer} Http2Server
- * @typedef {Http2SecureServerOptions & RouterOptions & {onlyHTTP1: boolean, gracefulTimeout: number}} ServerOptions
- * @typedef {import('node:net').AddressInfo} AddressInfo
- */
+/** @typedef {http2.Http2Server|http2.Http2SecureServer} Http2Server */
+/** @typedef {import('./types.js').ServerOptions} ServerOptions */
+/** @typedef {import('node:net').AddressInfo} AddressInfo */
 
 const log = logger(':server')
 
@@ -107,7 +103,7 @@ export class Server extends Router {
    * @returns {Http2Server}
    */
   close(callback) {
-    return this.#server.close(callback)
+    return this.#server?.close(callback)
   }
 }
 

@@ -1,4 +1,4 @@
-import assert from 'assert'
+import assert from 'node:assert'
 import supertest from 'supertest'
 import { Router, Server, send } from '../src/index.js'
 import { Http2Client } from './support/Http2Client.js'
@@ -26,6 +26,7 @@ describe('Server', function () {
     server.use('/', app.handle)
     server.listen()
     const { port } = server.address()
+    assert.equal(typeof port, 'number')
 
     await supertest(`http://localhost:${port}`)
       .get('/')
@@ -40,6 +41,7 @@ describe('Server', function () {
     server.use('/', app.handle)
     server.listen()
     const { port } = server.address()
+    assert.equal(typeof port, 'number')
 
     await supertest(`https://localhost:${port}`)
       .get('/')
@@ -55,6 +57,7 @@ describe('Server', function () {
     server.use('/', app.handle)
     server.listen()
     const { port } = server.address()
+    assert.equal(typeof port, 'number')
 
     await supertest(`https://localhost:${port}`)
       .get('/')
@@ -70,6 +73,7 @@ describe('Server', function () {
     server.use('/', app.handle)
     server.listen()
     const { port } = server.address()
+    assert.equal(typeof port, 'number')
 
     const res = await new Http2Client(`http://localhost:${port}`)
       .get('/')
@@ -85,6 +89,7 @@ describe('Server', function () {
     server.use('/', app.handle)
     server.listen()
     const { port } = server.address()
+    assert.equal(typeof port, 'number')
 
     const res = await new Http2Client(`https://localhost:${port}`)
       .get('/')

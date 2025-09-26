@@ -1,15 +1,17 @@
 import * as http from 'node:http';
-import { CookieOpts } from '#utils/cookie.js';
+import { SecureServerOptions } from 'node:http2';
+import { CookieOpts } from './utils/cookie.js';
 export { CookieOpts };
-export { TooBusyOptions } from '#utils/tooBusy.js';
-export { HeaderParserResult } from '#utils/headerParser.js';
-export { RouterOptions } from '#Router.js';
-export { BodyParserOptions } from '#middleware/bodyParser.js';
-export { CacheControlDirectives } from '#middleware/cacheControl.js';
-export { CspMiddlewareOptions, CspOptions, HstsOptions, ReferrerPolicy } from '#middleware/contentSec.js';
-export { CorsOptions } from '#middleware/cors.js';
-export { PresetOptions } from '#middleware/presets.js';
-export { RetryAfterOption } from '#middleware/tooBusy.js';
+export { TooBusyOptions } from './utils/tooBusy.js';
+export { HeaderParserResult } from './utils/headerParser.js';
+import { RouterOptions } from './Router.js';
+export { RouterOptions };
+export { BodyParserOptions } from './middleware/bodyParser.js';
+export { CacheControlDirectives } from './middleware/cacheControl.js';
+export { CspMiddlewareOptions, CspOptions, HstsOptions, ReferrerPolicy } from './middleware/contentSec.js';
+export { CorsOptions } from './middleware/cors.js';
+export { PresetOptions } from './middleware/presets.js';
+export { RetryAfterOption } from './middleware/tooBusy.js';
 export type Method = 'ALL' | 'ACL' | 'BIND' | 'CHECKOUT' | 'CONNECT' | 'COPY' | 'DELETE' | 'GET' | 'HEAD' | 'LINK' | 'LOCK' | 'M-SEARCH' | 'MERGE' | 'MKACTIVITY' | 'MKCALENDAR' | 'MKCOL' | 'MOVE' | 'NOTIFY' | 'OPTIONS' | 'PATCH' | 'POST' | 'PROPFIND' | 'PROPPATCH' | 'PURGE' | 'PUT' | 'REBIND' | 'REPORT' | 'SEARCH' | 'SOURCE' | 'SUBSCRIBE' | 'TRACE' | 'UNBIND' | 'UNLINK' | 'UNLOCK' | 'UNSUBSCRIBE';
 export interface Request extends http.IncomingMessage {
     /**
@@ -112,4 +114,15 @@ export interface Log {
     info: Function;
     warn: Function;
     error: Function;
+}
+export interface ServerOptions extends RouterOptions, SecureServerOptions {
+    /**
+     * start server only in HTTP1 mode
+     * @default false
+     */
+    onlyHTTP1: boolean;
+    /**
+     * graceful timeout on server shutdown. time in milliseconds
+     */
+    gracefulTimeout: number;
 }

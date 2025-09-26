@@ -51,13 +51,8 @@ export class Server extends Router {
     }): Http2Server;
     #private;
 }
-export type Http2SecureServerOptions = import("http2").SecureServerOptions;
-export type RouterOptions = import("#Router.js").RouterOptions;
 export type Http2Server = http2.Http2Server | http2.Http2SecureServer;
-export type ServerOptions = Http2SecureServerOptions & RouterOptions & {
-    onlyHTTP1: boolean;
-    gracefulTimeout: number;
-};
+export type ServerOptions = import("./types.js").ServerOptions;
 export type AddressInfo = import("node:net").AddressInfo;
 import { Router } from './Router.js';
 import * as http2 from 'node:http2';
