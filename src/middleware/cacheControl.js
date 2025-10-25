@@ -104,7 +104,7 @@ function max(value, lower = 0) {
 export function cacheControl(options) {
   const value = buildCacheControl(options)
 
-  return function cacheControlMw(req, res, next) {
+  return function cacheControlMw(_req, res, next) {
     res.setHeader('cache-control', value)
     next()
   }

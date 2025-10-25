@@ -19,6 +19,6 @@ const app = new Router()
 app.use(implicitHeader)
 ```
 
-[---
+---
 
-🔝 TOP](#top)
+[🔝 TOP](#top)

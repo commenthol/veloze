@@ -68,7 +68,10 @@ Response utilities
 - [logger](./utils/logger.md) Logging.
 - [ms](./utils/ms.md) Convert string to milliseconds (or seconds) value.
 - [qs](./utils/qs.md) Parses a query string.
-- [random64](./utils/random64.md) TODO:
+- [random64](./utils/random64.md) Generate a random string composed of chars
+  `[0-9a-zA-Z_-]`
+- [readiness](./utils/readiness.md) Run Readiness and Liveness probes.
+- [setLogger](./utils/setLogger.md) Change default logger.
 
 ---
 

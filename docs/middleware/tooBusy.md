@@ -4,7 +4,7 @@
 
 # tooBusy middleware
 
-Credits https://github.com/STRML/node-toobusy
+Credits https://github.com/STRML/node-toobusy  
 License WTFPL
 
 Connect middleware which checks if server is too busy.

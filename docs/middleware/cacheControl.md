@@ -8,7 +8,7 @@ Middleware which sets the 'cache-control' header.
 
 If set without options defaults to:
 
-'cache-control': 'no-store'
+    cache-control: no-store
 
 See https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
 
@@ -38,8 +38,7 @@ router.use(
 
 Set the cache-control header dependent of the request method
 
-All requests matching `noCacheMethods` will have `cache-control: no-store,
-no-cache, max-age=0` being set.
+All requests matching `noCacheMethods` will have `cache-control: no-store` being set.
 
 ```js
 import { Router, cacheControlByMethod } from "veloze";

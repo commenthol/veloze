@@ -63,6 +63,7 @@ app.get("/", (req, res) => {
   res.json({ id: "foobar" });
 });
 
+// use of eTag for lost updates or stalled deletes
 app.put("/:id", bodyParser.json(), async (req, res) => {
   const { id } = req.params;
 

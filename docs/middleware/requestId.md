@@ -7,6 +7,8 @@
 Middleware which sets a random request id;
 Overwrites or sets `req.headers['x-request-id']`
 
+Consider using [traceContext](../middleware/traceContext.md) instead of requestId.
+
 # Usage
 
 ```js

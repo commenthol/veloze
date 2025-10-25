@@ -4,7 +4,9 @@
 
 # veloze
 
-A modern and fast express-like webserver for the web.
+[📃 Documentation][Documentation]
+
+> A modern and fast express-like webserver for the web.
 
 Allows you to:
 - reuse connect (express) middlewares
@@ -47,19 +49,16 @@ Benchmarks:
 - can be found in [veloze-benchmarks](https://github.com/commenthol/veloze-benchmarks)
 
 Documentation:
-- read more at [./docs/index.md](https://github.com/commenthol/veloze/blob/main/docs/index.md)
+- read more at [./docs/index.md][Documentation]
 
 # license
 
 MIT licensed
-
-# roadmap
-
-- examples
-- documentation
 
 [npm-badge]: https://badge.fury.io/js/veloze.svg
 [npm]: https://www.npmjs.com/package/veloze
 [types-badge]: https://badgen.net/npm/types/veloze
 [actions-badge]: https://github.com/commenthol/veloze/actions/workflows/ci.yml/badge.svg
 [actions]: https://github.com/commenthol/veloze/actions/workflows/ci.yml
+
+[Documentation]: https://github.com/commenthol/veloze/blob/main/docs/index.md
