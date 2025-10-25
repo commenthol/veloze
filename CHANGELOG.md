@@ -1,3 +1,21 @@
+# 1.5.0 (2025-10-25)
+
+### feat:
+
+- readiness utility (#27f18d9)
+
+### docs:
+
+- review and minor fixes (#81d98d6)
+
+### chore:
+
+- bump dependencies (#99e0992)
+
+### refactor:
+
+- Server types (#31e3109)
+
 # 1.4.1 (2025-09-14)
 
 ### fix:
