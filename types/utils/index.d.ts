@@ -12,4 +12,5 @@ export { timingSafeEqual } from "./timingSafeEqual.js";
 export { cookieParse, cookieSerialize } from "./cookie.js";
 export { escapeHtmlLit, escapeHtml } from "./escapeHtml.js";
 export { random64, nanoid, DIGITS, HEX, LOWERCASE, UPPERCASE, DASHES } from "./random64.js";
+export { Readiness, nap, abort } from "./readiness.js";
 export { compressStream, filterCompressibleMimeType, isCompressibleMimeType, isCompressibleMimeTypeHTB, healTheBreachRandomSpaces } from "./compressStream.js";

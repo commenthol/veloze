@@ -1,4 +1,4 @@
-[◀︎ utils/random64](../utils/random64.md)
+[◀︎ utils/readiness](../utils/readiness.md)
 [🛖](../index.md)
 [index ▶](../index.md)
 

@@ -1,6 +1,6 @@
 [◀︎ utils/qs](../utils/qs.md)
 [🛖](../index.md)
-[utils/setLogger ▶](../utils/setLogger.md)
+[utils/readiness ▶](../utils/readiness.md)
 
 # utils/random64
 
