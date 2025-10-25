@@ -17,7 +17,7 @@ export {
   DASHES
 } from './random64.js'
 export { rangeParser } from './rangeParser.js'
-export { Readiness, nap, abort } from './readiness.js'
+export { Readiness, nap, abortablePromise } from './readiness.js'
 export { safeServerShutdown } from './safeServerShutdown.js'
 export { tooBusy } from './tooBusy.js'
 export { timingSafeEqual } from './timingSafeEqual.js'

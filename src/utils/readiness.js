@@ -6,25 +6,20 @@ export const nap = (ms = 100) =>
   new Promise((resolve) => setTimeout(resolve, ms).unref())
 
 /**
- * @typedef {Promise<never> & {abort: () => void}} AbortPromise
+ * @template T
+ * @param {Promise<T>} promise
+ * @param {number} [ms]
+ * @returns {Promise<T>}
  */
-/**
- * @param {number} [ms=1000]
- * @returns {AbortPromise}
- */
-export const abort = (ms = 1e3) => {
-  let timeoutId
-  /** @type {AbortPromise} */
-  // @ts-ignore
-  const p = new Promise((_, reject) => {
-    timeoutId = setTimeout(() => reject(new Error('TimeoutError')), ms).unref()
-  })
-  p.abort = () => {
-    clearTimeout(timeoutId)
-  }
-  return p
+export const abortablePromise = (promise, ms = 1000) => {
+  const p = Promise.withResolvers()
+  p.promise.finally(() => clearTimeout(timeoutId))
+  let timeoutId = setTimeout(() => {
+    p.reject(new Error('TimeoutError'))
+  }, ms).unref()
+  promise.then(p.resolve).catch(p.reject)
+  return p.promise
 }
-
 /**
  * @typedef {Object} Check
  * @property {() => Promise<boolean>} asyncFn
@@ -111,17 +106,17 @@ export class Readiness {
    * @param {Check} check
    */
   async _runCheck(name, check) {
-    const abortSignal = abort(this._options.abortTimeoutMs)
     try {
       // allow aborting long running checks
-      const result = await Promise.race([check.asyncFn(), abortSignal])
+      const result = await abortablePromise(
+        check.asyncFn(),
+        this._options.abortTimeoutMs
+      )
       check.result = result === true
       log.debug(`%s: check=%s finished=%s`, this._options.name, name, result)
     } catch (/** @type {any} */ err) {
       check.result = false
       log.warn('%s: check=%s failed=%s', this._options.name, name, err.message)
-    } finally {
-      abortSignal.abort()
     }
     check.checkAt = new Date()
   }

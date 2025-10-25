@@ -1,5 +1,5 @@
 export function nap(ms?: number): Promise<any>;
-export function abort(ms?: number): AbortPromise;
+export function abortablePromise<T>(promise: Promise<T>, ms?: number): Promise<T>;
 /**
  * @typedef {Object} Check
  * @property {() => Promise<boolean>} asyncFn
@@ -58,9 +58,6 @@ export class Readiness {
     private _runCheck;
     _runAllChecks(): Promise<void>;
 }
-export type AbortPromise = Promise<never> & {
-    abort: () => void;
-};
 export type Check = {
     asyncFn: () => Promise<boolean>;
     result: boolean;
