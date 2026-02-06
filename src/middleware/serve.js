@@ -26,7 +26,6 @@ const log = logger(':serve')
 
 const ALLOWED_METHODS = ['GET', 'HEAD']
 const ALLOW = ALLOWED_METHODS.join(', ')
-const RE_TRAVERSE = /(?:^|[\\/])\.\.(?:[\\/]|$)/
 
 /**
  * @typedef {object} ServeOptions
@@ -85,11 +84,8 @@ export function serve(root, options) {
         pathnameFromUrl = pathnameFromUrl.slice(strip.length)
       }
 
+      // make path absolute and prevent path traversal
       const pathname = path.resolve('/', pathnameFromUrl)
-      /* c8 ignore next 3 */
-      if (RE_TRAVERSE.test(pathname)) {
-        throw new HttpError(403)
-      }
       const filename = path.join(_root, pathname)
 
       const basename = path.basename(filename)

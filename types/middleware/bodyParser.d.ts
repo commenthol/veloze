@@ -27,6 +27,10 @@ export type Log = import("../types.js").Log;
 export type BodyParserOptions = {
     limit?: string | number | undefined;
     /**
+     * timeout in ms for receiving the body
+     */
+    timeout?: number | undefined;
+    /**
      * allowed methods for bodyParsing
      */
     methods?: string[] | undefined;
@@ -42,4 +46,8 @@ export type BodyParserOptions = {
      * parse raw content
      */
     typeRaw?: string | false | undefined;
+    /**
+     * memory heap usage percent threshold to trigger error
+     */
+    heapPercentThreshold?: number | undefined;
 };

@@ -43,8 +43,15 @@ describe('middleware/redirect2Https', function () {
     assert.strictEqual(res.statusCode, 308)
   })
 
-  it('shall redirect to host and url', function () {
+  it('shall not redirect POST requests because of CSRF', function () {
     const req = new Request('POST', '/test', { host: 'example.com' })
+    const res = new Response()
+    redirect2Https({ redirectUrl: 'https://example.com' })(req, res)
+    assert.strictEqual(res.statusCode, 405)
+  })
+
+  it('shall redirect to host and url', function () {
+    const req = new Request('HEAD', '/test', { host: 'example.com' })
     const res = new Response()
     redirect2Https({ redirectUrl: 'https://example.com' })(req, res)
     assert.strictEqual(res.headers.location, 'https://example.com/test')
@@ -52,7 +59,7 @@ describe('middleware/redirect2Https', function () {
   })
 
   it('shall always redirect to a defined url', function () {
-    const req = new Request('POST', '/test', { host: 'example.com' })
+    const req = new Request('GET', '/test', { host: 'example.com' })
     const res = new Response()
     redirect2Https({ redirectUrl: 'https://foo.bar/other' })(req, res)
     assert.strictEqual(res.headers.location, 'https://foo.bar/other/test')
@@ -60,7 +67,7 @@ describe('middleware/redirect2Https', function () {
   })
 
   it('shall allow to redirect to a known vhost', function () {
-    const req = new Request('POST', '/test', { host: 'example.com' })
+    const req = new Request('GET', '/test', { host: 'example.com' })
     const res = new Response()
     redirect2Https({
       redirectUrl: 'https://foo.bar/other',

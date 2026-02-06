@@ -349,7 +349,7 @@ export function cspReport() {
 }
 
 const setCspNonce = (headerName, headerValue) => (res) => {
-  const nonce = random64(16, true)
+  const nonce = random64(24, true)
   res.locals = res.locals || {}
   res.locals.nonce = nonce
   const value = headerValue.replaceAll("'nonce'", `'nonce-${nonce}'`)

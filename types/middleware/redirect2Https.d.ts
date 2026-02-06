@@ -1,7 +1,4 @@
 /**
- * @typedef {import('../types.js').HandlerCb} HandlerCb
- */
-/**
  * A connect middleware to redirect from http to https
  * @param {object} options
  * @param {string} options.redirectUrl

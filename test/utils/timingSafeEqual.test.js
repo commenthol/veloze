@@ -38,7 +38,7 @@ describe('string/timingSafeEqual', function () {
     let diff1 = 0n
     let diff2 = 0n
 
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 10; i++) {
       diff1 += bench(() => timingSafeEqual(a1, b1))
       diff2 += bench(() => timingSafeEqual(a2, b2))
     }

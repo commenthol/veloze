@@ -4,20 +4,32 @@ import { cookieParse, cookieSerialize } from '../../src/utils/index.js'
 describe('utils/cookie', function () {
   describe('cookieParse', function () {
     it('empty string', function () {
-      assert.deepStrictEqual(cookieParse(), {})
+      assert.deepStrictEqual(cookieParse(), Object.create(null))
     })
+
     it('cookie string', function () {
       assert.deepStrictEqual(
         cookieParse(
           '_foobar=FB.1.12.24; flag; preferred_color_mode=light; tz=Asia%2FTokyo'
         ),
-        {
+        Object.assign(Object.create(null), {
           _foobar: 'FB.1.12.24',
           flag: true,
           preferred_color_mode: 'light',
           tz: 'Asia/Tokyo'
-        }
+        })
       )
+    })
+
+    it('shall not pollute prototype', function () {
+      const cookies = cookieParse(
+        '__proto__=foo;constructor=bar;hasOwnProperty=baz;toString=qux;prototype=quux'
+      )
+      const proto = Object.getPrototypeOf(cookies)
+      assert.strictEqual(proto, null)
+      assert.deepEqual(cookies, {
+        prototype: 'quux'
+      })
     })
   })
 

@@ -18,10 +18,12 @@ import { safeDecodeUriComponent } from './safeDecode.js'
  */
 export function cookieParse(cookieStr = '') {
   const parts = cookieStr.split(';')
-  const cookies = {}
+  const cookies = Object.create(null)
   for (const part of parts) {
     const [key, val] = part.trim().split('=')
-    if (!key) continue
+    if (!key || Object.prototype.hasOwnProperty.call(Object.prototype, key)) {
+      continue
+    }
     if (typeof val === 'string') {
       const value = safeDecodeUriComponent(val)
       cookies[key] = value

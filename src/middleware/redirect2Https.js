@@ -5,6 +5,8 @@ import { redirect } from '../response/redirect.js'
  * @typedef {import('../types.js').HandlerCb} HandlerCb
  */
 
+const SAFE_METHODS = new Set(['GET', 'HEAD', 'OPTIONS'])
+
 /**
  * A connect middleware to redirect from http to https
  * @param {object} options
@@ -31,6 +33,13 @@ export function redirect2Https(options) {
     if (isHttps) {
       next()
     } else {
+      // Only redirect safe methods (GET, HEAD, OPTIONS)
+      if (!SAFE_METHODS.has(req.method || '')) {
+        res.statusCode = 405
+        res.setHeader('Content-Type', 'text/plain')
+        res.end('HTTPS required for this request method')
+        return
+      }
       const reqUrl = fixPathname(req.originalUrl || req.url)
       const [hostHeader] = hostPort(req.headers?.host)
       const _host =
@@ -43,6 +52,7 @@ export function redirect2Https(options) {
   }
 }
 
-const fixPathname = (pathname) => (pathname === '/' ? '' : pathname)
+const fixPathname = (pathname) =>
+  (pathname === '/' ? '' : pathname).replaceAll('//', '/')
 
 const hostPort = (host = '') => ('' + host).split(':')

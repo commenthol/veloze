@@ -15,10 +15,12 @@ import {
  *
  * @typedef {object} BodyParserOptions
  * @property {string|number} [limit='100kB']
+ * @property {number} [timeout=30000] timeout in ms for receiving the body
  * @property {string[]} [methods=['POST', 'PUT', 'PATCH', 'SEARCH']] allowed methods for bodyParsing
  * @property {string|false} [typeJson='application/json'] parse json content
  * @property {string|false} [typeUrlEncoded='application/x-www-form-urlencoded'] parse urlEncoded content
  * @property {string|false} [typeRaw='application/octet-stream'] parse raw content
+ * @property {number} [heapPercentThreshold=90] memory heap usage percent threshold to trigger error
  */
 
 const log = logger(':bodyParser')
@@ -41,19 +43,27 @@ export const bodyParser = (options) => {
     methods = ['POST', 'PUT', 'PATCH', 'SEARCH'],
     typeJson = MIME_JSON,
     typeUrlEncoded = MIME_FORM,
-    typeRaw = MIME_BIN
+    typeRaw = MIME_BIN,
+    timeout = 30000
   } = options || {}
   const limit = bytes(_limit || '100kB') || 102400
   log.debug(`limit is set to ${limit} bytes`)
 
-  return function bodyParserMw(req, res, next) {
+  function hasMemoryPressure() {
+    const usage = process.memoryUsage()
+    return usage.heapUsed / usage.heapTotal > 0.95
+  }
+
+  return function bodyParserMw(req, _res, next) {
     // @ts-expect-error
     if (!methods.includes(req.method) || req.body) {
       next()
       return
     }
 
-    let body = Buffer.alloc(0)
+    const chunks = []
+    let receivedBytes = 0
+    let timeoutId
 
     const contentLength =
       req.headers[CONTENT_LENGTH] === undefined
@@ -65,23 +75,45 @@ export const bodyParser = (options) => {
       return
     }
 
+    // prevent slow client attacks
+    if (timeout > 0) {
+      timeoutId = setTimeout(() => {
+        removeListeners()
+        req.destroy()
+        next(new HttpError(408, 'Request timeout'))
+      }, timeout)
+    }
+
     req.on('data', onData)
     req.on('end', onEnd)
     req.on('error', onEnd)
 
     function removeListeners() {
+      clearTimeout(timeoutId)
       req.removeListener('data', onData)
       req.removeListener('end', onEnd)
       req.removeListener('error', onEnd)
     }
     function onData(chunk) {
-      if ((body.length || chunk.length) < limit) {
-        body = Buffer.concat([body, chunk])
-      } else {
-        /* c8 ignore next 3 */
-        removeListeners()
-        next(new HttpError(413, 'upload limit'))
+      receivedBytes += chunk.length
+
+      let err
+      if (hasMemoryPressure()) {
+        log.warn('Memory usage is high, aborting request')
+        err = new HttpError(503, 'server is under high load, try again later')
+      } else if (receivedBytes > limit) {
+        // Check total received bytes
+        err = new HttpError(413, 'upload limit exceeded')
       }
+
+      if (err) {
+        removeListeners()
+        req.destroy() // Destroy the socket to stop receiving data
+        next(err)
+        return
+      }
+
+      chunks.push(chunk)
     }
     function onEnd(err) {
       removeListeners()
@@ -91,6 +123,13 @@ export const bodyParser = (options) => {
         return
       }
 
+      // Verify Content-Length matches actual received bytes
+      if (!isNaN(contentLength) && contentLength !== receivedBytes) {
+        next(new HttpError(400, 'Content-Length mismatch'))
+        return
+      }
+
+      const body = Buffer.concat(chunks, receivedBytes)
       const [contentType] = ('' + req.headers[CONTENT_TYPE]).split(';')
 
       if (typeJson && contentType === typeJson) {

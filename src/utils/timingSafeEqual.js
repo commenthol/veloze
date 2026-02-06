@@ -1,3 +1,5 @@
+import { timingSafeEqual as cryptoTimingSafeEqual } from 'node:crypto'
+
 /**
  * @param {string} a input; secret from others
  * @param {string} b secret for comparison
@@ -7,10 +9,9 @@ export const timingSafeEqual = (a, b = '') => {
     return false
   }
 
-  let check = a.length === b.length
-  for (let i = 0; i < a.length; i++) {
-    check &&= a[i] === b[i]
+  try {
+    return cryptoTimingSafeEqual(Buffer.from(a, 'utf8'), Buffer.from(b, 'utf8'))
+  } catch {
+    return false
   }
-
-  return check
 }
