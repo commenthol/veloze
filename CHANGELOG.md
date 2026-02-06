@@ -1,3 +1,13 @@
+# 1.5.1 (2026-02-06)
+
+### fix:
+
+- security fixes (#ba7e4b8)
+
+### refactor:
+
+- abortable promise in readiness utility (#70d9ba9)
+
 # 1.5.0 (2025-10-25)
 
 ### feat:
