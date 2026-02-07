@@ -109,7 +109,11 @@ export function safeServerShutdown(server, options) {
     })
 
   EXIT_EVENTS.forEach((ev) =>
-    process.on(ev, () => {
+    process.on(ev, (err) => {
+      log.fatal(`process received "${ev}" signal, shutting down server...`)
+      if (err) {
+        log.fatal(err)
+      }
       if (isShutdown) return
       /* c8 ignore next */
       server.close()
