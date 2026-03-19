@@ -1,3 +1,14 @@
+# 1.5.2 (2026-03-19)
+
+### fix:
+
+- improve safeServerShutdown logging in case of errors (#15ff64f)
+
+### chore:
+
+- bump dependencies (#c6b4e8d)
+- fix ejs dependency for consolidate (#f96f31b)
+
 # 1.5.1 (2026-02-06)
 
 ### fix:
