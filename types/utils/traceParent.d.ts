@@ -30,6 +30,6 @@ export class TraceParent {
      * @param {import('http').ServerResponse} res
      */
     addResponse(res: import("http").ServerResponse): this;
-    _res: import("http").ServerResponse<import("http").IncomingMessage> | undefined;
+    _res: import("node:http").ServerResponse<import("node:http").IncomingMessage> | undefined;
     toString(): string;
 }
